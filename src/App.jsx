@@ -27,7 +27,7 @@ const App = () => {
           <Navbar color="bg-l_color_r-600"/>          
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home/>} />
+              <Route path="/" element={<LoginAdmin/>} />
               <Route path="/conocenos" element={<AboutUs/>} />
               <Route path="/home" element={<Home/>}  />
               <Route path="/donate" element={<Donate/>}  />
