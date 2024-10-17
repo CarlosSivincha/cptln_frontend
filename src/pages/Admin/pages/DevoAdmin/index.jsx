@@ -27,6 +27,7 @@ export const Devo = () => {
                 />
                 <h3 className="mt-4 text-black">Contenido en HTML:</h3>
                 <div dangerouslySetInnerHTML={{ __html: editorHtml }} className="mt-2 text-white" />
+                <h3 className="mt-4 text-black">Gaaaaaaaaaaaaaaaaaaa:</h3>
             </div>
         </div>
     );
