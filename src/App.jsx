@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StrictMode, lazy, Suspense } from "react";
 import { AuthProvider } from "./context/Usuario_context";
+
+
 const AboutUs = lazy(() => import("@/pages/client/pages/AboutUs"));
 const Home = lazy(() => import("@/pages/client/pages/Home"));
 const Donate = lazy(() => import("@/pages/client/pages/Donate"));
