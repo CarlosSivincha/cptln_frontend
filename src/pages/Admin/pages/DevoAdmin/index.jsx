@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { format } from "date-fns"; // Asegúrate de tener esta importación si vas a formatear la fecha
 import { es } from "date-fns/locale"; // Importa la localización si es necesario
+import ReactQuill from "react-quill"; // Importa ReactQuill
 import Header from "@/pages/client/components/Header"; // Asegúrate de que esta ruta sea correcta
 import { registrarDevo } from "../../../../Api/Devo";
-
+import "react-quill/dist/quill.snow.css";
 
 const YourFormComponent = () => {
 
@@ -28,6 +29,7 @@ const YourFormComponent = () => {
     }
     const handleParrafo = (html) => {
         setParrafo(html)
+        console.log(parrafo)
     }
     const handleFecha = (event) => {
         setFecha(event.target.value)
@@ -50,6 +52,12 @@ const YourFormComponent = () => {
             console.log(error)
         }
     }
+    const modules = {
+        toolbar: [
+            ['bold', 'italic', 'underline'], 
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }], 
+        ],
+    };
 
     return (
         <>
@@ -80,12 +88,14 @@ const YourFormComponent = () => {
                         placeholder="Versículo"
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
-                    <textarea
+
+                    <ReactQuill
+                        className="bg-white"
+                        modules={modules}
                         name="parrafo"
                         value={parrafo}
                         onChange={handleParrafo}
                         placeholder="Contenido"
-                        className="w-full h-40 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <input
                         type="file"
