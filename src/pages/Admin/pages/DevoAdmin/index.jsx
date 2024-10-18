@@ -97,7 +97,7 @@ const YourFormComponent = () => {
                         type="file"
                         name="audio"
                         onChange={handleAudio}
-                        accept="audio/*"
+                        accept="audio/*, video/mp4"
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <button type="submit" className="w-full p-3 font-semibold text-white transition duration-200 rounded-md bg-l_color_y-600 hover:bg-l_color_y-700">
