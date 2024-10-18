@@ -49,10 +49,10 @@ const formatFecha = (date) => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        placeholder="Título"
+                        name="titulo"
+                        value={formData.titulo}
+                        onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+                        placeholder="titulo"
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <input
@@ -71,10 +71,10 @@ const formatFecha = (date) => {
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <textarea
-                        name="contenido"
-                        value={formData.contenido}
-                        onChange={(e) => setFormData({ ...formData, contenido: e.target.value })}
-                        placeholder="Contenido"
+                        name="parrafo"
+                        value={formData.parrafo}
+                        onChange={(e) => setFormData({ ...formData, parrafo: e.target.value })}
+                        placeholder="parrafo"
                         className="w-full h-40 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <input
