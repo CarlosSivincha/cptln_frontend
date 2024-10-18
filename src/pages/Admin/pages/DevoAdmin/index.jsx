@@ -28,16 +28,19 @@ const formatFecha = (date) => {
 };
 
     // Simular el envío del formulario
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formattedData = {
             ...formData,
             fecha: formatFecha(formData.fecha) // Formatea la fecha en formato numérico
         };
-        // Aquí puedes enviar `formattedData` a la API o manejarlo según necesites
-        console.log(formattedData); // O la función para enviar a la API
-
-        await  registrarDevo(formattedData);
+    
+        try {
+            await registrarDevo(formattedData); // Envía formattedData a la API
+            console.log("Devocional registrado con éxito"); // Mensaje de éxito
+        } catch (error) {
+            console.error("Error al registrar el devocional:", error); // Manejo de errores
+        }
     };
     
 
