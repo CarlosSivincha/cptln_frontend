@@ -13,24 +13,29 @@ const YourFormComponent = () => {
 
     // Simular el envío del formulario
     const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Crear un objeto FormData para enviar todos los datos, incluyendo la imagen
-    const dataToSend = new FormData();
-    dataToSend.append('titulo', formData.titulo);
-    dataToSend.append('fecha', formData.fecha); // Envía la fecha tal como está en el formulario
-    dataToSend.append('versiculo', formData.versiculo);
-    dataToSend.append('parrafo', formData.parrafo);
-    if (formData.imagen) {
-        dataToSend.append('imagen', formData.imagen);
-    }
-
-    try {
-        await registrarDevo(dataToSend); // Envía dataToSend a la API
-        console.log("Devocional registrado con éxito"); // Mensaje de éxito
-    } catch (error) {
-        console.error("Error al registrar el devocional:", error); // Manejo de errores
-    }
+        e.preventDefault();
+    
+        // Crear un objeto FormData para enviar todos los datos, incluyendo la imagen
+        const dataToSend = new FormData();
+        dataToSend.append('titulo', formData.titulo);
+        dataToSend.append('fecha', formData.fecha); // Envía la fecha tal como está en el formulario
+        dataToSend.append('versiculo', formData.versiculo);
+        dataToSend.append('parrafo', formData.parrafo);
+        
+        // Verifica que hay una imagen antes de agregarla
+        if (formData.imagen) {
+            dataToSend.append('imagen', formData.imagen);
+            console.log("Imagen seleccionada:", formData.imagen); // Verifica que se ha seleccionado una imagen
+        } else {
+            console.warn("No se ha seleccionado ninguna imagen."); // Mensaje de advertencia
+        }
+    
+        try {
+            await registrarDevo(dataToSend); // Envía dataToSend a la API
+            console.log("Devocional registrado con éxito"); // Mensaje de éxito
+        } catch (error) {
+            console.error("Error al registrar el devocional:", error); // Manejo de errores
+        }
     };
 
 
@@ -76,6 +81,7 @@ const YourFormComponent = () => {
                         onChange={(e) => setFormData({ ...formData, imagen: e.target.files[0] })}
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
+                
                     <button type="submit" className="w-full p-3 font-semibold text-white transition duration-200 rounded-md bg-l_color_y-600 hover:bg-l_color_y-700">
                         Enviar
                     </button>
