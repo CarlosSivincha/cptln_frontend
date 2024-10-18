@@ -7,7 +7,8 @@ import { registrarDevo } from "../../../../Api/Devo";
 
 const YourFormComponent = () => {
 
-    const [imagen, setImagen] = useState(null);
+    const [imagen, setImagen] = useState(null)
+    const [audio, setAudio] = useState(null)
     const [titulo, setTitulo] = useState("")
     const [versiculo, setVersiculo] = useState("")
     const [parrafo, setParrafo] = useState("")
@@ -16,6 +17,9 @@ const YourFormComponent = () => {
     const handleImagen = (event) => {
         setImagen(event.target.files[0])
     }
+    const handleAudio = (event) => {
+        setAudio(event.target.files[0])
+    };
     const handleTitulo = (event) => {
         setTitulo(event.target.value)
     }
@@ -29,10 +33,12 @@ const YourFormComponent = () => {
         setFecha(event.target.value)
     }
 
+
     const subirdevo = async (event) => {
         event.preventDefault()
         const formData = new FormData();
         formData.append('imagen', imagen);
+        formData.append('audio', audio);
         formData.append('titulo', titulo);
         formData.append('versiculo', versiculo);
         formData.append('parrafo', parrafo);
@@ -85,6 +91,13 @@ const YourFormComponent = () => {
                         type="file"
                         name="imagen"
                         onChange={handleImagen}
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                    />
+                    <input
+                        type="file"
+                        name="audio"
+                        onChange={handleAudio}
+                        accept="audio/*"
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <button type="submit" className="w-full p-3 font-semibold text-white transition duration-200 rounded-md bg-l_color_y-600 hover:bg-l_color_y-700">
