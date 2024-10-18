@@ -27,21 +27,18 @@ const formatFecha = (date) => {
     }
 };
 
-    // Simular el envío del formulario
+   // Simular el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formattedData = {
-            ...formData,
-            fecha: formatFecha(formData.fecha) // Formatea la fecha en formato numérico
-        };
-    
+        
         try {
-            await registrarDevo(formattedData); // Envía formattedData a la API
+            await registrarDevo(formData); // Envía formData a la API sin formatear la fecha
             console.log("Devocional registrado con éxito"); // Mensaje de éxito
         } catch (error) {
             console.error("Error al registrar el devocional:", error); // Manejo de errores
         }
     };
+
     
 
     return (
