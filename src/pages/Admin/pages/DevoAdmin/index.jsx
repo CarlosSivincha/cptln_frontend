@@ -7,10 +7,10 @@ import { registrarDevo } from "../../../../Api/Devo";
 
 const YourFormComponent = () => {
     const [formData, setFormData] = useState({
-        title: '',
+        titulo: '',
         fecha: '',
         versiculo: '',
-        contenido: '',
+        parrafo: '',
         imagen: null
     });
 
