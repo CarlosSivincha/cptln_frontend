@@ -225,7 +225,7 @@ const handleMouseEnterMenu = () => {
               <a href="/donate">Ayúdanos</a>
             </li>
             <li className={`hover:text-gray-300 ${isScrolledUp ? "text-black" : "text-white"}`}>
-              <a href="/oracion">Oración</a>
+              <a href="/devo">Oración</a>
             </li>
 
             
@@ -275,7 +275,7 @@ const handleMouseEnterMenu = () => {
               onClick={() => setIsProgramsOpen(!isProgramsOpen)} // Cambiar estado del submenú
               className="flex items-center"
             >
-              Programas
+              Programas <FaChevronDown />
             </button>
           </li>
           
@@ -300,7 +300,7 @@ const handleMouseEnterMenu = () => {
               onClick={() => setIsResourcesOpen(!isResourcesOpen)} // Cambiar estado del submenú
               className="flex items-center"
             >
-              Recursos
+              Recursos <FaChevronDown/>
             </button>
           </li>
 
@@ -330,7 +330,7 @@ const handleMouseEnterMenu = () => {
           </li>
           <li className="flex items-center space-x-2 text-gray-800 hover:text-gray-600">
             <FaPrayingHands />
-            <a href="/oracion" onClick={() => setIsOpen(false)}>Oración</a>
+            <a href="/devo" onClick={() => setIsOpen(false)}>Oración</a>
           </li>
         </ul>
       </div>
