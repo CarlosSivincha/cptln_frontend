@@ -37,7 +37,7 @@ const formatFecha = (date) => {
         // Aquí puedes enviar `formattedData` a la API o manejarlo según necesites
         console.log(formattedData); // O la función para enviar a la API
 
-        await  registrarDevo(formData)
+        await  registrarDevo(formattedData);
     };
     
 
