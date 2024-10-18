@@ -11,40 +11,28 @@ const YourFormComponent = () => {
         imagen: null
     });
 
-    // Función para formatear la fecha al formato "YYYY-MM-DD"
-    const formatFecha = (date) => {
-        try {
-            const d = new Date(date);
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0'); // Meses de 0-11 a 1-12
-            const day = String(d.getDate()).padStart(2, '0'); // Asegurarse de que el día tenga 2 dígitos
-            return `${year}-${month}-${day}`; // Formato: YYYY-MM-DD
-        } catch (error) {
-            return ''; // Manejo si la fecha no es válida
-        }
-    };
-
     // Simular el envío del formulario
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        // Crear un objeto FormData para enviar todos los datos, incluyendo la imagen
-        const dataToSend = new FormData();
-        dataToSend.append('titulo', formData.titulo);
-        dataToSend.append('fecha', formatFecha(formData.fecha)); // Formatea la fecha
-        dataToSend.append('versiculo', formData.versiculo);
-        dataToSend.append('parrafo', formData.parrafo);
-        if (formData.imagen) {
-            dataToSend.append('imagen', formData.imagen);
-        }
+    // Crear un objeto FormData para enviar todos los datos, incluyendo la imagen
+    const dataToSend = new FormData();
+    dataToSend.append('titulo', formData.titulo);
+    dataToSend.append('fecha', formData.fecha); // Envía la fecha tal como está en el formulario
+    dataToSend.append('versiculo', formData.versiculo);
+    dataToSend.append('parrafo', formData.parrafo);
+    if (formData.imagen) {
+        dataToSend.append('imagen', formData.imagen);
+    }
 
-        try {
-            await registrarDevo(dataToSend); // Envía dataToSend a la API
-            console.log("Devocional registrado con éxito"); // Mensaje de éxito
-        } catch (error) {
-            console.error("Error al registrar el devocional:", error); // Manejo de errores
-        }
+    try {
+        await registrarDevo(dataToSend); // Envía dataToSend a la API
+        console.log("Devocional registrado con éxito"); // Mensaje de éxito
+    } catch (error) {
+        console.error("Error al registrar el devocional:", error); // Manejo de errores
+    }
     };
+
 
     return (
         <>
