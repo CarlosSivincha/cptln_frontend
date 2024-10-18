@@ -13,8 +13,8 @@ const Devo = lazy(() => import("@/pages/client/pages/Devo"))
 const LoginAdmin = lazy(() => import("@/pages/Admin/pages/LoginAdmin"));
 const RegisterAdmin = lazy(() => import("@/pages/Admin/pages/RegisterAdmin"));
 const DevoAd = lazy(() => import("@/pages/Admin/pages/DevoAdmin"));
-
-
+const NewsAdmin = lazy(() => import("@/pages/Admin/pages/NewsAdmin"))
+const EventsAdmin = lazy(() => import("@/pages/Admin/pages/EventsAdmin"))
 const Navbar = lazy(() => import("@/pages/client/components/Navbar"));
 const Fotter = lazy(() => import("@/pages/client/components/Fotter"));
 
@@ -33,10 +33,12 @@ const App = () => {
               <Route path="/home" element={<Home/>}  />
               <Route path="/donate" element={<Donate/>}  />
               <Route path="/contactanos" element={<Contact/>} />
-              <Route path="/Devo" element={<Devo/>} />
+              <Route path="/devo" element={<Devo/>} />
               <Route path="/register" element={<RegisterAdmin/>} />
               <Route path="/devoAd" element={<DevoAd/>} />
               <Route path="/login" element={<LoginAdmin/>} />
+              <Route path="/newsad" element={<NewsAdmin/>} />
+              <Route path="/eventad" element={<EventsAdmin/>} />
               {/* <Route path="/programas" element={<Programs/>} /> */}
             </Routes>
           </BrowserRouter>
