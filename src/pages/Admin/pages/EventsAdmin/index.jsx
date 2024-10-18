@@ -92,7 +92,7 @@ const EventsAdmin = () => {
                         type="time" 
                         name="hora"
                         value={hora}
-                        onChange={handleFecha}
+                        onChange={handleHora}
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     </div>
