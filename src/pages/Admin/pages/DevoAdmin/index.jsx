@@ -26,8 +26,8 @@ const YourFormComponent = () => {
     const handleVersiculo = (event) => {
         setVersiculo(event.target.value)
     }
-    const handleParrafo = (event) => {
-        setParrafo(event.target.value)
+    const handleParrafo = (html) => {
+        setParrafo(html)
     }
     const handleFecha = (event) => {
         setFecha(event.target.value)
