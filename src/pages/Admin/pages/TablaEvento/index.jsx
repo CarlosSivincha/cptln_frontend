@@ -13,8 +13,8 @@ const TablaEvento = () => {
 
     useEffect(() => {
         const fetch = async () => {
-            const data = await obtenerEventos()
-            setEventos(data)
+            const response = await obtenerEventos()
+            setEventos(response.data)
         }
         fetch()
     }, [])
