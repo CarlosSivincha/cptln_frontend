@@ -39,23 +39,23 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    useEffect(() => {
-        const checkLogin = async () => { // Obtiene el token directamente
-            const token = localStorage.getItem('token');
-            if (token) {
-                Cookies.set('token', token);
-            }
-            try {
-                const res = await verifyTokenRequest(token);
-                if (res.data) {
-                    setUser(res.data);
-                }
-            } catch (error) {
-                console.error('Token verification error:', error);
-            }
-        };
-        checkLogin();
-    }, []);
+    // useEffect(() => {
+    //     const checkLogin = async () => { // Obtiene el token directamente
+    //         const token = localStorage.getItem('token');
+    //         if (token) {
+    //             Cookies.set('token', token);
+    //         }
+    //         try {
+    //             const res = await verifyTokenRequest(token);
+    //             if (res.data) {
+    //                 setUser(res.data);
+    //             }
+    //         } catch (error) {
+    //             console.error('Token verification error:', error);
+    //         }
+    //     };
+    //     checkLogin();
+    // }, []);
 
     return (
         <Usuario_context.Provider value={{ user, loginUser, RegisterUser }} >
