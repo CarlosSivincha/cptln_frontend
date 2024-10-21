@@ -8,22 +8,16 @@ import { registrarNoticia } from "../../../../Api/News";
 const NewsFormComponent = () => {
     const [titulo, setTitulo] = useState("");
     const [cuerpo, setCuerpo] = useState("");
-    const [imagenFondo, setImagenFondo] = useState(null); // Para manejar la imagen de fondo
-    const [imagenesAdicionales, setImagenesAdicionales] = useState([]); // Para manejar las imágenes adicionales
+    const [imagenFondo, setImagenFondo] = useState(null); 
+    const [imagenesAdicionales, setImagenesAdicionales] = useState([]); 
     const [fecha, setFecha] = useState("");
 
     const handleTitulo = (event) => setTitulo(event.target.value);
     const handleCuerpo = (html) => setCuerpo(html);
-    
-    // Manejar la imagen de fondo
-    const handleImagenFondo = (event) => {
-        setImagenFondo(event.target.files[0]); // Solo permite una imagen
-    };
+    const handleImagenFondo = (event) => setImagenFondo(event.target.files[0]); 
 
-    // Manejar múltiples imágenes adicionales
     const handleImagenesAdicionales = (event) => {
-        const files = Array.from(event.target.files); // Convierte los archivos en un array
-        setImagenesAdicionales(files);
+        setImagenesAdicionales([...event.target.files]); 
     };
 
     const handleFecha = (event) => setFecha(event.target.value);
@@ -34,17 +28,12 @@ const NewsFormComponent = () => {
         formData.append('titulo', titulo);
         formData.append('cuerpo', cuerpo);
         formData.append('fecha', fecha);
+        formData.append('portada',imagenFondo);
+        imagenesAdicionales.forEach((image) => {
+            formData.append('imagenes', image); // Usa el mismo nombre 'files'
+          });
 
-        // Añadir la imagen de fondo al formData
-        if (imagenFondo) {
-            formData.append('imagenFondo', imagenFondo);
-        }
-
-        // Añadir las imágenes adicionales al formData
-        imagenesAdicionales.forEach((imagen, index) => {
-            formData.append(`imagenAdicional${index + 1}`, imagen); // imagenAdicional1, imagenAdicional2, etc.
-        });
-
+        
         try {
             // Aquí iría la función para registrar la noticia
             const respuesta = await registrarNoticia(formData); // Función para manejar el envío
@@ -87,7 +76,7 @@ const NewsFormComponent = () => {
                         <label className="block mb-2 text-gray-600">Imagen de fondo</label>
                         <input
                             type="file"
-                            name="imagenFondo"
+                            name="portada"
                             onChange={handleImagenFondo}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                         />
@@ -96,7 +85,7 @@ const NewsFormComponent = () => {
                         <label className="block mb-2 text-gray-600">Imágenes adicionales (2 o más)</label>
                         <input
                             type="file"
-                            name="imagenesAdicionales"
+                            name="imagenes"
                             onChange={handleImagenesAdicionales}
                             multiple // Permite seleccionar múltiples imágenes
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
