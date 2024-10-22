@@ -64,7 +64,7 @@ export const Contact = () => {
                 <div className="flex flex-col [@media(min-width:1280px)]:flex-row w-full">
                     {/* Sección del formulario */}
                     {isMobile ? (
-                        <div className="p-8 bg-[#A7A692] rounded-none">
+                        <div className="p-8 bg-l_color_v-var rounded-none">
                             <div className="flex justify-center mb-6">
                                 <img src={OriginalLogo} alt="Logo" className="w-12 h-12 sm:w-16 sm:h-16" />
                             </div>
@@ -126,7 +126,7 @@ export const Contact = () => {
                                     <input type="email" placeholder="Correo Electrónico" className="w-full p-3 mb-4 bg-gray-100 rounded-md" />
                                     <div className="grid grid-cols-2 gap-4 mb-4">
                                         <input type="text" placeholder="Teléfono" className="p-3 bg-gray-100 rounded-md" />
-                                        <select className="flex-1 px-4 py-2 border rounded-full">
+                                        <select className="flex-1 px-3 py-2 border rounded-md bg-gray-100">
                                             <option value="">Ciudad</option>
                                             <option value="Amazonas">Amazonas</option>
                                             <option value="Áncash">Áncash</option>
@@ -167,20 +167,30 @@ export const Contact = () => {
                         {/* Imagen de fondo */}
                         <div className="absolute inset-0 bg-center bg-cover">
                             <img src={Fondo_C} alt="Imagen de fondo" className="object-cover w-full h-full" />
-                            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+                            <div className="absolute inset-0 bg-black bg-opacity-40"></div>
                         </div>
 
                         {/* Información de contacto */}
                         <div className="relative z-10 flex flex-col justify-center h-full p-8 text-white">
-                            <h2 className="mb-4 text-4xl font-semibold">Contacto</h2>
-                            <p className="mb-2">Dirección: Juan B. Alberdi 3480, Villa Ballester - Buenos Aires</p>
-                            <p className="mb-2">Teléfono: +54 11 4738 4327</p>
-                            <p className="mb-2">WhatsApp: +54 911 5323 4647</p>
-                            <p>Email: cptln@cptln.org.ar</p>
+                            <h2 className="h3-subtitles mb-4 font-semibold">Contacto</h2>
+                            <p className="standard-paragraph mb-2">Dirección: Urb. Villa Eléctrica, Edificio Apolo B-16, JLBR</p>
+                            <p className="standard-paragraph mb-2">Teléfono:</p>
+                            <p>Email:</p>
                             {/* Icono de WhatsApp */}
-                            <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
-                                <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
-                            </a>
+                            <div className="flex gap-5">
+                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                </a>
+                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                </a>
+                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                </a>
+                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -189,7 +199,7 @@ export const Contact = () => {
             {/* Carrusel de Imágenes */}
             <div className="py-8 bg-l_color_Fondo">
                 <div className="container px-4 mx-auto lg:px-8">
-                    <h3 className="mb-8 text-xl font-bold text-center text-black">NUESTROS TRABAJOS</h3>
+                    <h3 className="mb-8 h3-subtitles text-center text-black">NUESTROS TRABAJOS</h3>
                     <Slider {...settings}>
                         <div className="px-2">
                             <div className="flex items-center justify-center h-64 overflow-hidden">

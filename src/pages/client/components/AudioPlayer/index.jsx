@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react'
 import audioFile from '../../../../assets/Prueba 1.mp4'
 const AudioPlayer = () => {
@@ -66,7 +65,7 @@ const AudioPlayer = () => {
 
     return (
         <>
-            <div className='flex items-center w-full p-2 space-x-4 rounded-md bg-slate-900'>
+            <div className='flex w-full items-center space-x-4 p-2 rounded-md bg-slate-900'>
                 {/* Cargar Audio */}
                 <audio
                     ref={audioRef}
@@ -104,7 +103,7 @@ const AudioPlayer = () => {
                 {/* Barra de progreso */}
                 <span
                     onClick={handleClickProgressBar}
-                    className='flex w-full h-3 transition-all duration-300 rounded-sm cursor-pointer'
+                    className='flex w-full h-3 transition-all duration-300 cursor-pointer rounded-sm'
                     style={{
                         background: `linear-gradient(to right, white ${progressPercentage}%, #1f2937 ${progressPercentage + 0.1}%, #1f2937 100%)`
                     }}
@@ -120,7 +119,7 @@ const AudioPlayer = () => {
 
 
                 {/* Volumen */}
-                <div className='relative items-center inline-block group'>
+                <div className='relative inline-block items-center group'>
                     <button className='group' onClick={handleMute}>
                         {controlVolume > 0 ?
                             (
@@ -137,7 +136,7 @@ const AudioPlayer = () => {
                             )
                         }
                     </button>
-                    <div className='absolute transition-all duration-300 origin-right -rotate-90 opacity-0 -bottom-4 right-2 group group-hover:opacity-100'>
+                    <div className='absolute transition-all duration-300 -rotate-90 -bottom-4 right-2 group origin-right group-hover:opacity-100 opacity-0'>
                         <input type="range"
                             min={0}
                             max={1}

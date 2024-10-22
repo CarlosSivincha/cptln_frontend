@@ -1,26 +1,54 @@
 import { lazy, useEffect, useState } from "react";
 import BackgroundHeaderImage from "../../../../assets/img_F_header.png";
-import CarruselImage from "../../../../assets/img_P_carrusel.png";
+import JoelImg from "../../../../assets/Joel_3.jpg";
+import PasiImg from "../../../../assets/PASI_3.jpg";
 import Slider from "react-slick";
-import ImagenNoticia1 from "../../../../assets/img_N_card.png";
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { dataNoticias } from "../../../../api/Noticias.js";
+import { dataEventos } from "../../../../api/Eventos.js";
+
+import data from "../../data.json";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Componentes lazy-loaded
 const Header = lazy(() => import("@/pages/client/components/Header"));
 const NewsCard = lazy(() => import("@/pages/client/components/NewsCard"));
 const EventCard = lazy(() => import("@/pages/client/components/EventCard"));
+const NewsLoader = lazy(() => import("@/pages/client/components/Loaders/NewsLoader.jsx"));
+const EventsLoader = lazy(() => import("@/pages/client/components/Loaders/EventsLoader.jsx"));
 
 // Datos de los programas para el carrusel
 const programs = [
-  { imgSrc: CarruselImage, name: "JOEL" },
-  { imgSrc: CarruselImage, name: "PASI" },
-  { imgSrc: CarruselImage, name: "VIVENCIAR" }
+  { imgSrc: JoelImg, name: "JOEL", tipo: "Niños y Adolescentes" },
+  { imgSrc: PasiImg, name: "PASI", tipo: "Niños y Adolescentes" },
+  { imgSrc: JoelImg, name: "VIVENCIAR", tipo: "Familia" },
 ];
 
 export const Home = () => {
   const [slidesToShow, setSlidesToShow] = useState(2);
+  const [ fetchNoticias, setFetchNoticias ] = useState([])
+  const [ fetchEventos, setFetchEventos ] = useState([])
+  const [isLoadingNews, setIsLoadingNews] = useState(true); // Nuevo estado de carga
+  const [isLoadingEvents, setIsLoadingEventes] = useState(true); // Nuevo estado de carga
+
+  useEffect(() => {  
+    const fetch = async () => {
+      const response = await dataNoticias()
+      // console.log(response)
+      setFetchNoticias(response.data)
+      setIsLoadingNews(false);
+    }
+    fetch();
+    const fetchEvent = async () => {
+      const response = await dataEventos()
+      // console.log(response)
+      setFetchEventos(response.data)
+      setIsLoadingEventes(false);
+    }
+    fetchEvent();
+  }, []);
 
   const updateSlidesToShow = () => {
     const width = window.innerWidth;
@@ -33,9 +61,9 @@ export const Home = () => {
 
   useEffect(() => {
     updateSlidesToShow();
-    window.addEventListener('resize', updateSlidesToShow);
+    window.addEventListener("resize", updateSlidesToShow);
     return () => {
-      window.removeEventListener('resize', updateSlidesToShow);
+      window.removeEventListener("resize", updateSlidesToShow);
     };
   }, []);
 
@@ -45,137 +73,138 @@ export const Home = () => {
     speed: 500,
     slidesToShow: slidesToShow,
     slidesToScroll: 1,
+    autoplay: true,
+    mobileFirst: true,
   };
 
   return (
     <div className="flex flex-col gap-12 pb-12">
       {/* Sección del Header */}
-      <div className="relative h-[45vh] min-h-[300px]"> 
+      <div className="relative h-[45vh] min-h-[300px]">
         {/* Imagen de fondo */}
         <img
           src={BackgroundHeaderImage}
           alt="Header background"
           className="absolute inset-0 object-cover w-full h-full"
-          style={{ objectFit: 'cover' }} 
+          style={{ objectFit: "cover" }}
         />
         {/* Filtro oscuro */}
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         {/* Contenido del Header */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full p-4 text-center">
-        <Header
-          color="bg-transparent"
-          title="CRISTO PARA TODAS LAS NACIONES - PERÚ"
-          text="Llevando a Cristo a las Naciones y las Naciones a la Iglesia"
-        />
-      </div>
-      </div>
-      {/* Sección de Programas */}
-      <div className="container px-2 min-[768px]:px-8 min-[1024px]:px-10 min-[1280px]:px-10 min-[1440px]:px-0 mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <h2 className="text-xl font-bold">Programas</h2>
-          <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
-            Ver todo
-          </button>
+          <Header
+            color="bg-transparent"
+            title="CRISTO PARA TODAS LAS NACIONES - PERÚ"
+            text="Llevando a Cristo a las Naciones y las Naciones a la Iglesia"
+          />
         </div>
+      </div>
 
-        {/* Carrusel de Programas */}
-        <div className="container px-2 min-[768px]:px-8 min-[1024px]:px-10 min-[1280px]:px-10 min-[1440px]:px-8 min-[1920px]:px-20 mx-auto">
-          <Slider {...carouselSettings}>
-            {programs.map((program, index) => (
-              <div key={index} className="relative px-2">
-                <div
-                  className="relative w-full h-64 overflow-hidden"
-                  style={{
-                    backgroundImage: `url(${program.imgSrc})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                >
+      <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28 mx-5">
+        {/* Sección de Programas */}
+        <div className="container min-[768px]:px-10 min-[1024px]:px-12 min-[1280px]:px-16 min-[1440px]:px-6 mx-auto">
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="h3-subtitles">Programas</h2>
+            <a href="/programas">
+              <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
+                Ver todo
+              </button>
+            </a>
+          </div>
+
+          {/* Carrusel de Programas */}
+          <div className="min-[768px]:px-5 min-[1024px]:px-6 min-[1280px]:px-8 min-[1440px]:px-10 min-[1920px]:px-12 mx-auto">
+            <Slider {...carouselSettings}>
+              {programs.map((program, index) => (
+                <div key={index} className="relative px-2">
                   <div
-                    className="absolute bottom-0 left-0 flex flex-col items-center justify-center p-2 text-white bg-red-500"
+                    className="relative w-full h-64 overflow-hidden rounded-[10px] lg:h-72 xl:h-80 2xl:h-96"
                     style={{
-                      width: 'calc(33% - 2rem)',
-                      height: '25%',
-                      borderRadius: '0 10px 0 0',
+                      backgroundImage: `url(${program.imgSrc})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                     }}
                   >
-                    <span className="text-xs">Niños y Jóvenes</span>
-                    <span className="text-sm font-bold">{program.name}</span>
+                    <div className="absolute bottom-0 left-0 flex flex-col items-center justify-center p-2 text-white bg-l_color_r-600 w-full max-md:rounded-b-[10px] md:rounded-bl-lg md:rounded-tr-lg md:w-2/5 md:py-3 xl:py-4 2xl:py-6">
+                      <span className="text-sm xl:text-base">
+                        {program.tipo}
+                      </span>
+                      <span className="text-base xl:text-xl font-bold">
+                        {program.name}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </Slider>
+              ))}
+            </Slider>
+          </div>
         </div>
-      </div>
-{/* Sección de Noticias y Eventos */}
-<div className="container px-2 min-[768px]:px-8 min-[1024px]:px-10 min-[1280px]:px-10 min-[1440px]:px-0 mx-auto"> 
-  <div className="flex flex-col min-[1280px]:flex-row gap-2">
-    <div className="flex-1">
-      <div className="flex items-center gap-4 mb-8">
-        <h2 className="text-xl font-bold">Noticias</h2>
-        <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
-          Ver todo
-        </button>
-      </div>
-      <div className="grid grid-cols-1 min-[505px]:grid-cols-2 min-[1024px]:grid-cols-3 min-[1280px]:grid-cols-2 min-[1440px]:grid-cols-3 gap-8">
-        <NewsCard
-          title="Noticia 1"
-          date="Julio 30, 2024"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
-          link="#"
-          imageSrc={ImagenNoticia1}
-        />
-        <NewsCard
-          title="Noticia 2"
-          date="Julio 29, 2024"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
-          link="#"
-          imageSrc={ImagenNoticia1}
-        />
-        <NewsCard
-          title="Noticia 2"
-          date="Julio 29, 2024"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
-          link="#"
-          imageSrc={ImagenNoticia1}
-        />
-        <NewsCard
-          title="Noticia 3"
-          date="Julio 28, 2024"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
-          link="#"
-          imageSrc={ImagenNoticia1}
-        />
-      </div>
-    </div>
+        {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
+        <div className="flex mx-5 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">
+        <div className="min-[360px]:mx-auto">
+          <h3 class="h3-subtitles mb-5">Noticias</h3>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {isLoadingNews // Mientras está cargando, muestra los skeletons
+              ? Array(6) // Crear 6 skeletons como placeholders
+                  .fill()
+                  .map((_, index) => (
+                    <NewsLoader key={index} /> // loading={true} activa los skeletons
+                  ))
+              : fetchNoticias.map((not, index) => (
+                  <NewsCard
+                    key={not._id}
+                    title={not.titulo}
+                    date={not.fecha}
+                    description={not.cuerpo}
+                    link={not._id}
+                    imageSrc={not.portada}
+                    loading={false} // loading={false} oculta los skeletons
+                  />
+                ))}
+            </div>
+        </div>
 
-      {/* Columna de Eventos */}
-      <div className="mt-10 min-[1280px]:mt-0 min-[1280px]:ml-10 lg:mt-0">
-        <h2 className="text-xl font-bold mb-9">Próximos eventos</h2>
-        <div className="mt-2 space-y-4">
-          <EventCard
-            date="ABR 30 2024"
-            title="Evento 1"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-            location="Av. Independencia N° 100"
-          />
-          <EventCard
-            date="JUL 11 2024"
-            title="Evento 2"
-            description="Descripción Descripción"
-            location="Av. Independencia N° 100"
-          />
-          <EventCard
-            date="AGTO 03 2024"
-            title="Evento 3"
-            description="Descripción Descripción"
-            location="Av. Independencia N° 100"
-          />
+        <div className=" min-[360px]:mx-auto">
+          <h3 className="h3-subtitles mb-5">Eventos</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]">
+          {isLoadingEvents // Mientras está cargando, muestra los skeletons
+              ? Array(3) // Crear 6 skeletons como placeholders
+                  .fill()
+                  .map((_, index) => (
+                    <EventsLoader key={index} /> // loading={true} activa los skeletons
+                  ))
+              : fetchEventos.map((event, index) => (
+                <EventCard
+                key={event._id}
+                date={event.fecha}
+                hora={event.hora}
+                title={event.titulo}
+                description={event.cuerpo}
+                location={event.ubicacion}
+              />
+                ))}
+            {/* <EventCard
+              date="ABR 30 2024"
+              title="Evento 1"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              location="Av. Independencia N° 100"
+            />
+            <EventCard
+              date="ABR 30 2024"
+              title="Evento 1"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              location="Av. Independencia N° 100"
+            />
+            <EventCard
+              date="ABR 30 2024"
+              title="Evento 1"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              location="Av. Independencia N° 100"
+            /> */}
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+      </div>
     </div>
   );
 };

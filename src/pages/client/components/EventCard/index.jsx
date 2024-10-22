@@ -1,26 +1,46 @@
 /* eslint-disable react/prop-types */
 // src/pages/client/components/EventCard/index.jsx
 
-const EventCard = ({ date, title, description, location }) => {
-  // Suponiendo que el formato de fecha sea algo como "30 Julio 2024"
-  const [day, month, year] = date.split(' ');
+const EventCard = ({ date, title, description, location, hora }) => {
+  // Convertir la cadena a un objeto Date
+  const dateFormat = new Date(date)
+
+  // Obtener las partes individuales de la fecha
+  const dia = dateFormat.getDate() // Día (14)
+  const anio = dateFormat.getFullYear() // Año (2024)
+
+  // Meses abreviados en inglés
+  const shortMonthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+  // Obtener el nombre abreviado del mes
+  const mes = shortMonthNames[dateFormat.getMonth()] // OCT
+
+  // Asignar el resultado completo a una sola variable
+  const formattedDate = `${mes} ${dia} ${anio}`
+
+  const [day, month, year] = formattedDate.split(' ');
+
+  const stripHtmlTags = (html) => {
+    return html.replace(/<\/?[^>]+(>|$)/g, "");
+  };
 
   return (
-    <div 
-      className="flex w-full overflow-hidden bg-white rounded-lg shadow-md"
-      style={{
-        height: '120px',
-        minWidth: '290px',  // Reducimos el minWidth para pantallas pequeñas
-        maxWidth: '450px',
-      }}
-    >
+    <div className="flex overflow-hidden bg-white rounded-lg shadow-md h-[120px] w-full max-w-[5000px]">
+      {/* Sección de la fecha (fondo ocupa todo el alto) */}
+      <div className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white bg-[#A25F3E] h-full w-[28%]">
+        <div className="text-lg xl:text-xl">{day}</div>
+        <div className="text-4xl xl:text-5xl leading-none">{month}</div>
+        <div className="text-lg xl:text-xl">{year}</div>
+        {/* <div className="text-base xl:text-lg">{hora}</div> */}
+      </div>
+
       {/* Sección de información */}
-      <div className="flex items-center justify-between flex-grow min-w-0 p-4">
+      <div className="flex items-center justify-between flex-grow min-w-0 p-4 relative">
         <div className="flex-grow">
           <h3 className="mb-1 text-lg font-semibold">{title}</h3>
-          <p className="text-sm text-gray-600 line-clamp-2">{description}</p>
+          <p className="text-sm text-gray-600 line-clamp-1 md:line-clamp-2">{stripHtmlTags(description)}</p>
           <div className="flex items-center mt-2 text-xs text-gray-500">
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-4 h-4 mr-1"
               fill="none"
@@ -28,25 +48,18 @@ const EventCard = ({ date, title, description, location }) => {
               stroke="currentColor"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12m-9 0a9 9 0 119 9 9 9 0 01-9-9z" />
-            </svg>
-            {location}
+            </svg> */}
+            <span className="">{location}</span>
+            
           </div>
         </div>
+        <div className="absolute py-0.5 px-1.5 md:py-1 md:px-2 top-0 right-0 bg-l_color_r text-white font-bold text-xs md:text-base">
+          <span>{hora}</span>
+        </div>
       </div>
+      
 
-      {/* Sección de la fecha (fondo ocupa todo el alto) */}
-      <div 
-        className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white"
-        style={{
-          backgroundColor: '#A25F3E',
-          width: '90px',  // Ajustamos el ancho para pantallas pequeñas
-          height: '100%',
-        }}
-      >
-        <div className="text-xl">{day}</div>
-        <div className="text-5xl leading-none">{month}</div>
-        <div className="text-xl">{year}</div>
-      </div>
+      
     </div>
   );
 };
