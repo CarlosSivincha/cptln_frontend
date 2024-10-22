@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerDevocionalPag } from '../../../../Api/Devo';
+import { obtenerDevocionalPag } from '../../../../Api/devocionales';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
