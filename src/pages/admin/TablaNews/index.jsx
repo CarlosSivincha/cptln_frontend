@@ -11,24 +11,23 @@ import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 
 const TablaNews = () => {
-
     const [noticias, setNoticias] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1); // Página actual
+    const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [isLoading, setIsLoading] = useState(false); // Estado de carga
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetch = async (page) => {
             try {
-                setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerNoticiaPag({ params: { page: Number(page), limit: 10 } });
+                setIsLoading(true);
+                const response = await obtenerNoticiasPag({ params: { page: Number(page), limit: 5 } });
                 setNoticias(response.data.noticias);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {
                 console.log(error);
             } finally {
-                setIsLoading(false); // Finalizar estado de carga
+                setIsLoading(false);
             }
         }
         fetch(currentPage);
@@ -36,14 +35,25 @@ const TablaNews = () => {
 
     const columnHelper = createColumnHelper();
 
+    const truncateText = (text, maxLength) => {
+        if (!text) return '';
+        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+    };
+
+    const stripHtml = (html) => {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+        return tempDiv.innerText;
+    };
+
     const columns = [
         columnHelper.accessor('_id', {
             header: 'ID',
-            cell: info => null, // No muestra el valor en la celda
+            cell: info => null,
             enableColumnFilter: false,
-            size: 0, // Mantén el tamaño en 0 para ocupar menos espacio
+            size: 0,
             meta: {
-                hidden: true, // Puedes usar esta propiedad para marcar que está oculta
+                hidden: true,
             },
         }),
         columnHelper.accessor('titulo', {
@@ -52,13 +62,12 @@ const TablaNews = () => {
         }),
         columnHelper.accessor('cuerpo', {
             header: "Cuerpo",
-            cell: info => info.getValue(),
+            cell: info => truncateText(stripHtml(info.getValue()), 70), // Primero elimina HTML y luego trunca
         }),
         columnHelper.accessor('fecha', {
             header: "Fecha",
             cell: info => info.getValue(),
         }),
-
     ];
 
     const table = useReactTable({
@@ -84,6 +93,7 @@ const TablaNews = () => {
             setCurrentPage(currentPage - 1);
         }
     };
+    
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
@@ -91,9 +101,10 @@ const TablaNews = () => {
                     <h3 className="text-xl font-semibold text-gray-700">Noticias</h3>
                     <button
                         onClick={() => navigate('/admin/newsad')}
-                        className="px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
+                        className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar
+                        <FaPlus  className="ml-1"  size={13}/>
                     </button>
                 </div>
 
@@ -150,17 +161,17 @@ const TablaNews = () => {
                     </table>
                 </div>
 
-                {/* Paginación */}
+                {/* PaginaciÃ³n */}
                 <div className="flex items-center justify-between mt-6">
                     <button
-                        className={`px-4 py-2 text-sm rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         onClick={handlePreviousPage}
                         disabled={currentPage === 1 || isLoading}
                     >
                         Anterior
                     </button>
                     <button
-                        className={`px-4 py-2 text-sm rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors ${currentPage === totalPages || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors ${currentPage === totalPages || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages || isLoading}
                     >
@@ -170,8 +181,6 @@ const TablaNews = () => {
             </div>
         </div>
     );
-
-
 }
 
 export default TablaNews;
