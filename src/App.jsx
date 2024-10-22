@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { StrictMode, lazy, Suspense } from "react";
 import  PageLoader from "./pages/client/components/Loaders/PageLoader";
 import CursosBiblico from "./pages/client/pages/CursosBiblicos";
+import { AuthProvider } from "./context/Usuario_context";
 
 const AboutUs = lazy(() => import("@/pages/client/pages/AboutUs"));
 const Programas = lazy(() => import("@/pages/client/pages/Programs"));
@@ -42,6 +43,7 @@ const App = () => {
   return (
     <>
       <StrictMode>
+      <AuthProvider>
         <div className="bg-[#EAE9E5]">
         <Suspense fallback={<PageLoader/>}>
           <Navbar color="bg-l_color_r-600"/>          
@@ -90,6 +92,7 @@ const App = () => {
           <Fotter />
         </Suspense>
         </div>
+        </AuthProvider>
       </StrictMode>
     </>
   );
