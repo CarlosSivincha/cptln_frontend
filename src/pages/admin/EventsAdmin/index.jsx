@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
-import { obtenerEventosID, registrarEvento,EditarEventos } from "../../../../Api/Events";
+import { obtenerEventosID, registrarEvento,EditarEventos } from "../../../../Api/eventos";
 import { useParams, useNavigate } from "react-router-dom";
 
 
