@@ -3,7 +3,7 @@ import BackgroundHeaderImage from "../../../../assets/img_F_header.png";
 import JoelImg from "../../../../assets/Joel_3.jpg";
 import PasiImg from "../../../../assets/PASI_3.jpg";
 import Slider from "react-slick";
-
+// ../../../../api/Noticias.js
 import { dataNoticias } from "../../../../api/Noticias.js";
 import { dataEventos } from "../../../../api/Eventos.js";
 
