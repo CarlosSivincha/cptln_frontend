@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { obtenerEventosPag } from '../../../Api/eventos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-
+import { FaPlus } from "react-icons/fa";
 const TablaEvento = () => {
 
     const [eventos, setEventos] = useState([]);
@@ -94,9 +94,10 @@ const TablaEvento = () => {
                     <h3 className="text-xl font-semibold text-gray-700">Eventos</h3>
                     <button
                         onClick={() => navigate('/admin/eventad')}
-                        className="px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
+                        className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar
+                        <FaPlus  className="ml-1"  size={13}/>
                     </button>
                 </div>
     
@@ -155,14 +156,14 @@ const TablaEvento = () => {
                 {/* Paginación */}
                 <div className="flex items-center justify-between mt-6">
                     <button
-                        className={`px-4 py-2 text-sm rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={handlePreviousPage}
-                        disabled={currentPage === 1 || isLoading}
+                       className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                       onClick={handlePreviousPage}
+                       disabled={currentPage === 1 || isLoading}
                     >
                         Anterior
                     </button>
                     <button
-                        className={`px-4 py-2 text-sm rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors ${currentPage === totalPages || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`px-4 py-2 text-sm rounded-md  bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === totalPages || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages || isLoading}
                     >

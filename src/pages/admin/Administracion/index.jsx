@@ -8,8 +8,6 @@ import { GiOpenBook } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
 const Administracion = () => {
-    
-
     return (
         <>
             <nav className="flex items-center justify-between w-full px-40 py-4 bg-l_color_r-600">
