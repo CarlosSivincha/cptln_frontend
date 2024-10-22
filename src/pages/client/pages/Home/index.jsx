@@ -4,8 +4,8 @@ import JoelImg from "../../../../assets/Joel_3.jpg";
 import PasiImg from "../../../../assets/PASI_3.jpg";
 import Slider from "react-slick";
 // ../../../../api/Noticias.js
-import { dataNoticias } from "api@/noticias.js";
-import { dataEventos } from "api@/eventos.js";
+import { dataNoticias } from "@/api/noticias.js";
+import { dataEventos } from "@/api/eventos.js";
 
 import data from "../../data.json";
 
