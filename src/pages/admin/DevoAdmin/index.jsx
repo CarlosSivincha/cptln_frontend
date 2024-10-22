@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
-import { registrarDevo, obtenerDevocionalID, EditarDevocional } from "../../../../Api/devocionales";
+import { registrarDevo, obtenerDevocionalID, EditarDevocional } from "../../../Api/devocionales";
 import "react-quill/dist/quill.snow.css";
 import { useParams } from "react-router-dom";
 import AudioPlayer from "../../../client/components/AudioPlayer";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
-import { registrarNoticia } from "../../../../Api/noticias";
+import { registrarNoticia } from "../../../Api/noticias";
 
 
 const NewsFormComponent = () => {

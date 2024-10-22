@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerEventosPag } from '../../../../Api/eventos';
+import { obtenerEventosPag } from '../../../Api/eventos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
