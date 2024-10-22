@@ -6,8 +6,8 @@ import Image1 from "../../../../assets/Día_del_Nino_1.jpg";
 import Image2 from "../../../../assets/Día_del_Nino_2.jpg";
 import Image3 from "../../../../assets/Día_del_Nino_3.jpg";
 
-import { dataNoticiaUnica } from "@/Api/noticias";
-import { dataEventos } from "@/Api/eventos";
+import { obtenerNoticiaID } from "@/Api/noticias";
+import { obtenerEventos } from "@/Api/eventos";
 
 import data from "../../data.json";
 
@@ -21,7 +21,7 @@ export const Noticia = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await dataNoticiaUnica(id)
+      const response = await obtenerNoticiaID(id)
       // console.log(response)
       setNoticia(response.data)
       console.log(response.data)
@@ -32,7 +32,7 @@ export const Noticia = () => {
     
     fetch();
     const fetchEvent = async () => {
-      const response = await dataEventos()
+      const response = await obtenerEventos()
       // console.log(response)
       setFetchEventos(response.data)
       

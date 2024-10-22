@@ -1,5 +1,11 @@
-import axios from "./axios"
+import axios from "./axios";
 
-export const dataNoticias = () => axios.get('noticias')
+export const registrarNoticia = event => axios.post("noticias",event)
 
-export const dataNoticiaUnica = (_id) => axios.get(`noticias/${_id}`)
+export const obtenerNoticia = () => axios.get("noticias")
+
+export const obtenerNoticiaID = (id) => axios.get(`noticias/${id}`)
+
+export const EditarNoticia =  (id, data) => axios.post(`noticias/${id}`,data)
+
+export const obtenerNoticiaPag = (parametros) => axios.get("noticias/pagination",parametros)

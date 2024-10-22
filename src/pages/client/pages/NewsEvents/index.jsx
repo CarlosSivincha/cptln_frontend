@@ -2,8 +2,8 @@ import { lazy, useEffect, useState } from "react";
 import ImagenNoticia1 from "../../../../assets/img_N_card.png";
 // import {NewsLoader} from "../../components/Loaders/NewsLoader"
 
-import { dataNoticias } from "@/Api/noticias";
-import { dataEventos } from "@/Api/eventos";
+import { obtenerNoticia } from "@/Api/noticias";
+import { obtenerEventos } from "@/Api/eventos";
 
 import data from "../../data.json"
 
@@ -22,14 +22,14 @@ export const NewsEvents = () => {
 
   useEffect(() => {  
     const fetch = async () => {
-      const response = await dataNoticias()
+      const response = await obtenerNoticia()
       // console.log(response)
       setFetchNoticias(response.data)
       setIsLoadingNews(false);
     }
     fetch();
     const fetchEvent = async () => {
-      const response = await dataEventos()
+      const response = await obtenerEventos()
       // console.log(response)
       setFetchEventos(response.data)
       setIsLoadingEventes(false);

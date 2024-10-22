@@ -4,8 +4,8 @@ import JoelImg from "../../../../assets/Joel_3.jpg";
 import PasiImg from "../../../../assets/PASI_3.jpg";
 import Slider from "react-slick";
 // ../../../../api/Noticias.js
-import { dataNoticias } from "@/Api/noticias";
-import { dataEventos } from "@/Api/eventos";
+import { obtenerNoticia } from "@/Api/noticias";
+import { obtenerEventos } from "@/Api/eventos";
 
 import data from "../../data.json";
 
@@ -35,14 +35,14 @@ export const Home = () => {
 
   useEffect(() => {  
     const fetch = async () => {
-      const response = await dataNoticias()
+      const response = await obtenerNoticia()
       // console.log(response)
       setFetchNoticias(response.data)
       setIsLoadingNews(false);
     }
     fetch();
     const fetchEvent = async () => {
-      const response = await dataEventos()
+      const response = await obtenerEventos()
       // console.log(response)
       setFetchEventos(response.data)
       setIsLoadingEventes(false);
