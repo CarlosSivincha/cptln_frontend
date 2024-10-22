@@ -27,16 +27,16 @@ const NewsEvents = lazy(() => import("@/pages/client/pages/NewsEvents"));
 const NotFound = lazy(() => import("@/pages/client/pages/ExtraPages/NotFound"))
 
 // Admin const
-const LoginAdmin = lazy(() => import("@/pages/Admin/LoginAdmin"));
-const RegisterAdmin = lazy(() => import("@/pages/Admin/RegisterAdmin"));
-const DevoAd = lazy(() => import("@/pages/Admin/DevoAdmin"));
-const NewsAdmin = lazy(() => import("@/pages/Admin/NewsAdmin"))
-const EventsAdmin = lazy(() => import("@/pages/Admin/EventsAdmin"))
+const LoginAdmin = lazy(() => import("@/pages/admin/LoginAdmin"));
+const RegisterAdmin = lazy(() => import("@/pages/admin/RegisterAdmin"));
+const DevoAd = lazy(() => import("@/pages/admin/DevoAdmin"));
+const NewsAdmin = lazy(() => import("@/pages/admin/NewsAdmin"))
+const EventsAdmin = lazy(() => import("@/pages/admin/EventsAdmin"))
 // const Navbar = lazy(() => import("@/pages/client/components/Navbar"));
-const Administracion = lazy(() => import("@/pages/Admin/Administracion"))
-const TablaEvento = lazy(() => import("@/pages/Admin/TablaEvento"))
-const TablaDevocional = lazy(() => import("@/pages/Admin/TablaDevocional"))
-const TablaNews = lazy(() => import("@/pages/Admin/TablaNews"))
+const Administracion = lazy(() => import("@/pages/admin/Administracion"))
+const TablaEvento = lazy(() => import("@/pages/admin/TablaEvento"))
+const TablaDevocional = lazy(() => import("@/pages/admin/TablaDevocional"))
+const TablaNews = lazy(() => import("@/pages/admin/TablaNews"))
 
 const App = () => {
   return (
