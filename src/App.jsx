@@ -32,7 +32,7 @@ const RegisterAdmin = lazy(() => import("@/pages/Admin/pages/RegisterAdmin"));
 const DevoAd = lazy(() => import("@/pages/Admin/pages/DevoAdmin"));
 const NewsAdmin = lazy(() => import("@/pages/Admin/pages/NewsAdmin"))
 const EventsAdmin = lazy(() => import("@/pages/Admin/pages/EventsAdmin"))
-const Navbar = lazy(() => import("@/pages/client/components/Navbar"));
+// const Navbar = lazy(() => import("@/pages/client/components/Navbar"));
 const Administracion = lazy(() => import("@/pages/Admin/pages/Administracion"))
 const TablaEvento = lazy(() => import("@/pages/Admin/pages/TablaEvento"))
 const TablaDevocional = lazy(() => import("@/pages/Admin/pages/TablaDevocional"))
