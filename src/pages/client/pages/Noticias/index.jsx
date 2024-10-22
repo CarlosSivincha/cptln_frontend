@@ -6,8 +6,8 @@ import Image1 from "../../../../assets/Día_del_Nino_1.jpg";
 import Image2 from "../../../../assets/Día_del_Nino_2.jpg";
 import Image3 from "../../../../assets/Día_del_Nino_3.jpg";
 
-import { dataNoticiaUnica } from "../../../../api/Noticias.js";
-import { dataEventos } from "../../../../api/Eventos.js";
+import { dataNoticiaUnica } from "../../../../api/noticias.js";
+import { dataEventos } from "../../../../api/eventos.js";
 
 import data from "../../data.json";
 
