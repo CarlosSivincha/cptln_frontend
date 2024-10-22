@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerNoticiaPag } from '../../../Api/noticias';
+import { obtenerNoticiasPag } from '../../../Api/noticias';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
