@@ -24,7 +24,7 @@ const Administracion = () => {
             <div className="flex">
                 {/* Menú lateral */}
                 <div
-                    className="fixed bottom-0 left-0 w-24 transition-all duration-300 bg-white top-20 hover:w-96 group"  >
+                    className="fixed bottom-0 left-0 w-24 transition-all duration-300 bg-white top-20 hover:w-96 group z-20"  >
                     <ul>
                         <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                             <Link to="/admin/tablaevento" className="hidden ml-4 text-xl group-hover:inline-block ">
