@@ -1,4 +1,4 @@
-import OriginalLogo from "../../../../assets/OriginalLogo.png";
+import OriginalLogo from "../../../assets/OriginalLogo.png";
 import { useState } from "react";
 import { useAuth } from "../../../../context/Usuario_context";
 
