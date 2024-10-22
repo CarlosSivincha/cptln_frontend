@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import OriginalLogo from "../../../../assets/OriginalLogo.png";
+import OriginalLogo from "../../../assets/OriginalLogo.png";
 import { Outlet } from "react-router-dom";
 import { MdOutlineEvent } from 'react-icons/md';
 import { ImNewspaper } from "react-icons/im";
