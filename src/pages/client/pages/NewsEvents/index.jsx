@@ -2,8 +2,8 @@ import { lazy, useEffect, useState } from "react";
 import ImagenNoticia1 from "../../../../assets/img_N_card.png";
 // import {NewsLoader} from "../../components/Loaders/NewsLoader"
 
-import { dataNoticias } from "../../../../api/Noticias.js";
-import { dataEventos } from "../../../../api/Eventos.js";
+import { dataNoticias } from "../../../../api/noticias.js";
+import { dataEventos } from "../../../../api/eventos.js";
 
 import data from "../../data.json"
 
