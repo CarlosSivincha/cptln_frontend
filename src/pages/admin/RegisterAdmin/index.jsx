@@ -1,4 +1,4 @@
-import OriginalLogo from "../../../../assets/OriginalLogo.png";
+import OriginalLogo from "../../../../src/assets/OriginalLogo.png";
 
 export const RegisterAdmin = () => {
   return (
