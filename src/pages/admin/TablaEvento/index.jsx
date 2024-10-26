@@ -72,7 +72,7 @@ const TablaEvento = () => {
     const navigate = useNavigate();
 
     const EditarEvento = (id) => {
-        navigate(`${id}`);
+        navigate(`tablaevento/${id}`);
     };
 
     const handleNextPage = () => {

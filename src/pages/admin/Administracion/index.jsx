@@ -41,7 +41,7 @@ const Administracion = () => {
                     onMouseLeave={toggleMenu} // Contrae el menú y cierra el submenú al salir
                 >
                     <ul>
-                        <Link to="/admin/tablaevento" className="w-full">
+                        <Link to="/admin" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
                                     Eventos

@@ -28,7 +28,7 @@ const CategoriaAdmin = () => {
             const fetch = async () => {
                 const response = await obtenerCategoriasID(id);
                 setNombre(response.data.nombre);
-                setObjetivo(response.data.objetivo);
+                // setObjetivo(response.data.objetivo);
                 setDescripcion(response.data.descripcion);
                 setColor(response.data.color);
                 setImagenes(response.data.imagenes);
@@ -38,18 +38,18 @@ const CategoriaAdmin = () => {
     }, []);
 
     const enviarCategoria = async (event) => {
-        event.preventDefault();
-        const formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('descripcion', descripcion);
-        formData.append('color', color);
-        formData.append('objetivo', objetivo);
-        [...imagenes].forEach((file) => {
-            formData.append('imagenes', file);
-        });
+        // event.preventDefault();
         try {
+            const formData = new FormData();
+            formData.append('nombre', nombre);
+            formData.append('descripcion', descripcion);
+            formData.append('color', color);
+            formData.append('objetivo', objetivo);
+            [...imagenes].forEach((file) => {
+                formData.append('imagenes', file);
+            });
             const respuesta = await registrarCategoria(formData);
-            console.log(respuesta);
+            if (respuesta.status == 200) return navigate('/admin')
         } catch (error) {
             console.log(error);
         }
@@ -57,17 +57,20 @@ const CategoriaAdmin = () => {
 
     const ModificarCategoria = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('descripcion', descripcion);
-        formData.append('color', color);
-        formData.append('objetivo', objetivo);
-        [...imagenes].forEach((file) => {
-            formData.append('imagenes', file);
-        });
         try {
+            const formData = new FormData();
+            formData.append('nombre', nombre);
+            formData.append('descripcion', descripcion);
+            formData.append('color', color);
+            // formData.append('objetivo', objetivo);
+            [...imagenes].forEach((file) => {
+                formData.append('imagenes', file);
+            });
             const respuesta = await EditarCategorias(id, formData);
             console.log(respuesta);
+            if (respuesta.status == 200) { 
+                navigate('/admin') 
+            }
         } catch (error) {
             console.log(error);
         }
@@ -129,6 +132,7 @@ const CategoriaAdmin = () => {
                                 type="file"
                                 name="imagenes"
                                 onChange={handleImagenes}
+                                accept=".png, .jpg, .jpeg"
                                 multiple
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
