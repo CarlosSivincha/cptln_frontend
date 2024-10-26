@@ -9,10 +9,12 @@ import TransferImage1 from "../../../../assets/img_D_C_2.png";
 import TransferImage2 from "../../../../assets/img_D_C_3.png"; 
 import TransferImage3 from "../../../../assets/img_D_C.png";
 import TransferImage3_2 from "../../../../assets/img_N_card.png";
+import { useParams } from "react-router-dom";
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
 export const Contact = () => {
+    // const { data } = useParams(); 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
     
     // Configuración del carrusel
@@ -53,6 +55,10 @@ export const Contact = () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    // useEffect(() => {
+
+    // }, [data])
 
     return (
         <div className="flex flex-col gap-20">

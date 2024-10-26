@@ -69,7 +69,7 @@ const App = () => {
                   <Route path="/" element={<Navbar color="bg-l_color_r-600" />}>
                     <Route index element={<Home />} />
                     <Route path="aboutus" element={<AboutUs />} />
-                    <Route path="programas" element={<Programas />} />
+                    {/* <Route path="programas" element={<Programas />} /> */}
                     {/* <Route
                       path="programas/niños-adolescentes"
                       element={<Niños />}
@@ -94,11 +94,11 @@ const App = () => {
                     /> */}
 
                     <Route
-                      path="categorias/"
+                      path="programas/"
                       element={<Programas />}
                     />
                     <Route
-                      path="categorias/:nombre"
+                      path="programas/:nombre"
                       element={<div> GAAAAAAAAAAA </div>}
                     />
 

@@ -19,8 +19,8 @@ export const ProgramCard = ({ posicion = "derecha", ...props }) => {
             <div className={`lg:absolute lg:h-96 ${posicion === "izquierda" ? "lg:inset-y-0 lg:left-20 xl:left-32 2xl:left-44" : "lg:inset-y-0 lg:right-20 xl:right-32 2xl:right-44"} lg:my-auto min-[1100px]:h-[28rem] max-md:h-[350px] md:w-1/2 xl:max-w-[540px] 2xl:h-[30rem] max-md:rounded-b-[16px] lg:rounded-[12px] md:rounded-r-[16px] bg-white`}>
                 <div className="p-8 lg:p-10 xl:p-14 flex flex-col h-full w-full">
                     <h3 className="max-md:text-[1.625em] max-lg:text-[1.875em] max-[1110px]:text-[2.1875em] text-[2.5em] font-bold leading-[1.25em] text-[#222126]">{props.title}</h3>
-                    <p className="mt-4 lg:mt-6 xl:mt-8 font-normal text-[1.30em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] text-[#555656] line-clamp-[7] min-[375px]:line-clamp-[9] min-sm:line-clamp-none">{props.description}</p>
-                    <a href={`/categorias/${convertirTexto(props.title)}`} className="flex items-center gap-3 self-end mt-auto font-bold text-[1.2em] leading-[1.5em] max-[1100px]:text-[1.075em] max-[1100px]:leading-[1.4em] text-[#3C5050] hover:text-[#46797A] rounded-md">
+                    <p className="mt-4 lg:mt-6 xl:mt-8 font-normal text-[1.30em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] text-[#555656] line-clamp-[7] min-[375px]:line-clamp-[9] min-sm:line-clamp-none" dangerouslySetInnerHTML={{ __html:  props.description}}></p>
+                    <a href={`/programas/${convertirTexto(props.title)}`} className="flex items-center gap-3 self-end mt-auto font-bold text-[1.2em] leading-[1.5em] max-[1100px]:text-[1.075em] max-[1100px]:leading-[1.4em] text-[#3C5050] hover:text-[#46797A] rounded-md">
                         <span>Conocer más</span>
                         <GrLinkNext />
                     </a>

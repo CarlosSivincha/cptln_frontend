@@ -17,7 +17,7 @@ export const Noticia = () => {
   const { id } = useParams();
   const [noticia, setNoticia] = useState([]);
   const [ fetchEventos, setFetchEventos ] = useState([])
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
@@ -25,10 +25,8 @@ export const Noticia = () => {
       // console.log(response)
       setNoticia(response.data)
       console.log(response.data)
+      setLoading(false);
     }
-    const timer = setTimeout(() => {
-      setLoading(true);
-    }, 1000);
     
     fetch();
     const fetchEvent = async () => {
@@ -38,49 +36,18 @@ export const Noticia = () => {
       
     }
     fetchEvent();
-    return () => clearTimeout(timer);
   }, [id]);
 
-  const stripHtmlTags = (html) => {
-    if (!html) return "";
-    return html
-    .replace(/<\/p>/gi, "\n") // Reemplaza las etiquetas de cierre </p> con un salto de línea
-    .replace(/<p[^>]*>/gi, "\n") // Reemplaza las etiquetas de apertura <p> con un salto de línea
-    .replace(/<\/?[^>]+(>|$)/g, ""); // Elimina cualquier otra etiqueta HTML
+  function convertirFechaPersonalizada(fecha) {
+    const fechaObj = new Date(fecha);
 
-    // let text = html
-    // .replace(/<\/p>/gi, "\n") // Cierra los párrafos con un salto de línea
-    // .replace(/<p[^>]*>/gi, "\n"); // Abre los párrafos con un salto de línea
+    const dia = fechaObj.getDate();
+    const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
+    const año = fechaObj.getFullYear();
 
-    // // Reemplaza <strong> o <b> con "**" para el texto en negrita (Markdown style)
-    // text = text
-    //   .replace(/<(strong|b)>/gi, "**")
-    //   .replace(/<\/(strong|b)>/gi, "**");
-
-    // // Manejar listas ordenadas <ol> y desordenadas <ul>
-    // let listIndex = 0;
-    // text = text
-    //   .replace(/<ol[^>]*>/gi, () => { listIndex = 0; return "\n"; }) // Inicia lista ordenada
-    //   .replace(/<\/ol>/gi, "\n") // Termina lista ordenada
-    //   .replace(/<ul[^>]*>/gi, "\n") // Inicia lista desordenada
-    //   .replace(/<\/ul>/gi, "\n") // Termina lista desordenada
-    //   .replace(/<li[^>]*>/gi, () => { listIndex += 1; return `${listIndex}. `; }) // Cada elemento de <li> en <ol> es un número
-    //   .replace(/<\/li>/gi, "\n") // Termina un elemento de la lista
-
-    //   // Para listas desordenadas, reemplazamos con un guión "-" en lugar de un número
-    //   .replace(/<ul[^>]*>/gi, "\n")
-    //   .replace(/<li[^>]*>/gi, "- ")
-    //   .replace(/<\/li>/gi, "\n");
-
-    // // Elimina cualquier otra etiqueta HTML
-    // text = text.replace(/<\/?[^>]+(>|$)/g, "");// Elimina cualquier otra etiqueta HTML
-
-    // return text
-  };
-
-  if (!noticia) {
-    return <div>Cargando...</div>;
+    return `${mes.charAt(0).toUpperCase() + mes.slice(1)} ${dia}, ${año}`;
   }
+
   return (
     <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28">
       <div className="relative h-[45vh] min-h-[300px]">
@@ -98,7 +65,7 @@ export const Noticia = () => {
           <Header
             color="bg-transparent"
             title={noticia.titulo}
-            text={noticia.fecha}
+            text={convertirFechaPersonalizada(noticia.fecha)}
             return
             returnText="Noticias"
             linkReturn="/noticias-y-eventos"
@@ -110,7 +77,7 @@ export const Noticia = () => {
 
       <div className="flex max-2xl:flex-col mx-5 sm:mx-10 md:mx-20 lg:mx-24 min-[1110px]:max-w-[1100px] min-[1110px]:mx-10 min-[1210px]:mx-auto gap-10 2xl:gap-20 2xl:max-w-[1450px] 2xl:mx-16 min-[1600px]:mx-auto">
         <div className="flex flex-col gap-10 2xl:w-8/12">
-          <p className="standard-paragraph whitespace-pre-line">{stripHtmlTags(noticia.cuerpo)}</p>
+          <p className="standard-paragraph whitespace-pre-line" dangerouslySetInnerHTML={{ __html: noticia.cuerpo}}></p>
           {
             loading && noticia.imagenes && Array.isArray(noticia.imagenes) && noticia.imagenes.map((link, index) => (
               <img key={index} src={link} className="xl:w-[70%] self-center" alt={`imagen-${index}`} />
