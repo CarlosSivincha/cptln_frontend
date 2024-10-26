@@ -159,7 +159,7 @@ const App = () => {
                     <Route path="categorias" element={<CategoriaAdmin />} />
                     <Route path="ebooks" element={<EbooksAdmin />} />
 
-                    <Route path="tablaevento" element={<TablaEvento />} />
+                    <Route index element={<TablaEvento />} />
                     <Route path="tablaevento/:id" element={<EventsAdmin />} />
                     <Route path="tabladevocional" element={<TablaDevocional />} />
                     <Route path="tabladevocional/:id" element={<DevoAd/>} />
@@ -170,7 +170,7 @@ const App = () => {
 
 
                     <Route path="tablacategoria" element={<TablaCategoria />} />
-                    <Route path="tablacategoria/:id" element={<TablaCategoria />} />
+                    <Route path="tablacategoria/:id" element={<CategoriaAdmin />} />
 
                     {/* <Route path="test" element={<TestView />} /> */}
                     {/* <Route path="/programas" element={<Programs/>} /> */}
