@@ -6,46 +6,78 @@ import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 
 const CategoriaAdmin = () => {
+
     const navigate = useNavigate();
     const { id } = useParams();
 
     const [nombre, setNombre] = useState("");
-    // const [objetivo, setObjetivo] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [color, setColor] = useState("#ffffff");
     const [imagenes, setImagenes] = useState([]);
     const [imagenesResponse, setImagenesResponse] = useState([])
+    const [changeImagenes, setChangeImagenes] = useState(false)
     const handleNombre = (event) => setNombre(event.target.value);
-    // const handleObjetivo = (event) => setObjetivo(event.target.value);
     const handleColor = (event) => setColor(event.target.value);
     const handleDescripcion = (html) => setDescripcion(html);
-    const handleImagenes = (event) => {
-        setImagenes(event.target.files);
+    const handleImagenes = (event) => setImagenes(event.target.files)
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const files = Array.from(e.dataTransfer.files);
+
+        // Filtrar solo archivos de imagen
+        const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+        // Agregar las nuevas imágenes al estado
+        setImagenes(prev => [...prev, ...imageFiles]);
     };
 
-    const [selectedOption, setSelectedOption] = useState(null);
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-    }
-    useEffect(() => {
-        console.log(selectedOption);
-    }, [selectedOption])
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
 
-    useEffect(() => {
-        if (id) {
-            const fetch = async () => {
-                const response = await obtenerCategoriasID(id);
-                setNombre(response.data.nombre);
-                setDescripcion(response.data.descripcion);
-                setColor(response.data.color);
-                setImagenesResponse(response.data.imagenes)  
-                const estadoIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true)
-                setSelectedOption(estadoIndex)
-                console.log(selectedOption)
-            }
-            fetch();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+
+        imagenes.forEach((imagen, index) => {
+            formData.append('imagenes', imagen);
+        });
+
+        try {
+            // Reemplaza 'yourEndpoint' con el endpoint de tu API
+            const response = await fetch('yourEndpoint', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data);
+        } catch (error) {
+            console.error('Error al enviar imágenes:', error);
         }
-    }, []);
+    };
+
+    // const [selectedOption, setSelectedOption] = useState(null);
+    // const handleOptionChange = (event) => {
+    //     setSelectedOption(event.target.value);
+    // }
+
+
+    // useEffect(() => {
+    //     if (id) {
+    //         const fetch = async () => {
+    //             const response = await obtenerCategoriasID(id);
+    //             setNombre(response.data.nombre);
+    //             setDescripcion(response.data.descripcion);
+    //             setColor(response.data.color);
+    //             setImagenesResponse(response.data.imagenes)  
+    //             const estadoIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true)
+    //             setSelectedOption(estadoIndex)
+    //             console.log(selectedOption)
+    //         }
+    //         fetch();
+    //     }
+    // }, []);
 
 
 
@@ -57,16 +89,10 @@ const CategoriaAdmin = () => {
                 setDescripcion(response.data.descripcion);
                 setColor(response.data.color);
                 setImagenesResponse(response.data.imagenes);
-    
-                // Busca y selecciona la imagen con estado === true después de actualizar imagenesResponse
-                const selectedImageIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true);
-                if (selectedImageIndex !== -1) {
-                    setSelectedOption(selectedImageIndex);
-                }
             };
             fetch();
         }
-    }, [id]);
+    }, []);
 
     const enviarCategoria = async (event) => {
         event.preventDefault();
@@ -98,7 +124,6 @@ const CategoriaAdmin = () => {
             [...imagenes].forEach((file) => {
                 formData.append('imagenes', file);
             });
-            formData.append('portadaIndex', selectedOption)
             const respuesta = await EditarCategorias(id, formData);
             console.log(respuesta);
             if (respuesta.status == 200) {
@@ -115,6 +140,7 @@ const CategoriaAdmin = () => {
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ],
     };
+
     return (
         <>
             <Header color="bg-l_color_v-600" title={`${id ? 'Editar Categoria' : 'Crear Categoria'}`} />
@@ -134,17 +160,6 @@ const CategoriaAdmin = () => {
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
                         </div>
-                        {/* <div className="space-y-2">
-                            <label className="block font-semibold text-gray-700">Objetivo</label>
-                            <input
-                                type="text"
-                                name="objetivo"
-                                value={objetivo}
-                                onChange={handleObjetivo}
-                                placeholder="Escribe el objetivo"
-                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            />
-                        </div> */}
                     </div>
 
                     <div className="space-y-4">
@@ -158,26 +173,74 @@ const CategoriaAdmin = () => {
                             placeholder="Escribe la descripción"
                         />
                     </div>
-                    <div>
-                        <label className="block font-semibold text-gray-700">Imágenes actuales</label>
-                        <div className="grid grid-cols-2 gap-4">
-                            {imagenesResponse.map((imagen, index) => (
-                                <React.Fragment key={index}>
-                                    <img src={imagen.ruta} alt="" />
-                                    <div className="flex w-full justify-center items-centers">
-                                        <input
-                                            type="radio"
-                                            value={index}
-                                            checked={selectedOption == index}
-                                            onChange={handleOptionChange}
-                                            className="mr-2 scale-150"
-                                        />
+                    {id && (
+                        changeImagenes ?
+                            (
+                                <>
+                                    <button className="p-2 bg-red-700 text-white rounded-md"
+                                        onClick={() => {
+                                            setChangeImagenes(false)
+                                            setImagenes([])
+                                        }}>
+                                        Cancelar
+                                    </button>
+                                    <div onDrop={handleDrop}
+                                        onDragOver={handleDragOver}
+                                        className="border-dashed border-2 border-gray-400 p-4 mb-4 flex flex-col items-center justify-center"
+                                        style={{ height: '200px' }}>
+                                        <p>Arrastra y suelta imágenes aquí</p>
                                     </div>
-                                </React.Fragment>
-                            ))}
-                        </div>
+                                </>
+                            )
+                            :
+                            (
+                                <div>
+                                    <button className="p-2 bg-green-700 text-white rounded-md"
+                                        onClick={() => {
+                                            setChangeImagenes(true)
+                                        }}>
+                                        Cambiar imagenes
+                                    </button>
+                                    <label className="block font-semibold text-gray-700">Imágenes actuales</label>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {imagenesResponse.map((imagen, index) => (
+                                            <React.Fragment key={index}>
+                                                <img src={imagen.ruta} alt="" />
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
+                            )
 
+                    )}
+
+                    {
+                        /* <div className="flex w-full justify-center items-centers">
+                            <input
+                                type="radio"
+                                value={index}
+                                checked={selectedOption == index}
+                                onChange={handleOptionChange}
+                                className="mr-2 scale-150"
+                            />
+                        </div> */
+                    }
+
+
+
+                    <div className="grid grid-cols-3 gap-2 mb-4">
+                        {imagenes.map((imagen, index) => (
+                            <img
+                                key={index}
+                                src={URL.createObjectURL(imagen)}
+                                alt={`Imagen ${index + 1}`}
+                                className="w-full h-32 object-cover"
+                            />
+                        ))}
                     </div>
+
+
+
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Imágenes</label>
