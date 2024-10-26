@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
 import { obtenerCategoriasID, registrarCategoria, EditarCategorias } from "../../../Api/categorias";
@@ -14,7 +14,7 @@ const CategoriaAdmin = () => {
     const [descripcion, setDescripcion] = useState("");
     const [color, setColor] = useState("#ffffff");
     const [imagenes, setImagenes] = useState([]);
-
+    const [imagenesResponse, setImagenesResponse] = useState([])
     const handleNombre = (event) => setNombre(event.target.value);
     // const handleObjetivo = (event) => setObjetivo(event.target.value);
     const handleColor = (event) => setColor(event.target.value);
@@ -23,33 +23,65 @@ const CategoriaAdmin = () => {
         setImagenes(event.target.files);
     };
 
+    const [selectedOption, setSelectedOption] = useState(null);
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    }
+    useEffect(() => {
+        console.log(selectedOption);
+    }, [selectedOption])
+
     useEffect(() => {
         if (id) {
             const fetch = async () => {
                 const response = await obtenerCategoriasID(id);
                 setNombre(response.data.nombre);
-                // setObjetivo(response.data.objetivo);
                 setDescripcion(response.data.descripcion);
                 setColor(response.data.color);
-                setImagenes(response.data.imagenes);
-            };
+                setImagenesResponse(response.data.imagenes)  
+                const estadoIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true)
+                setSelectedOption(estadoIndex)
+                console.log(selectedOption)
+            }
             fetch();
         }
     }, []);
 
+
+
+    useEffect(() => {
+        if (id) {
+            const fetch = async () => {
+                const response = await obtenerCategoriasID(id);
+                setNombre(response.data.nombre);
+                setDescripcion(response.data.descripcion);
+                setColor(response.data.color);
+                setImagenesResponse(response.data.imagenes);
+    
+                // Busca y selecciona la imagen con estado === true después de actualizar imagenesResponse
+                const selectedImageIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true);
+                if (selectedImageIndex !== -1) {
+                    setSelectedOption(selectedImageIndex);
+                }
+            };
+            fetch();
+        }
+    }, [id]);
+
     const enviarCategoria = async (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         try {
             const formData = new FormData();
             formData.append('nombre', nombre);
             formData.append('descripcion', descripcion);
             formData.append('color', color);
-            formData.append('objetivo', objetivo);
             [...imagenes].forEach((file) => {
                 formData.append('imagenes', file);
             });
             const respuesta = await registrarCategoria(formData);
-            if (respuesta.status == 200) return navigate('/admin')
+            if (respuesta.status == 200) {
+                navigate('/admin/tablacategoria')
+            }
         } catch (error) {
             console.log(error);
         }
@@ -66,10 +98,11 @@ const CategoriaAdmin = () => {
             [...imagenes].forEach((file) => {
                 formData.append('imagenes', file);
             });
+            formData.append('portadaIndex', selectedOption)
             const respuesta = await EditarCategorias(id, formData);
             console.log(respuesta);
-            if (respuesta.status == 200) { 
-                navigate('/admin') 
+            if (respuesta.status == 200) {
+                navigate('/admin/tablacategoria')
             }
         } catch (error) {
             console.log(error);
@@ -124,6 +157,26 @@ const CategoriaAdmin = () => {
                             onChange={handleDescripcion}
                             placeholder="Escribe la descripción"
                         />
+                    </div>
+                    <div>
+                        <label className="block font-semibold text-gray-700">Imágenes actuales</label>
+                        <div className="grid grid-cols-2 gap-4">
+                            {imagenesResponse.map((imagen, index) => (
+                                <React.Fragment key={index}>
+                                    <img src={imagen.ruta} alt="" />
+                                    <div className="flex w-full justify-center items-centers">
+                                        <input
+                                            type="radio"
+                                            value={index}
+                                            checked={selectedOption == index}
+                                            onChange={handleOptionChange}
+                                            className="mr-2 scale-150"
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            ))}
+                        </div>
+
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="space-y-2">
