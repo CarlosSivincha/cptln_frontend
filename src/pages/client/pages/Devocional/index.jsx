@@ -6,20 +6,10 @@ const Devocionales = lazy(() => import("@/pages/client/components/Devocionales")
 const DevocionalLoader = lazy(() => import("@/pages/client/components/Loaders/DevocionalLoader.jsx"));
 
 const Devocional = ({
-    title = `Sabiduría del cielo`,
-    fecha = "17 de septiembre de 2024",
-    versiculo = `"Pero la sabiduría que viene de lo alto es, ante todo, pura, y además pacífica, amable, benigna, llena de compasión y de buenos frutos, ecuánime y genuina" (Santiago 3:17)`,
-    contenido = `
-        La sociedad se ha beneficiado mucho de la tecnología. Recientemente, la posibilidad de realizar transacciones bancarias instantáneas ha aportado una practicidad increíble. Sin embargo, lo que sería algo para ayudar se ha convertido en un tremendo dolor de cabeza para muchas personas. Numerosos estafadores se aprovechan de esta facilidad para robar dinero de personas de buena fe, que no están atentas o no son conscientes de los peligros de ser engañados. Se puede decir que estos estafadores poseen una "sabiduría maliciosa", lo cual es reprobable.
-
-A pesar de que, si alguien nunca comete una estafa así, somos culpables de la estafa más grande de todas: querer dejar de ser la criatura de Dios para tomar su lugar en el control de todo. La desobediencia a la voluntad divina es algo impregnado en nosotros. No somos capaces de amar al prójimo como nos amamos a nosotros mismos, ni de amar a Dios sobre todas las cosas.
-
-Para deshacer este golpe causado por nuestro pecado, Dios, en su misericordia, envió a su Hijo Jesús a morir por nuestra maldad. Quien se arrepiente y cree esto recibe de Dios un cambio de pensamiento, guiado por su propio Espíritu Santo. Nos enseña "Pero la sabiduría que viene de lo alto es, ante todo, pura, y además pacífica, amable, benigna, llena de compasión y de buenos frutos, ecuánime y genuina" (Santiago 3:17). Así que, ante las tentaciones que surjan, dejemos que Dios actúe en nuestras vidas. En Cristo, tenemos la sabiduría de la nueva vida y entendemos que lo más importante es buscar primero el Reino de Dios.
-
-Oremos: 🙏 Padre Amado, ayúdame a hacer tu voluntad, que siempre será lo mejor para mí. Por Jesús, mi Salvador. Amén. 
-
-Autor: Aramis Jacoby
-    `
+    title,
+    fecha,
+    versiculo,
+    contenido
 }) => {
 
     return (
@@ -58,6 +48,7 @@ Autor: Aramis Jacoby
                 <DevocionalLoader/>
                 <DevocionalLoader/>
                 <DevocionalLoader/>
+                
                 
 {/*                     
                     <Devocionales/>

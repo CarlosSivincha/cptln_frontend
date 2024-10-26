@@ -7,8 +7,8 @@ import Vivenciar from "../../../../../assets/VIVENCIAR.jpg";
 const Header = lazy(() => import("@/pages/client/components/Header"));
 const ProgramCard = lazy(() => import("@/pages/client/pages/Programs/components/ProgramCard.jsx"));
 
-
 export const EquipandoSantos = () => {
+
     return(
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
             <Header color="bg-l_color_v-600" title="Programas para Familias" return returnText="Programas" linkReturn="/programas"/>

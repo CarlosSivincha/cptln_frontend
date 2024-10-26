@@ -44,9 +44,17 @@ export const Donate = () => {
     return (
         <div className="flex flex-col gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28">
             
-            <Header color="bg-l_color_o-600" title="¿CÓMO PUEDES AYUDAR?" text="Facilitamos tu contribución brindándote distintas opciones"/>
+            <Header color="bg-l_color_o-600" title="¿CÓMO PUEDES AYUDAR?" text="Necesitamos tu colaboración para continuar y expandir esta obra"/>
             
             {/* Cuadro de Transferencias */}
+            <div className="">
+                <div>
+
+                </div>
+                <div>
+
+                </div>
+            </div>
             <div className="container px-4 mx-auto lg:px-8">
                 <div className="p-8 rounded-lg shadow-lg bg-slate-300">
                     <div className="grid grid-cols-1 gap-8 text-black md:grid-cols-2">

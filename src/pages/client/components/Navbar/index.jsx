@@ -24,6 +24,7 @@ const Navbar = () => {
   const [isResourcesOpen, setIsResourcesOpen] = useState(false); // Estado para el submenú de "Recursos"
   const [timeoutId, setTimeoutId] = useState(null); // Para almacenar el ID del timeout
   const [isHoveringMenu, setIsHoveringMenu] = useState(false); // Estado para saber si el mouse está sobre el menú desplegable
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Estado para el menú móvil
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,72 +52,39 @@ const Navbar = () => {
     };
   }, [scrollPosition]);
 
-  // Función para manejar el menú desplegable de "Programas"
-  const toggleProgramsMenu = () => {
+  const handleMouseEnterPrograms = () => {
     if (isResourcesOpen) {
-      setIsResourcesOpen(false); // Cerrar Recursos si está abierto
+      setIsResourcesOpen(false);
     }
-    setIsProgramsOpen((prev) => !prev);
+    clearTimeout(timeoutId);
+    setIsProgramsOpen(true);
   };
 
-  // Función para manejar el menú desplegable de "Recursos"
-  const toggleResourcesMenu = () => {
-    if (isProgramsOpen) {
-      setIsProgramsOpen(false); // Cerrar Programas si está abierto
-    }
-    setIsResourcesOpen((prev) => !prev);
-  };
-
-  // Función para manejar el mouse al salir de "Programas"
   const handleMouseLeavePrograms = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId); // Limpiar el timeout anterior
-    }
-    if (!isHoveringMenu) {
-      const id = setTimeout(() => {
-        setIsProgramsOpen(false); // Cerrar después de 3 segundos
-      }, 1000);
-      setTimeoutId(id);
-    }
-  };
-  // Función para manejar el mouse al salir de "Recursos"
-  const handleMouseLeaveResources = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId); // Limpiar el timeout anterior
-    }
-    if (!isHoveringMenu) {
-      const id = setTimeout(() => {
-        setIsResourcesOpen(false); // Cerrar después de 3 segundos
-      }, 1000);
-      setTimeoutId(id);
-    }
-  };
-  // Función para manejar el mouse al salir del menú desplegable
-  const handleMouseLeaveMenu = () => {
-    setIsHoveringMenu(false);
-
-    // Limpiar cualquier timeout anterior
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    // Establecer un nuevo timeout para cerrar el menú
     const id = setTimeout(() => {
-      setIsProgramsOpen(false); // Cerrar el menú de Programas
-      setIsResourcesOpen(false); // Cerrar el menú de Recursos
-    }, 500); // 1 segundo de delay
-
+      setIsProgramsOpen(false);
+    }, 1000);
     setTimeoutId(id);
   };
 
-  // Función para manejar el mouse al entrar en el menú desplegable
-  const handleMouseEnterMenu = () => {
-    setIsHoveringMenu(true);
-
-    // Limpiar el timeout si el mouse está sobre el menú
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+  const handleMouseEnterResources = () => {
+    if (isProgramsOpen) {
+      setIsProgramsOpen(false);
     }
+    clearTimeout(timeoutId);
+    setIsResourcesOpen(true);
+  };
+
+  const handleMouseLeaveResources = () => {
+    const id = setTimeout(() => {
+      setIsResourcesOpen(false);
+    }, 1000);
+    setTimeoutId(id);
+  };
+
+  // Función para abrir/cerrar el menú móvil
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
@@ -126,7 +94,8 @@ const Navbar = () => {
           isHidden ? "-translate-y-full bg-white text-black" : "translate-y-0"
         } ${isScrolledUp ? "bg-white text-black shadow-md py-4" : "bg-logo_color_3-600 text-white py-4"} z-50`}
       >
-        <div className={`md:container flex items-center justify-between px-6 mx-auto ${isScrolledUp ? "py-3" : "py-6"}`}>
+        {/* ${isScrolledUp ? "py-1" : "py-2"} */}
+        <div className={`md:container flex items-center justify-between px-6 mx-auto ${isScrolledUp ? "py-1 xl:py-3" : "py-2 xl:py-6"}`}>
           <a href="/" className="flex items-center space-x-3 cursor-pointer">
             <img src={OriginalLogo} alt="Logo" className="h-12" />
             <span
@@ -189,10 +158,10 @@ const Navbar = () => {
             </li>
 
             {/* Menú desplegable de Programas */}
-            <li className="relative" onMouseLeave={handleMouseLeavePrograms}>
+            <li className="relative" onMouseLeave={handleMouseLeavePrograms} onMouseEnter={handleMouseEnterPrograms}>
               <a href="/programas">
               <button
-                onMouseEnter={toggleProgramsMenu}
+                
                 className={`flex items-center space-x-2 focus:outline-none ${
                   isScrolledUp ? "text-black" : "text-white"
                 }`}
@@ -205,8 +174,6 @@ const Navbar = () => {
               {isProgramsOpen && (
                 <div
                   className="absolute left-0 w-48 py-2 mt-2 bg-white rounded-md shadow-lg"
-                  onMouseEnter={handleMouseEnterMenu} // Mantener el menú abierto si el mouse está sobre él
-                  onMouseLeave={handleMouseLeaveMenu} // Usar la función para manejar el mouse al salir
                 >
                   <a
                     href="/programas/niños-adolescentes"
@@ -220,20 +187,19 @@ const Navbar = () => {
                   >
                     Familia
                   </a>
-                  {/* <a
-                    href="/programas/equipando-los-santos"
+                  <a
+                    href="/programas/creciendo-en-familia"
                     className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
                   >
-                    Equipando los Santos
-                  </a> */}
+                    Creciendo en Familia
+                  </a>
                 </div>
               )}
             </li>
 
             {/* Menú desplegable de Recursos */}
-            <li className="relative" onMouseLeave={handleMouseLeaveResources}>
+            <li className="relative" onMouseLeave={handleMouseLeaveResources} onMouseEnter={handleMouseEnterResources}>
               <button
-                onMouseEnter={toggleResourcesMenu}
                 className={`flex items-center space-x-2 focus:outline-none ${
                   isScrolledUp ? "text-black" : "text-white"
                 }`}
@@ -245,8 +211,6 @@ const Navbar = () => {
               {isResourcesOpen && (
                 <div
                   className="absolute left-0 w-48 py-2 mt-2 bg-white rounded-md shadow-lg"
-                  onMouseEnter={handleMouseEnterMenu} // Mantener el menú abierto si el mouse está sobre él
-                  onMouseLeave={handleMouseLeaveMenu} // Usar la función para manejar el mouse al salir
                 >
                   <a
                     href="/recursos/ebooks"
@@ -351,11 +315,11 @@ const Navbar = () => {
                   Familia
                 </a>
               </li>
-              {/* <li className="flex items-center space-x-2 text-gray-800 hover:text-gray-600">
-                <a href="/programas/equipando-los-santos" onClick={() => setIsOpen(false)}>
-                  Equipando los Santos
+              <li className="flex items-center space-x-2 text-gray-800 hover:text-gray-600">
+                <a href="/programas/creciendo-en-familia" onClick={() => setIsOpen(false)}>
+                  Creciendo en Familia
                 </a>
-              </li> */}
+              </li>
             </ul>
           )}
 

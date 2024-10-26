@@ -10,6 +10,7 @@ const DevocionalLoader = (props) => (
     backgroundColor="#dedede"
     foregroundColor="#c2c2c2"
     {...props}
+    className="self-center"
   >
     <rect x="21" y="248" rx="3" ry="3" width="63" height="9" /> 
     <rect x="21" y="209" rx="3" ry="3" width="218" height="22" /> 

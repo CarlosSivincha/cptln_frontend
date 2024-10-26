@@ -1,7 +1,9 @@
 import { lazy } from "react";
 import videotest from '../../../../assets/file.mp4';
 import WhiteIcon from "../../../../assets/WhiteIcon.png";
+
 const Header = lazy(() => import("@/pages/client/components/Header"));
+const YoutubeEmbed = lazy(() => import("@/pages/client/components/YoutubeEmbed"));
 
 const CursosBiblico = ({ video, titulo = "Dios se revela", descripcion = "Dios se revela es un curso que, haciendo uso de la tecnología y lenguaje modernos, explica la fe cristiana. En él se presenta la obra de salvación de Dios a través de Cristo, los principios fundamentales de la fe cristiana y diversos aspectos prácticos de la fe en la vida del creyente." }) => {
     return (
@@ -12,7 +14,8 @@ const CursosBiblico = ({ video, titulo = "Dios se revela", descripcion = "Dios s
                     {/* Sección del video */}
                     <div className="flex flex-col gap-5 lg:py-5 lg:px-8 lg:bg-l_color_o-600 justify-center lg:rounded-l-xl">
                         <span className="block text-center max-md:text-[1.3em] max-lg:text-[1.5em] max-[1110px]:text-[1.7em] text-[1.9em] font-bold leading-[1.25em] lg:text-white">Capítulo 1: ¿Por qué Jesús?</span>
-                        <video src={!video ? videotest : video} controls className="w-full h-auto rounded-t-xl lg:roundedt-none lg:rounded-md" />
+                        <YoutubeEmbed videoId="osg_WmeLxQk"/>
+                        
                     </div>
 
                     {/* Sección de información y capítulos */}
@@ -63,7 +66,7 @@ const CursosBiblico = ({ video, titulo = "Dios se revela", descripcion = "Dios s
                 </div>
                 <div className="flex flex-col gap-5 max-lg:h-3/5 h-auto lg:h-96 w-full bg-[#A3723B] px-5 py-5 xl:px-10 justify-center">
                     <img src={WhiteIcon} alt="" className="w-12 self-center my-4"/>
-                    <form className="flex flex-col gap-5 w-full " action="" method="post">
+                    <form className="flex flex-col gap-5 w-full " action="" method="">
                         <div className="flex max-md:flex-col gap-5">
                             <input type="text" name="" id="" placeholder="Nombre *" className="py-1.5 px-2 w-full rounded-lg border border-[#EAE9E5] text-[1.125em] leading-[1.5em] max-[1100px]:text-[1em] max-[1100px]:leading-[1.4em]"/>
                             <input type="text" name="" id="" placeholder="Apellido *" className="py-1.5 px-2 w-full rounded-lg border border-[#EAE9E5] text-[1.125em] leading-[1.5em] max-[1100px]:text-[1em] max-[1100px]:leading-[1.4em]"/>
