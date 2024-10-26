@@ -170,7 +170,7 @@ const App = () => {
 
 
                     <Route path="tablacategoria" element={<TablaCategoria />} />
-                    <Route path="tablacategoria/:id" element={<TablaCategoria />} />
+                    <Route path="tablacategoria/:id" element={<CategoriaAdmin />} />
 
                     {/* <Route path="test" element={<TestView />} /> */}
                     {/* <Route path="/programas" element={<Programs/>} /> */}

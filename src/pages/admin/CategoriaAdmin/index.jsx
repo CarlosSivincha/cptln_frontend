@@ -10,13 +10,13 @@ const CategoriaAdmin = () => {
     const { id } = useParams();
 
     const [nombre, setNombre] = useState("");
-    const [objetivo, setObjetivo] = useState("");
+    // const [objetivo, setObjetivo] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [color, setColor] = useState("#ffffff");
     const [imagenes, setImagenes] = useState([]);
 
     const handleNombre = (event) => setNombre(event.target.value);
-    const handleObjetivo = (event) => setObjetivo(event.target.value);
+    // const handleObjetivo = (event) => setObjetivo(event.target.value);
     const handleColor = (event) => setColor(event.target.value);
     const handleDescripcion = (html) => setDescripcion(html);
     const handleImagenes = (event) => {
@@ -86,7 +86,7 @@ const CategoriaAdmin = () => {
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe la Categoria</h2>
                 <form onSubmit={id ? ModificarCategoria : enviarCategoria} className="space-y-8">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
                         <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Nombre</label>
                             <input
@@ -98,7 +98,7 @@ const CategoriaAdmin = () => {
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
                         </div>
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Objetivo</label>
                             <input
                                 type="text"
@@ -108,7 +108,7 @@ const CategoriaAdmin = () => {
                                 placeholder="Escribe el objetivo"
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="space-y-4">
@@ -140,7 +140,7 @@ const CategoriaAdmin = () => {
                                 name="color"
                                 value={color}
                                 onChange={handleColor}
-                                className="w-20 h-10 p-2 border border-gray-300 rounded-lg cursor-pointer"
+                                className="w-full h-16 border border-gray-300 rounded-lg cursor-pointer"
                             />
                         </div>
                     </div>
