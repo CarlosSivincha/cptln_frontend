@@ -51,8 +51,8 @@ const TablaCategoria = () => {
             header: "Nombre",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('objetivo', {
-            header: "Objetivo",
+        columnHelper.accessor('descripcion', {
+            header: "Descripcion",
             cell: info => info.getValue(),
         }),
     ];
@@ -88,8 +88,7 @@ const TablaCategoria = () => {
                     <h3 className="text-xl font-semibold text-gray-700">Categorias</h3>
                     <button
                         onClick={() => navigate('/admin/categorias')}
-                        className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
-                    >
+                        className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">
                         Agregar
                         <FaPlus  className="ml-1"  size={13}/>
                     </button>

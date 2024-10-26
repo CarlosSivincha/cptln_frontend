@@ -81,14 +81,14 @@ const Administracion = () => {
                                 <ImBooks className="block group-hover:hidden size-8" />
                             </li>
                         </Link>
-                        <Link to="/admin/tablaebooks" className="w-full">
+                        {/* <Link to="/admin/tablaebooks" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
                                     Portadas
                                 </span>
                                 <MdCameraFront className="block group-hover:hidden size-8" />
                             </li>
-                        </Link>
+                        </Link> */}
                         
                         {/* Menú desplegable de "Peticiones" */}
                         <Link to="#" className="w-full">
@@ -133,7 +133,7 @@ const Administracion = () => {
                         </Link>
                     </ul>
                 </div>
-                <div className="flex flex-col w-full min-h-screen transition-all duration-300 bg-[#EAE9E5]">
+                <div className="flex flex-col w-full transition-all duration-300 bg-[#EAE9E5] overflow-y-auto h-[calc(100vh-5rem)]">
                     <Outlet />
                 </div>
             </div>
