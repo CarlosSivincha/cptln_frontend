@@ -3,6 +3,6 @@ import axios from "./axios";
 export const solicitudEbooks = devo => axios.post("solicitud-ebooks",devo)
 
 
-// export const obtenerOraciones = () => axios.get("solicitud-oraciones")
+export const obtenerEbooks = () => axios.get("solicitud-ebooks")
 
-// export const obtenerOracionesPag = (parametros) => axios.get("solicitud-oraciones/pagination",parametros)
+export const obtenerEbooksPag = (parametros) => axios.get("solicitud-ebooks/pagination",parametros)

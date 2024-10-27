@@ -9,7 +9,9 @@ import TransferImage1 from "../../../../assets/img_D_C_2.png";
 import TransferImage2 from "../../../../assets/img_D_C_3.png"; 
 import TransferImage3 from "../../../../assets/img_D_C.png";
 import TransferImage3_2 from "../../../../assets/img_N_card.png";
-
+import { solicitudContactanos
+    
+ } from "../../../../Api/contactanos";
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
 export const Contact = () => {

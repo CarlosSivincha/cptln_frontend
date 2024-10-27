@@ -5,9 +5,9 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerCursosPag } from '../../../Api/cursosbiblicos';
+import { obtenerEbooksPag } from '../../../Api/resEbooks';
 
-const Tablacursosbiblicos = () => {
+const TablaresEbooks = () => {
 
     const [solicitudes, setSolicitudes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
@@ -18,7 +18,7 @@ const Tablacursosbiblicos = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerCursosPag({ params: { page: Number(page), limit: 10 } });
+                const response = await obtenerEbooksPag({ params: { page: Number(page), limit: 10 } });
                 setSolicitudes(response.data.solicitudes);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
@@ -55,6 +55,11 @@ const Tablacursosbiblicos = () => {
             header: "Correo",
             cell: info => info.getValue(),
         }),
+        columnHelper.accessor('motivo', {
+            header: "Motivo",
+            cell: info => info.getValue(),
+        }),
+        
     ];
 
     const table = useReactTable({
@@ -79,7 +84,7 @@ const Tablacursosbiblicos = () => {
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-700">Peticiones cursos biblicos</h3>
+                    <h3 className="text-xl font-semibold text-gray-700">Peticiones para Ebooks</h3>
                 </div>
                 {/* Tabla */}
                 <div className="overflow-x-auto">
@@ -149,4 +154,4 @@ const Tablacursosbiblicos = () => {
     );
 }
 
-export default Tablacursosbiblicos;
+export default TablaresEbooks;

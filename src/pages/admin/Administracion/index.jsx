@@ -111,12 +111,12 @@ const Administracion = () => {
                                         <span className="text-sm text-black">Oraciones</span>
                                     </li>
                                 </Link>
-                                <Link to="/admin/tabla2" className="w-full">
+                                <Link to="/admin/tablapeticionebooks" className="w-full">
                                     <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
                                         <span className="text-sm text-black">Obooks</span>
                                     </li>
                                 </Link>
-                                <Link to="/admin/tabla3" className="w-full">
+                                <Link to="/admin/tablacursosbi" className="w-full">
                                     <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
                                         <span className="text-sm text-black">Cursos</span>
                                     </li>

@@ -66,7 +66,7 @@ export const Ebooks = () => {
         formData.append('nombres', nombres);
         formData.append('apellidos', apellidos);
         formData.append('correo', correo);
-        formData.append('categoria', categoria);
+        formData.append('motivo', categoria);
         try {
             const respuesta = await solicitudEbooks(formData);
             console.log(respuesta);
@@ -77,16 +77,16 @@ export const Ebooks = () => {
     }
 
     return(
-        <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28 items-center">
+        <div className="flex flex-col items-center gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28">
             <Header color="bg-l_color_v-600" title="Nuestros Ebooks"/>
-            {/* <div className="bg-l_color_o-600 h-96 w-full m-auto flex justify-center items-center">
-                <div className="bg-white w-72 h-72 p-10 rounded-full text-center flex items-center">
+            {/* <div className="flex items-center justify-center w-full m-auto bg-l_color_o-600 h-96">
+                <div className="flex items-center p-10 text-center bg-white rounded-full w-72 h-72">
                     <p className="font-normal text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em]">Contamos con una variedad de materiales gratuitos que podrán ayudarte con los desafíos de la actualidad. <br/> <br/>¡Te invitamos a que los descargues!</p>
                 </div>
             </div> */}
             <div className="flex w-full justify-center box-content lg:max-w-[900px] 2xl:max-w-[1300px] mx-auto">
-                {/* <div className="bg-white w-72 max-md:hidden rounded-full"></div> */}
-                <div className="bg-l_color_v-var max-lg:w-72 max-lg:h-72 p-10 rounded-l-2xl max-sm:rounded-full text-center flex items-center lg:w-2/5">
+                {/* <div className="bg-white rounded-full w-72 max-md:hidden"></div> */}
+                <div className="flex items-center p-10 text-center bg-l_color_v-var max-lg:w-72 max-lg:h-72 rounded-l-2xl max-sm:rounded-full lg:w-2/5">
                     <p className="font-normal text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] text-white">Contamos con una variedad de materiales gratuitos que podrán ayudarte con los desafíos de la actualidad. <br/> <br/>¡Te invitamos a que los descargues!</p>
                 </div>
                 <img
@@ -132,7 +132,7 @@ export const Ebooks = () => {
                     <p className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] ">¿Estás listo para comenzar?</p>
                 </div>
                 <div className="flex flex-col gap-5 max-lg:h-3/5 h-auto lg:h-96 w-full bg-[#A3723B] px-5 py-5 xl:px-10 justify-center">
-                    <img src={WhiteIcon} alt="" className="w-12 self-center my-4"/>
+                    <img src={WhiteIcon} alt="" className="self-center w-12 my-4"/>
                     <form className="flex flex-col w-full gap-5" onSubmit={enviarDatos} ref={formRef}>
                         <div className="flex gap-5 max-md:flex-col">
                             <input
