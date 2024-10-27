@@ -85,13 +85,10 @@ const CategoriaAdmin = () => {
                 formData.append('imagenes', file);
             });
             const respuesta = await registrarCategoria(formData);
-<<<<<<< HEAD
-            if (respuesta.status == 200) return navigate('/admin/tablacategoria')
-=======
             if (respuesta.status == 200) {
                 navigate('/admin/tablacategoria')
             }
->>>>>>> cd177aee97d2a14cc5a5d33f167750a30d4378e9
+
         } catch (error) {
             console.log(error);
         }
@@ -110,13 +107,10 @@ const CategoriaAdmin = () => {
             });
             const respuesta = await EditarCategorias(id, formData);
             console.log(respuesta);
-<<<<<<< HEAD
-            if (respuesta.status == 200) { 
-                navigate('/admin/tablacategoria') 
-=======
+
             if (respuesta.status == 200) {
                 navigate('/admin/tablacategoria')
->>>>>>> cd177aee97d2a14cc5a5d33f167750a30d4378e9
+
             }
         } catch (error) {
             console.log(error);
