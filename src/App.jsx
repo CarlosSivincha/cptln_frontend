@@ -31,6 +31,7 @@ const CursosCompletos = lazy(() =>
   import("@/pages/client/pages/CursosCompletos")
 );
 const Joel = lazy(() => import("@/pages/client/pages/Program/Joel"));
+const ProgramaEspecifico = lazy(() => import("@/pages/client/pages/Program"));
 const Pasi = lazy(() => import("@/pages/client/pages/Program/Pasi"));
 const JuntosComunidad = lazy(() =>
   import("@/pages/client/pages/Program/JuntosComunidad")
@@ -103,7 +104,7 @@ const App = () => {
                     />
                     <Route
                       path="programas/:nombre"
-                      element={<div> GAAAAAAAAAAA </div>}
+                      element={<ProgramaEspecifico/>}
                     />
 
                     {/* <Route path="/programas/joel" element={<Joel/>}/>

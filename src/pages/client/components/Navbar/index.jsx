@@ -88,7 +88,7 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <div className="grid min-h-[100dvh] grid-rows-[auto_1fr_auto]">
       <nav
         className={`fixed top-0 w-full transition-transform duration-300 ${
           isHidden ? "-translate-y-full bg-white text-black" : "translate-y-0"
@@ -412,7 +412,7 @@ const Navbar = () => {
             
 
         </div>
-    </>
+    </div>
   );
 };
 export default Navbar;
