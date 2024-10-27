@@ -1,4 +1,4 @@
-import { lazy, useState, useEffect } from "react";
+import { lazy, useState, useEffect, useRef } from "react";
 const Header = lazy(() => import("@/pages/client/components/Header"));
 const EbookCard = lazy(() => import("./components/EbookCard"));
 const EbookLoader = lazy(() => import("@/pages/client/components/Loaders/EbookLoader.jsx"));
@@ -10,6 +10,8 @@ import { obtenerEbooks } from "../../../../Api/ebooks"
 import { solicitudEbooks } from "../../../../Api/resEbooks";
 
 export const Ebooks = () => {
+
+    const formRef = useRef(null);
 
     const [fetchEbooks, setFetchEbooks] = useState([]);
     const [sessionValue, setSessionValue] = useState(false);
@@ -37,6 +39,10 @@ export const Ebooks = () => {
     }, [sessionValue])
 
     const guardarSessionStorage = () => {
+        window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+        });
         sessionStorage.setItem('validacion_ebooks', true);
         // console.log("Dato guardado en sessionStorage:", true);
         setSessionValue(sessionStorage.getItem('validacion_ebooks'))
@@ -64,6 +70,7 @@ export const Ebooks = () => {
         try {
             const respuesta = await solicitudEbooks(formData);
             console.log(respuesta);
+            formRef.current.reset();
         } catch (error) {
             console.log(error);
         };
@@ -126,7 +133,7 @@ export const Ebooks = () => {
                 </div>
                 <div className="flex flex-col gap-5 max-lg:h-3/5 h-auto lg:h-96 w-full bg-[#A3723B] px-5 py-5 xl:px-10 justify-center">
                     <img src={WhiteIcon} alt="" className="w-12 self-center my-4"/>
-                    <form className="flex flex-col w-full gap-5" onSubmit={enviarDatos}>
+                    <form className="flex flex-col w-full gap-5" onSubmit={enviarDatos} ref={formRef}>
                         <div className="flex gap-5 max-md:flex-col">
                             <input
                                 type="text"

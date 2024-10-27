@@ -97,10 +97,10 @@ const TablaEvento = () => {
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar
-                        <FaPlus  className="ml-1"  size={13}/>
+                        <FaPlus className="ml-1" size={13} />
                     </button>
                 </div>
-    
+
                 {/* Tabla */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full border border-collapse border-gray-300 table-auto">
@@ -152,13 +152,13 @@ const TablaEvento = () => {
                         </tbody>
                     </table>
                 </div>
-    
+
                 {/* Paginación */}
                 <div className="flex items-center justify-between mt-6">
                     <button
-                       className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                       onClick={handlePreviousPage}
-                       disabled={currentPage === 1 || isLoading}
+                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1 || isLoading}
                     >
                         Anterior
                     </button>

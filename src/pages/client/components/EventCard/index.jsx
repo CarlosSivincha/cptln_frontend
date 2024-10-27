@@ -25,9 +25,9 @@ const EventCard = ({ date, title, description, location, hora }) => {
   };
 
   return (
-    <div className="flex overflow-hidden bg-white rounded-lg shadow-md h-[120px] w-full max-w-[5000px]">
+    <div className="flex overflow-hidden bg-white rounded-lg shadow-md h-[140px] w-full max-w-[5000px]">
       {/* Sección de la fecha (fondo ocupa todo el alto) */}
-      <div className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white bg-[#A25F3E] h-full w-[28%]">
+      <div className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white bg-[#A25F3E] h-full w-[20%]">
         <div className="text-lg xl:text-xl">{day}</div>
         <div className="text-4xl xl:text-5xl leading-none">{month}</div>
         <div className="text-lg xl:text-xl">{year}</div>
@@ -37,8 +37,8 @@ const EventCard = ({ date, title, description, location, hora }) => {
       {/* Sección de información */}
       <div className="flex items-center justify-between flex-grow min-w-0 p-4 relative">
         <div className="flex-grow">
-          <h3 className="mb-1 text-lg font-semibold">{title}</h3>
-          <p className="text-sm text-gray-600 line-clamp-1 md:line-clamp-2">{stripHtmlTags(description)}</p>
+          <h3 className="mb-1 text-lg font-semibold line-clamp-2">{title}</h3>
+          <p className="text-sm text-gray-600 line-clamp-1 md:line-clamp-2" dangerouslySetInnerHTML={{ __html: description}}></p>
           <div className="flex items-center mt-2 text-xs text-gray-500">
             {/* <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -49,11 +49,11 @@ const EventCard = ({ date, title, description, location, hora }) => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12m-9 0a9 9 0 119 9 9 9 0 01-9-9z" />
             </svg> */}
-            <span className="">{location}</span>
+            <span className="line-clamp-1">{location}</span>
             
           </div>
         </div>
-        <div className="absolute py-0.5 px-1.5 md:py-1 md:px-2 top-0 right-0 bg-l_color_r text-white font-bold text-xs md:text-base">
+        <div className="absolute py-1 px-2 md:py-1 md:px-3 bottom-0 right-0 bg-l_color_v-600 text-white font-bold text-xs md:text-base rounded-tl-lg">
           <span>{hora}</span>
         </div>
       </div>

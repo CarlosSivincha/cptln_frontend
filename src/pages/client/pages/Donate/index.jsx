@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -11,12 +11,14 @@ import TransferImage4 from "../../../../assets/bcp-logo.png";
 import TransferImage5 from "../../../../assets/img_Yape.png";
 import TransferImage6 from "../../../../assets/img_QR.png";
 
+import { obtenerNoticia } from "@/Api/noticias";
+const NewsLoader = lazy(() => import("@/pages/client/components/Loaders/NewsLoader.jsx"));
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
 export const Donate = () => {
      // Configuración del carrusel
-     const settings = {
+    const settings = {
         dots: true,
         infinite: true,
         speed: 500,
@@ -41,21 +43,63 @@ export const Donate = () => {
             }
         ]
     };
+
+    const [trabajos, setTrabajos] = useState([])
+    const [isLoadingTrabajos, setIsLoadingTrabajos] = useState(true)
+
+    useEffect(() => {
+        const fetch = async () => {
+            const response = await obtenerNoticia()
+            setTrabajos(response.data)
+            setIsLoadingTrabajos(false)
+        }
+        fetch()
+    }, [])
+
     return (
         <div className="flex flex-col gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28">
             
             <Header color="bg-l_color_o-600" title="¿CÓMO PUEDES AYUDAR?" text="Necesitamos tu colaboración para continuar y expandir esta obra"/>
             
             {/* Cuadro de Transferencias */}
-            <div className="">
-                <div>
-
+            <div className="flex mx-5 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px] ">
+                <div className="border-4 border-l_color_v px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
+                    <h3 className="h3-subtitles text-center">Voluntariado</h3>
+                    <p className="standard-paragraph text-justify">
+                        ¿Tienes alguna habilidad y te gustaría enseñar a otras personas?
+                        <br /> <br />
+                        ¿Sabes algo en específico y quieres compartir tus conocimientos a la comunidad?, ¿Te gustaría trabajar como voluntario en nuestra organización?
+                        <br /> <br />
+                        ¡Sé nuestro Voluntario!
+                        <br />
+                        ¡Juntos podemos hacer un gran trabajo!
+                    </p>
+                    <a href="/contactanos">
+                        <button className=" w-full flex gap-2 justify-center items-center py-2 rounded-md bg-l_color_v text-white text-sm sm:text-base xl:text-lg hover:bg-[#3a6567]">
+                            Contáctanos
+                        </button>
+                    </a>
                 </div>
-                <div>
-
+                <div className="border-4 border-l_color_r px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
+                    <h3 className="h3-subtitles text-center">Donaciones</h3>
+                    <p className="standard-paragraph text-justify">
+                        ¿Tienes alguna habilidad y te gustaría enseñar a otras personas?
+                        <br /> <br />
+                        ¿Sabes algo en específico y quieres compartir tus conocimientos a la comunidad?, ¿Te gustaría trabajar como voluntario en nuestra organización?
+                        <br /> <br />
+                        ¡Sé nuestro Voluntario!
+                        <br />
+                        ¡Juntos podemos hacer un gran trabajo!
+                    </p>
+                    <a href="/contactanos">
+                        <button className=" w-full flex gap-2 justify-center items-center py-2 rounded-md bg-l_color_r text-white text-sm sm:text-base xl:text-lg hover:bg-[#d72738]">
+                            Contáctanos
+                        </button>
+                    </a>
                 </div>
+                
             </div>
-            <div className="container px-4 mx-auto lg:px-8">
+            {/* <div className="container px-4 mx-auto lg:px-8">
                 <div className="p-8 rounded-lg shadow-lg bg-slate-300">
                     <div className="grid grid-cols-1 gap-8 text-black md:grid-cols-2">
                         <div>
@@ -106,14 +150,14 @@ export const Donate = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Carrusel de Imágenes */}
             <div className="py-8 bg-l_color_Fondo">
                 <div className="container px-4 mx-auto lg:px-8">
-                    <h3 className="mb-8 text-xl font-bold text-center text-black">NUESTROS TRABAJOS</h3>
+                    <h3 className="h3-subtitles mb-8 text-center text-black">NUESTROS TRABAJOS</h3>
                     <Slider {...settings}>
-                        <div className="px-2">
+                        {/* <div className="px-2">
                             <div className="flex items-center justify-center h-64 overflow-hidden">
                                 <img src={TransferImage1} alt="Trabajo 1" className="object-contain w-full h-full" />
                             </div>
@@ -132,12 +176,21 @@ export const Donate = () => {
                             <div className="flex items-center justify-center h-64 overflow-hidden">
                                 <img src={TransferImage3_2} alt="Trabajo 4" className="object-contain w-full h-full" />
                             </div>
-                        </div>
-                        <div className="px-2">
-                            <div className="flex items-center justify-center h-64 overflow-hidden">
-                                <img src={TransferImage3} alt="Trabajo 5" className="object-contain w-full h-full" />
-                            </div>
-                        </div>
+                        </div> */}
+                        
+                        {isLoadingTrabajos // Mientras está cargando, muestra los skeletons
+                            ? Array(6) // Crear 6 skeletons como placeholders
+                                .fill()
+                                .map((_, index) => (
+                                    <NewsLoader key={index} /> // loading={true} activa los skeletons
+                                ))
+                            : trabajos.map((trabajo) => (
+                                <div className="px-3">
+                                    <div className="flex items-center justify-center h-64 overflow-hidden">
+                                        <img src={trabajo.portada} alt="Trabajo 5" className="object-contain w-full h-full transition-transform duration-500 transform hover:scale-105" />
+                                    </div>
+                                </div>
+                        ))}
                     </Slider>
                 </div>
             </div>
