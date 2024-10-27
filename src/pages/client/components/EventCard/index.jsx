@@ -27,7 +27,7 @@ const EventCard = ({ date, title, description, location, hora }) => {
   return (
     <div className="flex overflow-hidden bg-white rounded-lg shadow-md h-[140px] w-full max-w-[5000px]">
       {/* Sección de la fecha (fondo ocupa todo el alto) */}
-      <div className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white bg-[#A25F3E] h-full w-[20%]">
+      <div className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white bg-[#A25F3E] h-full w-[24%]">
         <div className="text-lg xl:text-xl">{day}</div>
         <div className="text-4xl xl:text-5xl leading-none">{month}</div>
         <div className="text-lg xl:text-xl">{year}</div>

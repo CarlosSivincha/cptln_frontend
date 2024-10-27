@@ -27,15 +27,15 @@ export const Programs = () => {
         fetch();
     }, []);
 
-    useEffect(() => {  
-        const fetch = async () => {
-        const response = await obtenerProgramas()
-            // console.log(response)
-            setchProgramasSinCategoria(response.data)
-            setIsLoadingProgramasSinCategoria(false);
-        }
-        fetch();
-    }, []);
+    // useEffect(() => {  
+    //     const fetch = async () => {
+    //     const response = await obtenerProgramas()
+    //         // console.log(response)
+    //         setchProgramasSinCategoria(response.data)
+    //         setIsLoadingProgramasSinCategoria(false);
+    //     }
+    //     fetch();
+    // }, []);
 
     return(
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
@@ -47,7 +47,7 @@ export const Programs = () => {
                     key={categoria._id} // Recuerda también agregar una `key` única
                     color={categoria.color} 
                     title={categoria.nombre} 
-                    img={JOELPhoto} 
+                    img={categoria.imagenes} 
                     description={categoria.descripcion} 
                     posicion={index % 2 === 0 ? "derecha" : "izquierda"} 
                     link="/programas/niños-adolescentes"
