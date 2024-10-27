@@ -123,7 +123,7 @@ const Administracion = () => {
                                 </Link>
                             </ul>
                         )}
-                        <Link to="/admin/tablaebooks" className="w-full">
+                        <Link to="/admin/tablaprogramas" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
                                     Programas
