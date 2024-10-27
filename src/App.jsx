@@ -55,6 +55,7 @@ const TablaEbooks = lazy(() => import("@/pages/admin/TablaEbooks"))
 const TablaOracion = lazy(() => import("@/pages/admin/TablaOracion"))
 const CategoriaAdmin = lazy(() => import("@/pages/admin/CategoriaAdmin"))
 const EbooksAdmin = lazy(() => import("@/pages/admin/EbooksAdmin"))
+const TablaContactanos = lazy(() => import("@/pages/admin/TablaContactanos"))
 
 const App = () => {
   return (
@@ -167,6 +168,7 @@ const App = () => {
                     <Route path="tablanews/:id" element={<NewsAdmin />} />
                     <Route path="tablaebooks" element={<TablaEbooks/>} />
                     <Route path="tablaoracion" element={<TablaOracion/>} />
+                    <Route path="tablacontactos" element={<TablaContactanos/>} />
 
 
                     <Route path="tablacategoria" element={<TablaCategoria />} />

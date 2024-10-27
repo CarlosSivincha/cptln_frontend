@@ -38,18 +38,17 @@ const CategoriaAdmin = () => {
     }, []);
 
     const enviarCategoria = async (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         try {
             const formData = new FormData();
             formData.append('nombre', nombre);
             formData.append('descripcion', descripcion);
             formData.append('color', color);
-            formData.append('objetivo', objetivo);
             [...imagenes].forEach((file) => {
                 formData.append('imagenes', file);
             });
             const respuesta = await registrarCategoria(formData);
-            if (respuesta.status == 200) return navigate('/admin')
+            if (respuesta.status == 200) return navigate('/admin/tablacategoria')
         } catch (error) {
             console.log(error);
         }
@@ -69,7 +68,7 @@ const CategoriaAdmin = () => {
             const respuesta = await EditarCategorias(id, formData);
             console.log(respuesta);
             if (respuesta.status == 200) { 
-                navigate('/admin') 
+                navigate('/admin/tablacategoria') 
             }
         } catch (error) {
             console.log(error);
