@@ -19,6 +19,7 @@ const CategoriaAdmin = () => {
     const handleNombre = (event) => setNombre(event.target.value);
     const handleColor = (event) => setColor(event.target.value);
     const handleDescripcion = (html) => setDescripcion(html);
+
     const handleImagenes = (event) => setImagenes(event.target.files)
 
     const handleDrop = (e) => {
@@ -34,27 +35,6 @@ const CategoriaAdmin = () => {
 
     const handleDragOver = (e) => {
         e.preventDefault();
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-
-        imagenes.forEach((imagen, index) => {
-            formData.append('imagenes', imagen);
-        });
-
-        try {
-            // Reemplaza 'yourEndpoint' con el endpoint de tu API
-            const response = await fetch('yourEndpoint', {
-                method: 'POST',
-                body: formData,
-            });
-            const data = await response.json();
-            console.log('Respuesta del servidor:', data);
-        } catch (error) {
-            console.error('Error al enviar imágenes:', error);
-        }
     };
 
     // const [selectedOption, setSelectedOption] = useState(null);
@@ -145,7 +125,7 @@ const CategoriaAdmin = () => {
         <>
             <Header color="bg-l_color_v-600" title={`${id ? 'Editar Categoria' : 'Crear Categoria'}`} />
 
-            <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
+            <div className="max-w-4xl px-5 py-10 lg:w-[1000px] w-[500px] m-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe la Categoria</h2>
                 <form onSubmit={id ? ModificarCategoria : enviarCategoria} className="space-y-8">
                     <div>
@@ -187,8 +167,27 @@ const CategoriaAdmin = () => {
                                     <div onDrop={handleDrop}
                                         onDragOver={handleDragOver}
                                         className="border-dashed border-2 border-gray-400 p-4 mb-4 flex flex-col items-center justify-center"
-                                        style={{ height: '200px' }}>
-                                        <p>Arrastra y suelta imágenes aquí</p>
+                                    >
+                                        {imagenes.length > 0 ? (
+                                            <React.Fragment>
+                                                <div className="grid grid-cols-3 gap-2 mb-4">
+                                                    {imagenes.map((imagen, index) => (
+                                                        <img
+                                                            key={index}
+                                                            src={URL.createObjectURL(imagen)}
+                                                            alt={`Imagen ${index + 1}`}
+                                                            className="w-full h-32 object-cover"
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <p className="w-full text-center text-4xl italic text-gray-400">Aun puede añadir mas imagenes</p>
+                                            </React.Fragment>
+                                            ) 
+                                            :
+                                            (
+                                                <p>Arrastra y suelta imágenes aquí</p>
+                                            )
+                                        }
                                     </div>
                                 </>
                             )
@@ -228,21 +227,12 @@ const CategoriaAdmin = () => {
 
 
 
-                    <div className="grid grid-cols-3 gap-2 mb-4">
-                        {imagenes.map((imagen, index) => (
-                            <img
-                                key={index}
-                                src={URL.createObjectURL(imagen)}
-                                alt={`Imagen ${index + 1}`}
-                                className="w-full h-32 object-cover"
-                            />
-                        ))}
-                    </div>
 
 
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="space-y-2">
+
+                    <div className="">
+                        {/* <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Imágenes</label>
                             <input
                                 type="file"
@@ -252,7 +242,7 @@ const CategoriaAdmin = () => {
                                 multiple
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
-                        </div>
+                        </div> */}
                         <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Escoge un Color</label>
                             <input
