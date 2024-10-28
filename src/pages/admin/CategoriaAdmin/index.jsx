@@ -77,7 +77,7 @@ const CategoriaAdmin = () => {
         event.preventDefault();
         try {
             const formData = new FormData();
-            formData.append('nombre', nombre);
+            formData.append('nombre',nombre.trim().replace(/\s+/g, ' '));
             formData.append('descripcion', descripcion);
             formData.append('color', color);
             [...imagenes].forEach((file) => {
