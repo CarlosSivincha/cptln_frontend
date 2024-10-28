@@ -37,28 +37,27 @@ const CategoriaAdmin = () => {
         e.preventDefault();
     };
 
-    // const [selectedOption, setSelectedOption] = useState(null);
-    // const handleOptionChange = (event) => {
-    //     setSelectedOption(event.target.value);
-    // }
+    const [selectedOption, setSelectedOption] = useState(null);
+     const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    }
 
 
-    // useEffect(() => {
-    //     if (id) {
-    //         const fetch = async () => {
-    //             const response = await obtenerCategoriasID(id);
-    //             setNombre(response.data.nombre);
-    //             setDescripcion(response.data.descripcion);
-    //             setColor(response.data.color);
-    //             setImagenesResponse(response.data.imagenes)  
-    //             const estadoIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true)
-    //             setSelectedOption(estadoIndex)
-    //             console.log(selectedOption)
-    //         }
-    //         fetch();
-    //     }
-    // }, []);
-
+    useEffect(() => {
+        if (id) {
+            const fetch = async () => {
+                const response = await obtenerCategoriasID(id);
+                setNombre(response.data.nombre);
+                setDescripcion(response.data.descripcion);
+                setColor(response.data.color);
+                setImagenesResponse(response.data.imagenes)  
+                const estadoIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true)
+                setSelectedOption(estadoIndex)
+                console.log(selectedOption)
+            }
+            fetch();
+        }
+    }, []);
 
 
     useEffect(() => {
@@ -160,7 +159,7 @@ const CategoriaAdmin = () => {
                         changeImagenes ?
                             (
                                 <>
-                                    <button className="p-2 bg-red-700 text-white rounded-md"
+                                    <button className="p-2 text-white bg-red-700 rounded-md"
                                         onClick={() => {
                                             setChangeImagenes(false)
                                             setImagenes([])
@@ -169,7 +168,7 @@ const CategoriaAdmin = () => {
                                     </button>
                                     <div onDrop={handleDrop}
                                         onDragOver={handleDragOver}
-                                        className="border-dashed border-2 border-gray-400 p-4 mb-4 flex flex-col items-center justify-center"
+                                        className="flex flex-col items-center justify-center p-4 mb-4 border-2 border-gray-400 border-dashed"
                                     >
                                         {imagenes.length > 0 ? (
                                             <React.Fragment>
@@ -179,11 +178,11 @@ const CategoriaAdmin = () => {
                                                             key={index}
                                                             src={URL.createObjectURL(imagen)}
                                                             alt={`Imagen ${index + 1}`}
-                                                            className="w-full h-32 object-cover"
+                                                            className="object-cover w-full h-32"
                                                         />
                                                     ))}
                                                 </div>
-                                                <p className="w-full text-center text-4xl italic text-gray-400">Aun puede añadir mas imagenes</p>
+                                                <p className="w-full text-4xl italic text-center text-gray-400">Aun puede añadir mas imagenes</p>
                                             </React.Fragment>
                                             ) 
                                             :
@@ -197,7 +196,7 @@ const CategoriaAdmin = () => {
                             :
                             (
                                 <div>
-                                    <button className="p-2 bg-green-700 text-white rounded-md"
+                                    <button className="p-2 text-white bg-green-700 rounded-md"
                                         onClick={() => {
                                             setChangeImagenes(true)
                                         }}>
@@ -217,7 +216,7 @@ const CategoriaAdmin = () => {
                     )}
 
                     {
-                        /* <div className="flex w-full justify-center items-centers">
+                        /* <div className="flex justify-center w-full items-centers">
                             <input
                                 type="radio"
                                 value={index}
@@ -228,14 +227,8 @@ const CategoriaAdmin = () => {
                         </div> */
                     }
 
-
-
-
-
-
-
                     <div className="">
-                        {/* <div className="space-y-2">
+                        <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Imágenes</label>
                             <input
                                 type="file"
@@ -245,7 +238,7 @@ const CategoriaAdmin = () => {
                                 multiple
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
-                        </div> */}
+                        </div>
                         <div className="space-y-2">
                             <label className="block font-semibold text-gray-700">Escoge un Color</label>
                             <input
