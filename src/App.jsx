@@ -32,6 +32,7 @@ const CursosCompletos = lazy(() =>
 );
 const Joel = lazy(() => import("@/pages/client/pages/Program/Joel"));
 const ProgramaEspecifico = lazy(() => import("@/pages/client/pages/Program"));
+const ProgramaDescripcion = lazy(() => import("@/pages/client/pages/ProgramaDescripcion"));
 const Pasi = lazy(() => import("@/pages/client/pages/Program/Pasi"));
 const JuntosComunidad = lazy(() =>
   import("@/pages/client/pages/Program/JuntosComunidad")
@@ -107,6 +108,11 @@ const App = () => {
                       element={<ProgramaEspecifico/>}
                     />
 
+                    <Route
+                      path="programas/:categoria/programa/:programa"
+                      element={<ProgramaDescripcion/>}
+                    />
+
                     {/* <Route path="/programas/joel" element={<Joel/>}/>
                 <Route path="/programas/pasi" element={<Joel/>}/>
                 <Route path="/programas/juntos-en-comunidad" element={<Joel/>}/> */}
@@ -117,6 +123,12 @@ const App = () => {
                       path="recursos/devocional-diario"
                       element={<Devocional />}
                     />
+
+                    <Route
+                      path="recursos/devocional/:id"
+                      element={<Devocional />}
+                    />
+
                     <Route
                       path="recursos/cursos-biblicos"
                       element={<CursosBiblicos />}

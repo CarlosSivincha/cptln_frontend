@@ -50,7 +50,7 @@ export const Programs = () => {
                     img={categoria.imagenes} 
                     description={categoria.descripcion} 
                     posicion={index % 2 === 0 ? "derecha" : "izquierda"} 
-                    link="/programas/niños-adolescentes"
+                    link={`programas/${categoria.nombre}`}
                     />
                 ))
                 }

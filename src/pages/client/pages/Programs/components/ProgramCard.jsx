@@ -40,7 +40,7 @@ export const ProgramCard = ({ posicion = "derecha", ...props }) => {
                 <div className="p-8 lg:p-10 xl:p-14 flex flex-col h-full w-full">
                     <h3 className="max-md:text-[1.625em] max-lg:text-[1.875em] max-[1110px]:text-[2.1875em] text-[2.5em] font-bold leading-[1.25em] text-[#222126]">{props.title}</h3>
                     <p className="mt-4 lg:mt-6 xl:mt-8 font-normal text-[1.30em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] text-[#555656] line-clamp-[7] min-[375px]:line-clamp-[9] min-sm:line-clamp-none" dangerouslySetInnerHTML={{ __html: props.description }}></p>
-                    <a href={`/programas/${convertirTexto(props.title)}`} className="flex items-center gap-3 self-end mt-auto font-bold text-[1.2em] leading-[1.5em] max-[1100px]:text-[1.075em] max-[1100px]:leading-[1.4em] text-[#3C5050] hover:text-[#46797A] rounded-md">
+                    <a href={convertirTexto(props.link)} className="flex items-center gap-3 self-end mt-auto font-bold text-[1.2em] leading-[1.5em] max-[1100px]:text-[1.075em] max-[1100px]:leading-[1.4em] text-[#3C5050] hover:text-[#46797A] rounded-md">
                         <span>Conocer más</span>
                         <GrLinkNext />
                     </a>

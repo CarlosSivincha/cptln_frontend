@@ -40,7 +40,9 @@ export const DevocionalesDiarios = () => {
                                 <DevocionalLoader key={index} /> // loading={true} activa los skeletons
                             ))
                         : fetchDevocionales.map((devocional, index) => (
-                            <Devocionales key={devocional._id} title={devocional.titulo} fecha={devocional.fecha} versiculo={devocional.versiculo}/>
+                            <a className="w-full" href={`/recursos/devocional/${devocional._id}`} key={devocional._id}>
+                                <Devocionales title={devocional.titulo} fecha={devocional.fecha} versiculo={devocional.versiculo}/>
+                            </a>
                     ))}
 
                     {/* <Devocionales/>

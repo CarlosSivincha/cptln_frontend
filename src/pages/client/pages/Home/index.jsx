@@ -91,9 +91,9 @@ export const Home = () => {
 
   const carouselSettings = {
     dots: true,
-    infinite: true,
+    infinite: fetchProgramas.length > 1 ? true : false,
     speed: 500,
-    slidesToShow: slidesToShow,
+    slidesToShow: fetchProgramas.length > 1 ? slidesToShow : 1,
     slidesToScroll: 1,
     autoplay: true,
     mobileFirst: true,
@@ -168,18 +168,26 @@ export const Home = () => {
           </div>
         </div>
 
-        <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">
-          <div className="flex flex-col justify-between">
-            <div className="">
-              <h3 className="h3-subtitles">Creciendo en Familia</h3>
-              <p className="standard-paragraph">knfalskfnsfklsnfklsnfalksfnasklfn asfnklsnflksdfn asnfdksdnfklsdf aksdnfksanf kasnfksdanf</p>
-            </div>
-            <a href="">
-              <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">Ir a Creciendo en Familia</button>
-            </a>
+        {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]">
+          <div className="flex flex-col justify-between w-full 2xl:w-1/2">
+              <div>
+                  <h3 className="h3-subtitles">Creciendo en Familia</h3>
+                  <p className="standard-paragraph">knfalskf nsfklsnfkls nfalksfn asklfn asfnkls nflksdfn asnfdk sdnfklsdf aksdnfksanf kasnfksdanf</p>
+              </div>
+              <a href="">
+                  <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
+                      Ir a Creciendo en Familia
+                  </button>
+              </a>
           </div>
-          <video src={video} controls className="min-w-[240px] w-auto h-auto rounded-t-xl lg:roundedt-none lg:rounded-md" />
-        </div>
+          <div className="relative w-full 2xl:w-1/2 overflow-hidden">
+              <video 
+                  src={video} 
+                  controls 
+                  className="w-full max-w-[90%] h-auto object-contain rounded-t-xl lg:rounded-t-none lg:rounded-md"
+              />
+          </div>
+      </div> */}
 
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
         <div className="flex mx-5 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">

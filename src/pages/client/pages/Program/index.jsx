@@ -56,7 +56,7 @@ export const ProgramaEspecifico = () => {
 
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
-            {loadingProgramas ? (
+            {loadingCategoria ? (
                 <Header color="bg-l_color_y-600" title="Cargando..." />
             ) : infoCategoria && infoCategoria.length > 0 ? (
                 <Header 
@@ -72,8 +72,8 @@ export const ProgramaEspecifico = () => {
 
             {loadingCategoria ? (
                 <p className="standard-paragraph mx-10 sm:mx-auto md:mx-10 min-[930px]:mx-auto max-w-full max-md:max-w-[560px] max-lg:max-w-[800px] min-[880px]:mx-auto lg:mx-20 max-[1450px]:max-w-[1380px] xl:mx-24 min-[1700px]:mx-auto min-[1700px]:w-[1600px] min-[1800px]:w-[1550px]">Cargando ...</p>
-            ) : programasCategoria && programasCategoria.length > 0 ? (
-                <p className="standard-paragraph mx-10 sm:mx-auto md:mx-10 min-[930px]:mx-auto max-w-full max-md:max-w-[560px] max-lg:max-w-[800px] min-[880px]:mx-auto lg:mx-20 max-[1450px]:max-w-[1380px] xl:mx-24 min-[1700px]:mx-auto min-[1700px]:w-[1600px] min-[1800px]:w-[1550px]">{programasCategoria[0].categoria}</p>
+            ) : infoCategoria && infoCategoria.length > 0 ? (
+                <p className="standard-paragraph mx-10 sm:mx-auto md:mx-10 min-[930px]:mx-auto max-w-full max-md:max-w-[560px] max-lg:max-w-[800px] min-[880px]:mx-auto lg:mx-20 max-[1450px]:max-w-[1380px] xl:mx-24 min-[1700px]:mx-auto min-[1700px]:w-[1600px] min-[1800px]:w-[1550px]" dangerouslySetInnerHTML={{ __html: infoCategoria[0].descripcion }}></p>
             ) : ( "" )}
 
             {/* <p className="standard-paragraph mx-10 sm:mx-auto md:mx-10 min-[930px]:mx-auto max-w-full max-md:max-w-[560px] max-lg:max-w-[800px] min-[880px]:mx-auto lg:mx-20 max-[1450px]:max-w-[1380px] xl:mx-24 min-[1700px]:mx-auto min-[1700px]:w-[1600px] min-[1800px]:w-[1550px]">{programasCategoria[0].categoria}</p> */}
@@ -82,11 +82,12 @@ export const ProgramaEspecifico = () => {
                 {!loadingProgramas && programasCategoria.map((programa, index) => (
                     <ProgramCard
                         key={programa._id}
-                        color={index % 2 === 0 ? "#65633F" : "#3C5050"}
+                        color={programa.color}
                         title={programa.titulo}
                         img={programa.imagenes} // Asegúrate de que esto coincida con la estructura esperada por ProgramCard
                         description={programa.descripcion}
                         posicion={index % 2 === 0 ? "izquierda" : "derecha"}
+                        link={`/programas/${programa.categoria}/programa/${programa.titulo}`}
                     />
                 ))}
             </div>

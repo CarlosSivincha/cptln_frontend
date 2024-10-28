@@ -153,7 +153,7 @@ export const Donate = () => {
             </div> */}
 
             {/* Carrusel de Imágenes */}
-            <div className="py-8 bg-l_color_Fondo">
+            <div className="py-8 ">
                 <div className="container px-4 mx-auto lg:px-8">
                     <h3 className="h3-subtitles mb-8 text-center text-black">NUESTROS TRABAJOS</h3>
                     <Slider {...settings}>
@@ -182,7 +182,8 @@ export const Donate = () => {
                             ? Array(6) // Crear 6 skeletons como placeholders
                                 .fill()
                                 .map((_, index) => (
-                                    <NewsLoader key={index} /> // loading={true} activa los skeletons
+                                    <NewsLoader key={index} />
+                                     // loading={true} activa los skeletons
                                 ))
                             : trabajos.map((trabajo) => (
                                 <div className="px-3">

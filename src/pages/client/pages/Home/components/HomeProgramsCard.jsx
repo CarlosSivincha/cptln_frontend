@@ -29,7 +29,7 @@ export const HomeProgramsCard = ({ program }) => {
       onClick={() => sendToProgram(program.link)}
     >
 
-      <img src={imagen} alt="Imagen" className="w-full h-full object-cover bg-center hover:scale-105 transition-all duration-500"/>
+      <img src={program.imagenes[0].ruta} alt="Imagen" className="w-full h-full object-cover bg-center hover:scale-105 transition-all duration-500"/>
       {
         // console.log(program.imagenes)
       }

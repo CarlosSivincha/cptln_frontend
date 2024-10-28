@@ -153,7 +153,7 @@ const AudioPlayer = ({ audio }) => {
           <input
             value={controlVolume}
             onChange={handleVolumeChange}
-            className='absolute hidden group-hover:inline-block w-14 -top-5 -right-1'
+            className='absolute hidden group-hover:inline-block w-14  top-10 -right-4 z-10 rotate-90'
             type='range'
             step='any'
             min={0}

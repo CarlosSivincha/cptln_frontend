@@ -16,7 +16,7 @@ export const Devocionales = ({
     }        
 
     return(
-        <div className="flex flex-col rounded-md border shadow-lg bg-white min-w-[280px] min-h-[200px] max-h-[290px]">
+        <div className="flex flex-col rounded-md border shadow-lg bg-white min-w-[280px] min-h-[200px] max-h-[290px] ">
             <div className="flex w-full h-3 rounded-t-md bg-[#908A42]"></div>
             <span className="flex w-full px-4 mt-2 font-bold text-xl line-clamp-1 ">{title} </span>
             <p className="flex-grow px-4 py-2 italic text-gray-500 text-lg line-clamp-4">
