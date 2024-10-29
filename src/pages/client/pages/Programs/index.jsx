@@ -56,6 +56,7 @@ export const Programs = () => {
                 }
                 {
                     fetchProgramasSinCategoria.map((programa, index) => (
+                        !programa.categoria && (
                         <ProgramCard 
                         key={programa._id} // Recuerda también agregar una `key` única
                         color={programa.color} 
@@ -64,7 +65,7 @@ export const Programs = () => {
                         description={programa.descripcion} 
                         posicion={index % 2 == 0 ? "derecha" : "izquierda"} 
                         link={`programa/${programa.titulo}`}
-                        />
+                        />)
                     ))
                 }
                 {/* <ProgramCard color="bg-l_color_o-600" title="Niños y Adolescentes" img={JOELPhoto} description="Trabajamos con 3 proyectos relacionados a los niños, nuestro objetivo es poder enseñar valor y principios con fundamento bíblico sin descuidar temas actuales que tienen relevancia como lo es el abuso sexual infantil" posicion="derecha" link="/programas/niños-adolescentes"/>
