@@ -1,10 +1,11 @@
 import { lazy } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 const Header = lazy(() => import("@/pages/client/components/Header"));
 import Image1 from "../../../../assets/Día_del_Nino_1.jpg";
 import Image2 from "../../../../assets/Día_del_Nino_2.jpg";
 import Image3 from "../../../../assets/Día_del_Nino_3.jpg";
+const NotFound = lazy(() => import("@/pages/client/pages/ExtraPages/NotFound"));
 
 import { obtenerNoticiaID } from "@/Api/noticias";
 import { obtenerEventos } from "@/Api/eventos";
@@ -18,30 +19,58 @@ export const Noticia = () => {
   const [noticia, setNoticia] = useState([]);
   const [ fetchEventos, setFetchEventos ] = useState([])
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const fetch = async () => {
-      const response = await obtenerNoticiaID(id)
-      // console.log(response)
-      setNoticia(response.data)
-      console.log(response.data)
-      setLoading(false);
-    }
+    const fetchProgramas = async () => {
+        try {
+          const response = await obtenerNoticiaID(id)
+          if (!response.data) {
+            navigate(-1)
+            
+          } else {
+            setNoticia(response.data)
+            console.log(response.data)
+            setLoading(false);
+          }
+        } catch (error) {
+            
+            //console.error("Error fetching programas:", error);
+            setLoadingProgramaInfo(false);
+        }
+    };
+    // const fetch = async () => {
+    //   const response = await obtenerNoticiaID(id)
+    //   if (!response.data) {
+    //     console.log("Prueba ajdnadn")
+    //     navigate("*")
+    //   } else {
+    //     setNoticia(response.data)
+    //     console.log(response.data)
+        
+    //     setLoading(false);
+    //   }
+    //   // console.log(response)
+      
+    // }
     
-    fetch();
+    fetchProgramas();
     const fetchEvent = async () => {
       const response = await obtenerEventos()
       // console.log(response)
       setFetchEventos(response.data)
       
     }
-    fetchEvent();
-  }, [id]);
+    if( noticia.length == 0 ){
+      fetchEvent();
+    }
+    
+  }, [id, navigate]);
 
   function convertirFechaPersonalizada(fecha) {
     const fechaObj = new Date(fecha);
 
-    const dia = fechaObj.getDate();
+    const dia = fechaObj.getDate()-1;
     const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
     const año = fechaObj.getFullYear();
 
