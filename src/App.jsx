@@ -58,13 +58,15 @@ const TablaEbooks = lazy(() => import("@/pages/admin/TablaEbooks"))
 const TablaOracion = lazy(() => import("@/pages/admin/TablaOracion"))
 const CategoriaAdmin = lazy(() => import("@/pages/admin/CategoriaAdmin"))
 const EbooksAdmin = lazy(() => import("@/pages/admin/EbooksAdmin"))
+const CursoAdmin = lazy(() => import("@/pages/admin/CursosAdmin"))
 const TablaContactanos = lazy(() => import("@/pages/admin/TablaContactanos"))
 const TablaProgramas = lazy(() => import("@/pages/admin/TablaProgramas"))
 const TablaProgramaContenidoAdmin = lazy(() => import("@/pages/admin/TablaProgramaContenidoAdmin"))
 const ProgramaContenidoAdmin = lazy(() => import("@/pages/admin/ProgramaContenidoAdmin"))
 const Tablacursosbiblicos = lazy(() => import("@/pages/admin/TablaCursosBi"))
 const TablaresEbooks = lazy(() => import("@/pages/admin/TablaresEbooks"))
-
+const TablaCursos = lazy(() => import("@/pages/admin/TablaCurso"))
+const CapituloCursosAdmin = lazy(() => import("@/pages/admin/CapitulosCursosAdmin"))
 
 const App = () => {
   return (
@@ -185,8 +187,6 @@ const App = () => {
                     <Route path="categorias" element={<CategoriaAdmin />} />
                     <Route path="ebooks" element={<EbooksAdmin />} />
                     <Route path="programas" element={<ProgramaAdmin />} />
-                    <Route path="programas/contenido/:id" element={<ProgramaContenidoAdmin />} />
-
 
                     <Route index element={<TablaEvento />} />
                     <Route path="tablaevento/:id" element={<EventsAdmin />} />
@@ -195,6 +195,9 @@ const App = () => {
                     <Route path="tablanews" element={<TablaNews />} />
                     <Route path="tablanews/:id" element={<NewsAdmin />} />
                     <Route path="tablaebooks" element={<TablaEbooks/>} />
+                    <Route path="tablaebooks/:id" element={<EbooksAdmin/>} />
+                    
+
                     <Route path="tablaoracion" element={<TablaOracion/>} />
                     <Route path="tablacontactos" element={<TablaContactanos/>} />
 
@@ -203,7 +206,7 @@ const App = () => {
                     <Route path="tablacategoria/:id" element={<CategoriaAdmin />} />
                     <Route path="tablaprogramas" element={<TablaProgramas/>}/>
                     <Route path="tablaprogramas/:id" element={<ProgramaAdmin/>}/>
-                    <Route path="tablaprogramas/:id/tablacontenido" element={<TablaProgramaContenidoAdmin/>}/>
+       
 
                     <Route path="tablacursosbi" element={<Tablacursosbiblicos/>}/>
                     <Route path="tablapeticionebooks" element={<TablaresEbooks/>}/>

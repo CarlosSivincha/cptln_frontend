@@ -136,13 +136,14 @@ const TablaDevocional = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="flex items-center justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
+                                   <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarDevocional(row.original._id)}
-                                            className="text-blue-500 transition-colors hover:text-blue-600"
-                                        >
+                                            className="text-blue-500 transition-colors hover:text-blue-600">
+
                                             <MdEditDocument size={20} />
+                                            
                                         </button>
                                     </td>
                                 </tr>
