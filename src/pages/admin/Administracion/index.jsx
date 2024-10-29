@@ -9,7 +9,7 @@ import { MdCameraFront } from "react-icons/md";
 import { ImBooks } from "react-icons/im";
 import { IoIosPeople } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
-
+import { MdCastForEducation } from "react-icons/md";
 const Administracion = () => {
     const [showSubmenu, setShowSubmenu] = useState(false); 
     const [isExpanded, setIsExpanded] = useState(false); // Estado para el tamaño del menú
@@ -81,14 +81,14 @@ const Administracion = () => {
                                 <ImBooks className="block group-hover:hidden size-8" />
                             </li>
                         </Link>
-                        {/* <Link to="/admin/tablaebooks" className="w-full">
+                        <Link to="/admin/tablacursos" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
-                                    Portadas
+                                    Cursos
                                 </span>
-                                <MdCameraFront className="block group-hover:hidden size-8" />
+                                <MdCastForEducation className="block group-hover:hidden size-8"/>
                             </li>
-                        </Link> */}
+                        </Link> 
                         
                         {/* Menú desplegable de "Peticiones" */}
                         <Link to="#" className="w-full">
@@ -113,7 +113,7 @@ const Administracion = () => {
                                 </Link>
                                 <Link to="/admin/tablapeticionebooks" className="w-full">
                                     <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
-                                        <span className="text-sm text-black">Obooks</span>
+                                        <span className="text-sm text-black">Ebooks</span>
                                     </li>
                                 </Link>
                                 <Link to="/admin/tablacursosbi" className="w-full">

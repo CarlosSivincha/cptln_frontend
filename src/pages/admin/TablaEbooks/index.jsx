@@ -35,7 +35,10 @@ const TablaEbooks = () => {
     }, [currentPage]);
 
     const columnHelper = createColumnHelper();
-
+    const truncateText = (text, maxLength) => {
+        // Trunca el texto a maxLength y añade "..." si es necesario
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
     const columns = [
         columnHelper.accessor('_id', {
             header: 'ID',
@@ -52,7 +55,7 @@ const TablaEbooks = () => {
         }),
         columnHelper.accessor('descripcion', {
             header: "Descripcion",
-            cell: info => info.getValue(),
+            cell: info => truncateText(info.getValue(), 80),
         }),
 
     ];
@@ -132,13 +135,14 @@ const TablaEbooks = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="flex items-center justify-center px-4 py-2 border border-gray-300">
+                                     <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarEbooks(row.original._id)}
-                                            className="text-blue-500 transition-colors hover:text-blue-600"
-                                        >
+                                            className="text-blue-500 transition-colors hover:text-blue-600">
+
                                             <MdEditDocument size={20} />
+                                            
                                         </button>
                                     </td>
                                 </tr>

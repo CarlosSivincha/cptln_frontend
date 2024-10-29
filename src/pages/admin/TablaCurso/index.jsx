@@ -5,15 +5,15 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerCategoriasPag } from '../../../Api/categorias';
+import { obtenerCursoPag } from '../../../Api/cursos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import { MdLibraryAdd } from "react-icons/md";
 
+const TablaCursos = () => {
 
-const TablaCategoria = () => {
-
-    const [categoria, setCategoria] = useState([]);
+    const [cursos, setCursos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
@@ -22,8 +22,8 @@ const TablaCategoria = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerCategoriasPag({ params: { page: Number(page), limit: 10 } });
-                setCategoria(response.data.categorias);
+                const response = await obtenerCursoPag({ params: { page: Number(page), limit: 10 } });
+                setCursos(response.data.cursos);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {
@@ -36,13 +36,16 @@ const TablaCategoria = () => {
     }, [currentPage]);
 
     const columnHelper = createColumnHelper();
-    
+
+    const truncateText = (text, maxLength) => {
+        if (!text) return '';
+        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+    };
     const stripHtml = (html) => {
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = html;
         return tempDiv.innerText;
     };
-
     const columns = [
         columnHelper.accessor('_id', {
             header: 'ID',
@@ -53,8 +56,8 @@ const TablaCategoria = () => {
                 hidden: true, // Puedes usar esta propiedad para marcar que está oculta
             },
         }),
-        columnHelper.accessor('nombre', {
-            header: "Nombre",
+        columnHelper.accessor('titulo', {
+            header: "Titulo",
             cell: info => info.getValue(),
         }),
         columnHelper.accessor('descripcion', {
@@ -62,19 +65,20 @@ const TablaCategoria = () => {
             cell: info => (
                 <div className="line-clamp-2">
                     {stripHtml(info.getValue())}
-                </div>)
+                </div>),
         }),
+
     ];
 
     const table = useReactTable({
-        data: categoria,
+        data: cursos,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
 
     const navigate = useNavigate();
 
-    const EditarCategorias = (id) => {
+    const EditarCursos = (id) => {
         navigate(`${id}`);
     };
 
@@ -89,14 +93,13 @@ const TablaCategoria = () => {
             setCurrentPage(currentPage - 1);
         }
     };
-
     return (
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-10"> 
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-700">Categorias</h3>
+                    <h3 className="text-xl font-semibold text-gray-700">Cursos</h3>
                     <button
-                        onClick={() => navigate('/admin/categorias')}
+                        onClick={() => navigate('/admin/cursos')}
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">
                         Agregar
                         <FaPlus className="ml-1" size={13} />
@@ -105,14 +108,14 @@ const TablaCategoria = () => {
 
                 {/* Tabla */}
                 <div className="overflow-x-auto">
-                    <table className="min-w-full border border-collapse border-gray-300 table-auto">
+                    <table className="min-w-full border border-gray-300 table-auto">
                         <thead>
                             {table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id} className="text-left bg-gray-200">
                                     {headerGroup.headers.map(header => (
                                         <th
                                             key={header.id}
-                                            className={`px-4 py-2 border border-gray-300 ${header.column.id === '_id' ? 'hidden' : ''}`}
+                                            className={`px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300 ${header.column.id === '_id' ? 'hidden' : ''}`}
                                         >
                                             {header.isPlaceholder
                                                 ? null
@@ -122,10 +125,11 @@ const TablaCategoria = () => {
                                                 )}
                                         </th>
                                     ))}
-                                    <th className="px-4 py-2 border border-gray-300">Acciones</th>
+                                    <th className="px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Acciones</th>
                                 </tr>
                             ))}
                         </thead>
+
                         <tbody>
                             {table.getRowModel().rows.map((row, index) => (
                                 <tr
@@ -135,19 +139,25 @@ const TablaCategoria = () => {
                                     {row.getVisibleCells().map(cell => (
                                         <td
                                             key={cell.id}
-                                            className={`px-4 py-2 border border-gray-300 ${cell.column.id === '_id' ? 'hidden' : ''}`}
+                                            className={`px-2 py-2 text-sm text-gray-700 border border-gray-300 ${cell.column.id === '_id' ? 'hidden' : ''}`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="px-4 py-2 text-center border border-gray-300">
+                                     <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
-                                            onClick={() => EditarCategorias(row.original._id)}
+                                            onClick={() => EditarCursos(row.original._id)}
                                             className="text-blue-500 transition-colors hover:text-blue-600">
 
                                             <MdEditDocument size={20} />
-                                            
+                                        </button>
+                                       
+                                        <button
+                                            type='button'
+                                            onClick={() => EditarCursos(row.original._id)}
+                                            className="text-green-700 transition-colors hover:text-green-900">
+                                            <MdLibraryAdd size={20}/>
                                         </button>
                                     </td>
                                 </tr>
@@ -176,5 +186,8 @@ const TablaCategoria = () => {
             </div>
         </div>
     );
+
+
 }
-export default TablaCategoria;
+
+export default TablaCursos;

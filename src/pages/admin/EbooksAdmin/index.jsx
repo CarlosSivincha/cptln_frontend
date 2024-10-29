@@ -116,6 +116,7 @@ const EbooksAdmin = () => {
                             <input
                                 type="file"
                                 name="portada"
+                                accept="image/*" 
                                 onChange={handlePortada}
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
