@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import Joel from "../../../../../assets/Día_del_Nino_1.jpg"
+import ImageNotFound from "@/assets/image_not_found.jpg";
 
 export const HomeProgramsCard = ({ program }) => {
   const navigate = useNavigate();
@@ -23,13 +24,20 @@ export const HomeProgramsCard = ({ program }) => {
     navigate(link);
   };
 
+  const getImageUrl = () => {
+    if (program?.imagenes?.length > 0) {
+      return program.imagenes[0].ruta;
+    }
+    return ImageNotFound; // Imagen por defecto
+  };
+
   return (
     <div
       className="relative w-full h-64 overflow-hidden rounded-[10px] lg:h-72 xl:h-80 2xl:h-96 cursor-pointer "
       onClick={() => sendToProgram(program.link)}
     >
 
-      <img src={program.imagenes[0].ruta} alt="Imagen" className="w-full h-full object-cover bg-center hover:scale-105 transition-all duration-500"/>
+      <img src={getImageUrl()} alt="Imagen" className="w-full h-full object-cover bg-center hover:scale-105 transition-all duration-500"/>
       {
         // console.log(program.imagenes)
       }
@@ -40,7 +48,7 @@ export const HomeProgramsCard = ({ program }) => {
         }}
       >
         <span className="text-sm xl:text-base">{program.categoria}</span>
-        <span className="text-base xl:text-xl font-bold">{program.titulo}</span>
+        <span className="text-base xl:text-xl font-bold">{program.abreviatura}</span>
       </div>
     </div>
   );

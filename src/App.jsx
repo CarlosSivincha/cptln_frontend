@@ -190,8 +190,8 @@ const App = () => {
                     <Route path="programas" element={<ProgramaAdmin />} />
                     <Route path="programas/contenido/:id" element={<ProgramaContenidoAdmin />} />
                     <Route path="cursos" element={<CursoAdmin />} />
-                    <Route path="capitulocur" element={<CapituloCursosAdmin />} />
-                    
+                    <Route path="capitulocur" element={<CapituloCursosAdmin />} /> 
+
                     <Route index element={<TablaEvento />} />
                     <Route path="tablaevento/:id" element={<EventsAdmin />} />
                     <Route path="tabladevocional" element={<TablaDevocional />} />
@@ -211,11 +211,9 @@ const App = () => {
                     <Route path="tablaprogramas" element={<TablaProgramas/>}/>
                     <Route path="tablaprogramas/:id" element={<ProgramaAdmin/>}/>
                     <Route path="tablaprogramas/:id/tablacontenido" element={<TablaProgramaContenidoAdmin/>}/>
-                    <Route path="tablaprogramas/:id/tablacontenido/:idcategoria" element={<ProgramaContenidoAdmin/>}/>
+                    <Route path="tablaprogramas/:idprograma/tablacontenido/:id" element={<ProgramaContenidoAdmin/>}/>
                     <Route path="tablacursos" element={<TablaCursos/>}/>
                     <Route path="tablacursos/:id" element={<CursoAdmin/>}/>
-                    <Route path="TablaCapituloCurso" element={<TablaCapituloCurso/>}/>
-
 
                     <Route path="tablacursosbi" element={<Tablacursosbiblicos/>}/>
                     <Route path="tablapeticionebooks" element={<TablaresEbooks/>}/>
