@@ -5,12 +5,16 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerCursoPag } from '../../../Api/cursos';
+import { buscarContenidoDelCurso } from '../../../Api/cursos';
 import { MdEditDocument } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
-const TablaCursos = () => {
+
+const TablaCapituloCurso = () => {
+
+    const {id} = useParams
 
     const [capitulosCur, setCapitulosCur] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
@@ -21,7 +25,7 @@ const TablaCursos = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerCursoPag({ params: { page: Number(page), limit: 10 } });
+                const response = await buscarContenidoDelCurso(id,{ params: { page: Number(page), limit: 10 } });
                 setCapitulosCur(response.data.capitulosCur);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
@@ -54,10 +58,6 @@ const TablaCursos = () => {
             header: "PDF",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('youtube', {
-            header: "Youtube",
-            cell: info => info.getValue(),
-        }),
 
     ];
 
@@ -88,9 +88,9 @@ const TablaCursos = () => {
         <div className="flex justify-center mt-10"> 
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-700">Cursos</h3>
+                    <h3 className="text-xl font-semibold text-gray-700">Capitulo del curso</h3>
                     <button
-                        onClick={() => navigate('/admin/cursos')}
+                        onClick={() => navigate(`/admin/cursos/capitulos/capitulo/${id}}`)}
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">
                         Agregar
                         <FaPlus className="ml-1" size={13} />
@@ -142,9 +142,15 @@ const TablaCursos = () => {
                                             className="text-blue-500 transition-colors hover:text-blue-600">
 
                                             <MdEditDocument size={20} />
-                                            
-                                        </button>
                                         
+                                        </button>
+                                        <button
+                                            type='button'
+                                           // onClick={() => EditarCapituloCurso(row.original._id)}
+                                            className="text-red-500 transition-colors hover:text-red-600">
+                                              <MdDeleteForever  size={20} />
+                                        </button>
+                                      
                                     </td>
                                 </tr>
                             ))}
@@ -176,4 +182,4 @@ const TablaCursos = () => {
 
 }
 
-export default TablaCursos;
+export default TablaCapituloCurso;

@@ -67,7 +67,7 @@ const CursoAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_r-600" title={`${id ? 'Editar Devocional' : 'Crear Devocional'}`} />
+            <Header color="bg-l_color_r-600" title={`${id ? 'Editar Devocional' : 'Crear Curso'}`} />
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
                 <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">Escribe el Curso</h2>
                 <form onSubmit={id ? ModificarCurso : CrearCurso} className="p-6 space-y-10 bg-white rounded-lg shadow-lg">
