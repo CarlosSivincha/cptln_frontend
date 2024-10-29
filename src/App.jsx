@@ -61,6 +61,8 @@ const EbooksAdmin = lazy(() => import("@/pages/admin/EbooksAdmin"))
 const CursoAdmin = lazy(() => import("@/pages/admin/CursosAdmin"))
 const TablaContactanos = lazy(() => import("@/pages/admin/TablaContactanos"))
 const TablaProgramas = lazy(() => import("@/pages/admin/TablaProgramas"))
+const TablaProgramaContenidoAdmin = lazy(() => import("@/pages/admin/TablaProgramaContenidoAdmin"))
+const ProgramaContenidoAdmin = lazy(() => import("@/pages/admin/ProgramaContenidoAdmin"))
 const Tablacursosbiblicos = lazy(() => import("@/pages/admin/TablaCursosBi"))
 const TablaresEbooks = lazy(() => import("@/pages/admin/TablaresEbooks"))
 const TablaCursos = lazy(() => import("@/pages/admin/TablaCurso"))
@@ -114,6 +116,11 @@ const App = () => {
 
                     <Route
                       path="programas/:categoria/programa/:programa"
+                      element={<ProgramaDescripcion/>}
+                    />
+
+                    <Route
+                      path="programa/:programa"
                       element={<ProgramaDescripcion/>}
                     />
 
@@ -180,9 +187,6 @@ const App = () => {
                     <Route path="categorias" element={<CategoriaAdmin />} />
                     <Route path="ebooks" element={<EbooksAdmin />} />
                     <Route path="programas" element={<ProgramaAdmin />} />
-                    <Route path="cursos" element={<CursoAdmin />} />
-                    <Route path="capitulocur" element={<CapituloCursosAdmin />} />
-                  
 
                     <Route index element={<TablaEvento />} />
                     <Route path="tablaevento/:id" element={<EventsAdmin />} />
@@ -202,8 +206,6 @@ const App = () => {
                     <Route path="tablacategoria/:id" element={<CategoriaAdmin />} />
                     <Route path="tablaprogramas" element={<TablaProgramas/>}/>
                     <Route path="tablaprogramas/:id" element={<ProgramaAdmin/>}/>
-                    <Route path="tablacursos" element={<TablaCursos/>}/>
-                    <Route path="tablacursos/:id" element={<CursoAdmin/>}/>
        
 
                     <Route path="tablacursosbi" element={<Tablacursosbiblicos/>}/>

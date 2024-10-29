@@ -6,7 +6,7 @@ const NewsCard = ({ title, date, description, link, imageSrc }) => {
   function convertirFechaPersonalizada(fecha) {
     const fechaObj = new Date(fecha);
 
-    const dia = fechaObj.getDate();
+    const dia = fechaObj.getDate()-1;
     const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
     const año = fechaObj.getFullYear();
 

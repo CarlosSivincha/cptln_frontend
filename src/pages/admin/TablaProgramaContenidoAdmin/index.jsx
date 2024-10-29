@@ -5,12 +5,13 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerProgramasPagination } from '../../../Api/programas';
+import { obtenerContenidoProgramaPagination } from '../../../Api/programas';
 import { MdEditDocument, MdEditNote   } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
+import { useParams } from 'react-router-dom';
 
-const TablaProgramas = () => {
+const TablaProgramaContenidoAdmin = () => {
 
     const navigate = useNavigate();
 
@@ -18,11 +19,9 @@ const TablaProgramas = () => {
         navigate(`${id}`);
     };
 
-    const EditorContenido = (id) => {
-        navigate(`${id}/tablacontenido`)
-    }
+    const { id } = useParams()
 
-    const [programas, setProgramas] = useState([]);
+    const [contenido, setContenido] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
@@ -31,8 +30,8 @@ const TablaProgramas = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerProgramasPagination({ params: { page: Number(page), limit: 10 } });
-                setProgramas(response.data.programas);
+                const response = await obtenerContenidoProgramaPagination(id,{ params: { page: Number(page), limit: 10 } });
+                setContenido(response.data.contenidoPrograma);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {
@@ -56,18 +55,18 @@ const TablaProgramas = () => {
                 hidden: true, // Puedes usar esta propiedad para marcar que está oculta
             },
         }),
-        columnHelper.accessor('titulo', {
+        columnHelper.accessor('subtitulo', {
             header: "Titulo",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('categoria', {
+        columnHelper.accessor('parrafo', {
             header: "Categoria",
-            cell: info => info.getValue(),
+            cell: info => <div dangerouslySetInnerHTML={{__html: info.getValue()}}/>
         }),
     ];
 
     const table = useReactTable({
-        data: programas,
+        data: contenido,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
@@ -88,9 +87,9 @@ const TablaProgramas = () => {
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-700">Programas</h3>
+                    <h3 className="text-xl font-semibold text-gray-700">Contenido de Programa</h3>
                     <button
-                        onClick={() => navigate('/admin/programas')}
+                        onClick={() => navigate(`/admin/programas/contenido/${id}`)}
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar
@@ -134,7 +133,7 @@ const TablaProgramas = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="grid grid-cols-3 place-items-center space-x-2 justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
+                                    <td className="flex items-center justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
                                         <div>
                                             <button
                                                 type='button'
@@ -143,20 +142,6 @@ const TablaProgramas = () => {
                                             >
                                                 <MdEditDocument size={20} />
                                             </button>
-                                        </div>
-                                        <div>
-                                            {row.original.enlace ? (
-                                                <a href={row.original.enlace} target='_blank' className='flex'>
-                                                    <FaLink size={20} className='fill-gray-400' />
-                                                </a>
-                                            ) : row.original.contenido && (
-                                                <button 
-                                                    type='button'
-                                                    onClick={()=>EditorContenido((row.original._id))}
-                                                    className='flex'>
-                                                    <MdEditNote  size={30}/>
-                                                </button>
-                                            )}
                                         </div>
                                     </td>
                                 </tr>
@@ -187,4 +172,4 @@ const TablaProgramas = () => {
     );
 }
 
-export default TablaProgramas;
+export default TablaProgramaContenidoAdmin;

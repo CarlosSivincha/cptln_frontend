@@ -14,7 +14,7 @@ export const Programs = () => {
     const [ fetchCategorias, setFetchCategorias ] = useState([])
     const [ isLoadingCategorias, setIsLoadingCategorias ] = useState(true);
 
-    const [ fetchProgramasSinCategoria, setchProgramasSinCategoria ] = useState([])
+    const [ fetchProgramasSinCategoria, setFetcchProgramasSinCategoria ] = useState([])
     const [ isLoadingProgramasSinCategoria, setIsLoadingProgramasSinCategoria ] = useState(true);    
 
     useEffect(() => {  
@@ -27,15 +27,15 @@ export const Programs = () => {
         fetch();
     }, []);
 
-    // useEffect(() => {  
-    //     const fetch = async () => {
-    //     const response = await obtenerProgramas()
-    //         // console.log(response)
-    //         setchProgramasSinCategoria(response.data)
-    //         setIsLoadingProgramasSinCategoria(false);
-    //     }
-    //     fetch();
-    // }, []);
+    useEffect(() => {  
+        const fetch = async () => {
+        const response = await obtenerProgramas()
+            // console.log(response)
+            setFetcchProgramasSinCategoria(response.data)
+            setIsLoadingProgramasSinCategoria(false);
+        }
+        fetch();
+    }, []);
 
     return(
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
@@ -59,11 +59,11 @@ export const Programs = () => {
                         <ProgramCard 
                         key={programa._id} // Recuerda también agregar una `key` única
                         color={programa.color} 
-                        title={programa.nombre} 
-                        img={JOELPhoto} 
+                        title={programa.titulo} 
+                        img={programa.imagenes}  
                         description={programa.descripcion} 
                         posicion={index % 2 == 0 ? "derecha" : "izquierda"} 
-                        link="/programas/niños-adolescentes"
+                        link={`programa/${programa.titulo}`}
                         />
                     ))
                 }
