@@ -1,5 +1,5 @@
 import { lazy, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import imgjoel1 from '../../../../assets/Joel_2.jpg'
 import imgjoel2 from '../../../../assets/Joel_3.jpg'
 import imgNoticia from '../../../../assets/Día_del_Nino_3.jpg'
@@ -7,7 +7,8 @@ import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import NewsCard from "../../components/NewsCard";
-import { obtenerInfoPrograma } from "@/Api/programas";
+import { obtenerInfoProgramaContenido } from "@/Api/programas";
+import ImageNotFound from "@/assets/image_not_found.jpg";
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
@@ -66,7 +67,10 @@ const ProgramSelect = () => {
 
     const { categoria, programa } = useParams();
     const [programaInfo, setProgramaInfo] = useState([]);
+    const [contenidoPrograma, setContenidoPrograma] = useState([]);
     const [loadingProgramaInfo, setLoadingProgramaInfo] = useState(true);
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchProgramas = async () => {
@@ -74,8 +78,9 @@ const ProgramSelect = () => {
                 if (programa) {
                     const formData = new FormData();
                     formData.append("nombre", programa);
-                    const response = await obtenerInfoPrograma(formData);
+                    const response = await obtenerInfoProgramaContenido(formData);
                     setProgramaInfo(response.data);
+                    setContenidoPrograma(response.data.contenido)
                     setLoadingProgramaInfo(false);
                 }
             } catch (error) {
@@ -87,16 +92,46 @@ const ProgramSelect = () => {
         fetchProgramas();
     }, [programa]);
 
+    
+
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
             <Header color="bg-l_color_y-700" title={programaInfo.titulo} return returnText="Programas de niños y Adolescentes" linkReturn="/programas/niños-adolescentes"/>
             {/* flex justify-between max-md:flex-col gap-10 max-w-[1280px] box-content px-10 max-[600px]:px-[30px] md:items-center md:mx-auto */}
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24 px-10 max-[600px]:px-[30px] md:items-center md:mx-auto max-w-[1280px]">
-                <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center">
+
+                {
+                    contenidoPrograma.map((contenido, index) => (
+
+                        <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center" key={index}>
+                            <div className={`flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center ${index%2 == 1 ? " order-2 max-md:order-1" : ""}`}>
+                                {
+                                    contenido.imagen ? (
+                                        <img src={contenido.imagen} alt=""
+                                        className="bg-cover 2xl:h-80 xl:h-64 md:h-54 max-md:w-full rounded-2xl shadow-md shadow-gray-400" />
+                                        //bg-cover w-full rounded-2xl
+                                    ) : (
+                                        <img src={ImageNotFound} alt=""
+                                        className="bg-cover 2xl:h-80 xl:h-64 md:h-54 max-md:w-full rounded-2xl shadow-md shadow-gray-400" />
+                                        //bg-cover w-full rounded-2xl
+                                    )
+                                }
+                                
+                            </div>
+                            <div className="flex-1">
+                                <h3 className={`h3-subtitles ${index%2 == 1 ? "order-1 max-md:order-2" : ""}`}>{contenido.subtitulo}</h3>
+                                <p className="mt-[15px] standard-paragraph text-[#555656] text-justify" dangerouslySetInnerHTML={{ __html: contenido.parrafo}}>
+                                    
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                }
+                
+                {/* <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center">
                     <div className="flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center">
                         <img src={imgjoel2} alt=""
                             className="bg-cover 2xl:h-80 xl:h-64 md:h-54 max-md:w-full rounded-2xl shadow-md shadow-gray-400" />
-                            {/* bg-cover w-full rounded-2xl */}
                     </div>
                     <div className="flex-1">
                         <h3 className="h3-subtitles">¿Qué es Joel?</h3>
@@ -117,9 +152,10 @@ const ProgramSelect = () => {
                         Cada lección está específicamente orientada a las diferentes clases, clasificadas por edades, con las que la Institución educativa cuenta tomando de referencia el nivel cognitivo de los alumnos tanto como su desarrollo emocional y social.
                         </p>
                     </div>
-                </div>
+                </div> */}
+                
             </div>
-            <div className="px-10 max-[600px]:px-[30px] md:px-[50px] lg:px-[80px] 2xl:mx-auto max-w-[1580px]">
+            {/* <div className="px-10 max-[600px]:px-[30px] md:px-[50px] lg:px-[80px] 2xl:mx-auto max-w-[1580px]">
             <h3 className="h3-subtitles mb-6">Eventos pasados de JOEL</h3>
                 <Slider {...settings}>
                     <NewsCard
@@ -163,7 +199,7 @@ const ProgramSelect = () => {
                         date={'15 Agosto, 2024'}
                         description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
                 </Slider>
-            </div>
+            </div> */}
         </div>
 
     )

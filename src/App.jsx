@@ -117,6 +117,11 @@ const App = () => {
                       element={<ProgramaDescripcion/>}
                     />
 
+                    <Route
+                      path="programa/:programa"
+                      element={<ProgramaDescripcion/>}
+                    />
+
                     {/* <Route path="/programas/joel" element={<Joel/>}/>
                 <Route path="/programas/pasi" element={<Joel/>}/>
                 <Route path="/programas/juntos-en-comunidad" element={<Joel/>}/> */}
