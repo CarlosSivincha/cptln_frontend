@@ -74,17 +74,18 @@ const CapituloCursosAdmin = () => {
                             onChange={handleTitulo}
                             placeholder="Título"
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
                     <div>
                         <label className="block font-semibold text-gray-700">Link del PDF</label>
                         <input
-                            type="url"
-                            name="PDF"
-                            value={pdflink}
+                            type="file"
+                            name="pdf"
                             onChange={handlePdflink}
-                            placeholder="https://Cursos-en-PDF.com"
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            accept="application/pdf"
+                            
                         />
                     </div>
                     <div>

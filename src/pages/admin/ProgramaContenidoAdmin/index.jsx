@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
-import { crearContenidoPrograma } from "../../../Api/programas";
+import { buscarProgramaContenido, editarProgramaContenido, crearContenidoPrograma } from "../../../Api/programas";
 import { useParams } from "react-router-dom";
 
 const ProgramaContenidoAdmin = () => {
 
     // Obtener el parametro ID
-    const { id, idprograma } = useParams()
+    const { idprograma, id } = useParams()
 
     // Guardar datos del formulario
     const [subtitulo, setSubtitulo] = useState("");
@@ -20,18 +20,25 @@ const ProgramaContenidoAdmin = () => {
     const handleParrafo = (html) => setParrafo(html);
     const handleImagen = (event) => setImagen(event.target.files[0])
 
+    // Verificadores
+    const [imagenNew, setImagenNew] = useState(false)
+    const handleImagenNew = () => setImagenNew(!imagenNew)
+
     // Verificar si hay un ID en los parametros
-    // useEffect(() => {
-    //     console.log(id)
-    //     if (id) {
-    //         const fetch = async () => {
-    //             const response = await buscarPrograma(id)
-    //             setSelectcategoria(response.data.categoria)
-    //             setTitulo(response.data.titulo)
-    //         }
-    //         fetch()
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (id && idprograma) {
+            const fetch = async () => {
+                const response = await buscarProgramaContenido(idprograma, id)
+                setSubtitulo(response.data.subtitulo)
+                setParrafo(response.data.parrafo)
+                setImagen(response.data.imagen)
+                if (response.data.imagen == null) {
+                    setImagenNew(true)
+                }
+            }
+            fetch()
+        }
+    }, [])
 
     // Crear Programa
     const crearContenido = async (event) => {
@@ -49,19 +56,21 @@ const ProgramaContenidoAdmin = () => {
     };
 
     // Modificar Programa
-    // const ModificarProgramas = async (event) => {
-    //     event.preventDefault();
-    //     try {
-    //         const formData = new FormData();
-    //         formData.append('subtitulo', subtitulo.trim().replace(/\s+/g, ' '));
-    //         formData.append('parrafo', parrafo);
-    //         formData.append('imagen', imagen);
-    //         const respuesta = await editarPrograma(id, formData);
-    //         console.log(respuesta);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+    const ModificarProgramas = async (event) => {
+        event.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append('subtitulo', subtitulo.trim().replace(/\s+/g, ' '));
+            formData.append('parrafo', parrafo);
+            if (imagenNew) {
+                formData.append('imagen', imagen);
+            }
+            const respuesta = await editarProgramaContenido(idprograma, id, formData);
+            console.log(respuesta);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     // Configuracion de ReactQuill
     const modules = {
@@ -73,7 +82,7 @@ const ProgramaContenidoAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_y-600" title={`${(id && idprograma) ? 'Editar Programa' : 'Agregar Programa'}`} />
+            <Header color="bg-l_color_y-600" title={`${(id && idprograma) ? 'Editar contenido del programa' : 'Agregar contenido del programa'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Añada un contenido para el programa</h2>
                 <form onSubmit={(id && idprograma) ? ModificarProgramas : crearContenido} className="space-y-6">
@@ -93,19 +102,69 @@ const ProgramaContenidoAdmin = () => {
                         placeholder="Escriba el contenido"
                     />
 
-                    <label className="block mb-2 text-gray-600">Imagen</label>
-                    <input
-                        type="file"
-                        onChange={handleImagen}
-                        multiple // Permite seleccionar múltiples imágenes
-                        className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                    />
+
+                    {(id && idprograma) ?
+                        (
+                            imagenNew ?
+                                (
+                                    <>
+                                        <label className="block mb-2 text-gray-600">Imagen</label>
+                                        <div className="flex space-x-5">
+                                            <div className={`flex flex-col ${imagen ? 'w-2/3' : 'w-full'} `}>
+                                                <input
+                                                    type="file"
+                                                    onChange={handleImagen}
+                                                    multiple // Permite seleccionar múltiples imágenes
+                                                    className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                                />
+                                            </div>
+                                            {imagen && (
+                                                <div className="flex w-1/3 items-center justify-center">
+                                                    <button
+                                                        onClick={handleImagenNew}
+                                                        className={`rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
+                                                        {imagenNew ? 'Cancelar' : 'Cambiar Imagen'}
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <div className="flex">
+                                            <img src={imagen} alt="" className="flex w-1/2" />
+                                            <div className="flex w-1/2 justify-center items-center">
+                                                <button
+                                                    onClick={handleImagenNew}
+                                                    className={`flex  rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
+                                                    {imagenNew ? 'Cancelar' : 'Cambiar Imagen'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                        )
+                        :
+                        (
+                            <>
+                                <label className="block mb-2 text-gray-600">Imagen</label>
+                                <input
+                                    type="file"
+                                    onChange={handleImagen}
+                                    multiple // Permite seleccionar múltiples imágenes
+                                    className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                />
+                            </>
+                        )
+                    }
 
                     <button
                         type="submit"
                         className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                     >
-                        {(id && idprograma) ? 'Modificar Programa' : 'Crear Contenido'}
+                        {(id && idprograma) ? 'Modificar Contenido' : 'Crear Contenido'}
                     </button>
 
                 </form>
