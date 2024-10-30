@@ -91,11 +91,11 @@ const TablaProgramaContenidoAdmin = () => {
 
     const handleDragOver = (event) => {
         event.preventDefault();
-        console.log(event.target);
+        // console.log(event.target._id);
     };
 
     const handleDrop = (event, index) => {
-        console.log(event.target);
+        console.log(event);
         const newItems = [...contenido];
         const [draggedItem] = newItems.splice(draggedItemIndex, 1);
         newItems.splice(index, 0, draggedItem);
