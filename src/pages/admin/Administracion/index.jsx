@@ -81,14 +81,14 @@ const Administracion = () => {
                                 <ImBooks className="block group-hover:hidden size-8" />
                             </li>
                         </Link>
-                        {/* <Link to="/admin/tablacursos" className="w-full">
+                        <Link to="/admin/tablacursos" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
                                     Cursos
                                 </span>
                                 <MdCastForEducation className="block group-hover:hidden size-8"/>
                             </li>
-                        </Link>  */}
+                        </Link> 
                         
                         {/* Menú desplegable de "Peticiones" */}
                         <Link to="#" className="w-full">

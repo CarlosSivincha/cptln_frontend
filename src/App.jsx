@@ -3,7 +3,7 @@ import { StrictMode, lazy, Suspense } from "react";
 import PageLoader from "./pages/client/components/Loaders/PageLoader";
 import CursosBiblico from "./pages/client/pages/CursosBiblicos";
 import { AuthProvider } from "./context/Usuario_context";
-
+import PruebaCustom from "./Prueba";
 const AboutUs = lazy(() => import("@/pages/client/pages/AboutUs"));
 const Programas = lazy(() => import("@/pages/client/pages/Programs"));
 const Niños = lazy(() => import("@/pages/client/pages/Programs/Niños"));
@@ -222,6 +222,7 @@ const App = () => {
                     {/* <Route path="test" element={<TestView />} /> */}
                     {/* <Route path="/programas" element={<Programs/>} /> */}
                   </Route>
+                  <Route path="custom" element={<PruebaCustom/>} /> 
 
                   <Route path="*" element={<NotFound />} />
                 </Routes>

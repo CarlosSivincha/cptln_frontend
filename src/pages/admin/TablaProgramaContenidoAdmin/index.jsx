@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
 import { obtenerContenidoProgramaPagination } from '../../../Api/programas';
-import { MdEditDocument, MdEditNote   } from "react-icons/md";
+import { MdEditDocument, MdEditNote } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
 import { useParams } from 'react-router-dom';
@@ -30,7 +30,7 @@ const TablaProgramaContenidoAdmin = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerContenidoProgramaPagination(id,{ params: { page: Number(page), limit: 10 } });
+                const response = await obtenerContenidoProgramaPagination(id, { params: { page: Number(page), limit: 10 } });
                 setContenido(response.data.contenidoPrograma);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
@@ -61,7 +61,7 @@ const TablaProgramaContenidoAdmin = () => {
         }),
         columnHelper.accessor('parrafo', {
             header: "Categoria",
-            cell: info => <div dangerouslySetInnerHTML={{__html: info.getValue()}}/>
+            cell: info => <div dangerouslySetInnerHTML={{ __html: info.getValue() }} />
         }),
     ];
 
@@ -70,7 +70,7 @@ const TablaProgramaContenidoAdmin = () => {
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
-    
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -81,6 +81,26 @@ const TablaProgramaContenidoAdmin = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
+    };
+
+    const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+
+    const handleDragStart = (index) => {
+        setDraggedItemIndex(index);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+        console.log(event.target);
+    };
+
+    const handleDrop = (event, index) => {
+        console.log(event.target);
+        const newItems = [...contenido];
+        const [draggedItem] = newItems.splice(draggedItemIndex, 1);
+        newItems.splice(index, 0, draggedItem);
+        setContenido(newItems);
+        setDraggedItemIndex(null);
     };
 
     return (
@@ -123,6 +143,10 @@ const TablaProgramaContenidoAdmin = () => {
                             {table.getRowModel().rows.map((row, index) => (
                                 <tr
                                     key={row.id}
+                                    draggable
+                                    onDragStart={() => handleDragStart(index)}
+                                    onDragOver={handleDragOver}
+                                    onDrop={() => handleDrop(index)}
                                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                                 >
                                     {row.getVisibleCells().map(cell => (
