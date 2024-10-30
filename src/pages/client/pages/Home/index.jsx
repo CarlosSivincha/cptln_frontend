@@ -124,6 +124,7 @@ export const Home = () => {
 
       <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28 mx-5">
         {/* Sección de Programas */}
+
         <div className="container min-[768px]:px-10 min-[1024px]:px-12 min-[1280px]:px-16 min-[1440px]:px-6 mx-auto">
           <div className="flex items-center gap-4 mb-8">
             <h2 className="h3-subtitles">Programas</h2>
@@ -167,6 +168,7 @@ export const Home = () => {
             </Slider>
           </div>
         </div>
+        
 
         {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]">
           <div className="flex flex-col justify-between w-full 2xl:w-1/2">
@@ -190,7 +192,7 @@ export const Home = () => {
       </div> */}
 
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
-        <div className="flex mx-5 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">
+        <div className="flex mx-3 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">
           <div className="min-[310px]:mx-auto">
             <h3 className="h3-subtitles mb-5">Noticias</h3>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -216,7 +218,7 @@ export const Home = () => {
 
           <div className=" min-[360px]:mx-auto">
             <h3 className="h3-subtitles mb-5">Eventos</h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]">
               {isLoadingEvents // Mientras está cargando, muestra los skeletons
                 ? Array(3) // Crear 6 skeletons como placeholders
                     .fill()
