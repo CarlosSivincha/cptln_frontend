@@ -1,58 +1,55 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from "react"
 
-function SortableList() {
-    const [items, setItems] = useState([
-        "Elemento 1",
-        "Elemento 2",
-        "Elemento 3",
-        "Elemento 4",
-    ]);
+const Slider = () => {
 
-    // Almacena el índice del elemento que se está arrastrando
-    const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+    const noticias = [
+        {
+            titulo: 'Noticia 1',
+            categoria: 'Categoria 1',
+        },
+        {
+            titulo: 'Noticia 2',
+            categoria: 'Categoria 2',
+        },
+        {
+            titulo: 'Noticia 3',
+            categoria: 'Categoria 3',
+        },
+    ]
 
-    const handleDragStart = (index) => {
-        setDraggedItemIndex(index);
-    };
+    const [indiceCarousel, setIndiceCarousel] = useState(0)
+    const handleIndiceCarousel = (value) =>{
+        setIndiceCarousel(value)
+    }
 
-    const handleDragOver = (event) => {
-        event.preventDefault();
-        console.log(event.target);
-    };
-
-    const handleDrop = (event, index) => {
-        console.log(event.target);
-        const newItems = [...items];
-        const [draggedItem] = newItems.splice(draggedItemIndex, 1);
-        newItems.splice(index, 0, draggedItem);
-        setItems(newItems);
-        setDraggedItemIndex(null);
-    };
+    useEffect(() => {
+        const timer = setInterval(() => {
+            if (indiceCarousel+1 > noticias.length) {
+                setIndiceCarousel(0)
+            }
+            else{
+                setIndiceCarousel(indiceCarousel+1)
+            }
+        }, 1000);
+    }, []);
 
     return (
-        <div>
-            <h3>Lista Ordenable</h3>
-            <ul style={{ listStyleType: "none", padding: 0 }}>
-                {items.map((item, index) => (
-                    <li
-                        key={index}
-                        draggable
-                        onDragStart={() => handleDragStart(index)}
-                        onDragOver={handleDragOver}
-                        onDrop={() => handleDrop(index)}
-                        style={{
-                            padding: "8px",
-                            marginBottom: "4px",
-                            backgroundColor: "#e0e0e0",
-                            cursor: "move",
-                        }}
-                    >
-                        {item}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+        <>
+            <div className="w-full border-green-500 overflow-hidden">
+                <div className="flex transition-all duration-300" 
+                    style={{}}>
+
+                        {noticias.map((noticia, index) => (
+                            <div className="flex flex-shrink-0 w-1/2">
+                                {noticia.titulo}
+                                {noticia.categoria}
+                            </div>
+                        ))}
+                    
+                </div>
+            </div>
+        </>
+    )
 }
 
-export default SortableList;
+export default Slider

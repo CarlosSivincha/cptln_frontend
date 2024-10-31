@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 const CursoAdmin = () => {
 
     //const navigate = useNavigate()
-    const { id } = useParams()
+    const { idcurso } = useParams()
 
 
     const [titulo, setTitulo] = useState("");
@@ -20,10 +20,10 @@ const CursoAdmin = () => {
 
 
     useEffect(() => {
-        console.log(id)
-        if (id) {
+        console.log(idcurso)
+        if (idcurso) {
             const fetch = async () => {
-                const response = await obtenerCursoID(id)
+                const response = await obtenerCursoID(idcurso)
                 setTitulo(response.data.titulo)
                 setDescripcion(response.data.descripcion)     
             }
@@ -35,7 +35,6 @@ const CursoAdmin = () => {
         const formData = new FormData();
         formData.append('titulo', titulo);
         formData.append('descripcion', descripcion);
-      
         try {
             const respuesta = await registrarCurso(formData);
             console.log(respuesta);
