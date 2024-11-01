@@ -1,12 +1,70 @@
-import Header from "@/pages/client/components/Header";
+import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { obtenerDatosDeRadio, actualizarDatosDeRadio } from "../../../Api/radio";
+import { useNavigate } from "react-router-dom";
 
 const RadioAdmin = () => {
 
-    const guardarDatosDeRadio = () => {
+    // React Router
+    const navigate = useNavigate()
 
+    // Formulario
+    const [id, setID] = useState(null)
+    const [nombre, setNombre] = useState(null)
+    const [descripcion, setDescripcion] = useState(null)
+    const [portada, setPortada] = useState([])
+    const [portadaURL, setPortadaURL] = useState(null)
+    const [imagenesExtra, setImagenesExtra] = useState([])
+    const handleNombre = (e) => setNombre(e.target.value)
+    const handleDescripcion = (html) => setDescripcion(html)
+    const handleID = (value) => setID(value)
+    const handlePortada = (event) => setPortada(event.target.files[0])
+    const handleImagenesExtra = (event) => setImagenesExtra(event.target.files)
+
+    // Recuperar Datos
+    useEffect(() => {
+        const fetch = async () => {
+            const res = await obtenerDatosDeRadio()
+            if (res.data._id) {
+                setID(res.data._id)
+            }
+            if (res.data.nombre) {
+                setNombre(res.data.nombre)
+            }
+            if (res.data.descripcion) {
+                setDescripcion(res.data.descripcion)
+            }
+            if (res.data.portada) {
+                setPortadaURL(res.data.portada)
+            }
+        }
+        fetch()
+    }, [])
+
+    // Guardar Cambios
+    const guardarDatosDeRadio = async (event) => {
+        event.preventDefault();
+        console.log(`adasd`);
+        const formData = new FormData()
+        formData.append('nombre', nombre)
+        if (id) formData.append('id', id);
+        if (descripcion) formData.append('descripcion', descripcion);
+        if (portada.length > 0) {
+            formData.append('portada', portada);
+        }
+        if (imagenesExtra.length > 0) {
+            [...imagenesExtra].forEach((file) => { formData.append('imagenes', file) });
+        }
+        try {
+            const res = await actualizarDatosDeRadio(formData)
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
+    // React Quill Modulos
     const modules = {
         toolbar: [
             ['bold', 'italic', 'underline'],
@@ -15,40 +73,51 @@ const RadioAdmin = () => {
 
     return (
         <>
-            <div className="flex flex-col px-36 pt-10 w-full">
+            <div className="flex flex-col px-96 pt-10 w-full">
                 <h2 className="mb-6 text-3xl font-bold text-start text-gray-800">Configuracion de la radio</h2>
                 <form onSubmit={guardarDatosDeRadio} className="space-y-6">
                     <input
                         type="text"
-                        name="titulo"
-
+                        name="Nombre de la estacion"
+                        value={nombre}
+                        onChange={handleNombre}
                         placeholder="Título"
-                        className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                    />
-                    <input
-                        type="text"
-                        name="abreviatura"
-
-                        placeholder="Abreviatura"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
 
                     <ReactQuill
                         className="bg-white rounded-lg"
+                        value={descripcion}
                         modules={modules}
                         name="descripcion"
-
+                        onChange={handleDescripcion}
                         placeholder="Descripcion del Programa"
                     />
 
+                    <div className="grid grid-cols-2">
+                        <div className="flex flex-col w-full justify-center">
+                            <label htmlFor="">Portada de la radio</label>
+                            <input type="file" onChange={handlePortada} />
+                        </div>
+                        <div className="flex flex-col w-full justify-center">
+                            <label htmlFor="">Imagenes Extra</label>
+                            <input type="file" onChange={handleImagenesExtra} multiple />
+                        </div>
+                    </div>
 
+                    <div className="grid grid-cols-2 pt-10 gap-x-10">
+                        <button 
+                            className="transition duration-200 bg-yellow-500 rounded-md hover:bg-yellow-600"
+                            onClick={() => navigate(`tablasecciones`)}>
+                            Modificar Secciones
+                        </button>
 
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
-                    >
-                        Guardar Cambios
-                    </button>
+                        <button
+                            type="submit"
+                            className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600">
+                            Guardar Cambios
+                        </button>
+                    </div>
 
                 </form>
             </div>

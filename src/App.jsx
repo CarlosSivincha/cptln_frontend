@@ -69,8 +69,8 @@ const TablaCursos = lazy(() => import("@/pages/admin/TablaCurso"))
 const CapituloCursosAdmin = lazy(() => import("@/pages/admin/CapitulosCursosAdmin"))
 const TablaCapituloCurso = lazy(() => import("@/pages/admin/TablaCapituloCurso"))
 const RadioAdmin = lazy(()=>import('@/pages/admin/RadioAdmin'))
-const RadioAdminSecciones = lazy(()=>import('@/pages/admin/RadioAdmin'))
-const RadioAdminSeccionesContenido = lazy(()=>import('@/pages/admin/RadioAdmin'))
+const TablaRadioSecciones = lazy(()=>import('@/pages/admin/TablaRadioSecciones'))
+const SeccionRadioAdmin = lazy(()=>import('@/pages/admin/SeccionRadioAdmin'))
 
 const App = () => {
   return (
@@ -223,11 +223,11 @@ const App = () => {
                     <Route path="tablacursosbi" element={<Tablacursosbiblicos />} />
                     <Route path="tablapeticionebooks" element={<TablaresEbooks />} />
                     <Route path="radioconfig" element={<RadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones" element={<RadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/añadir" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones" element={<TablaRadioSecciones/>}/>
+                    <Route path="radioconfig/tablasecciones/agregar" element={<SeccionRadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion" element={<RadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<RadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/añadir" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<RadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<RadioAdmin/>}/>
 
                     {/* <Route path="tablaprogramas"/> */}
