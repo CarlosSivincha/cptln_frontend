@@ -225,7 +225,7 @@ const ProgramaAdmin = () => {
                         </button>
                     </div>
 
-                    <div className="border border-gray-300 p-2">
+                    <div className="p-2 border border-gray-300">
 
                         {panelEnlaceDatos ?
                             (
@@ -256,8 +256,8 @@ const ProgramaAdmin = () => {
                                             <input type="text"
                                                 value={enlace}
                                                 onChange={handleEnlace}
-                                                placeholder="Añadir url"
-                                                className="p-4 rounded-md border w-full border-gray-300 placeholder:italic"
+                                                placeholder="AÃ±adir url"
+                                                className="w-full p-4 border border-gray-300 rounded-md placeholder:italic"
                                             />
                                         </div>
                                         <div>
@@ -272,12 +272,12 @@ const ProgramaAdmin = () => {
                                                                         <input
                                                                             type="file"
                                                                             onChange={handlePortada}
-                                                                            multiple // Permite seleccionar múltiples imágenes
+                                                                            multiple // Permite seleccionar mÃºltiples imÃ¡genes
                                                                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                                         />
                                                                     </div>
                                                                     {portada && (
-                                                                        <div className="flex w-1/3 items-center justify-center">
+                                                                        <div className="flex items-center justify-center w-1/3">
                                                                             <button
                                                                                 onClick={handleImagenNew}
                                                                                 className={`rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
@@ -293,7 +293,7 @@ const ProgramaAdmin = () => {
                                                             <>
                                                                 <div className="flex">
                                                                     <img src={showPortada} alt="" className="flex w-1/2" />
-                                                                    <div className="flex w-1/2 justify-center items-center">
+                                                                    <div className="flex items-center justify-center w-1/2">
                                                                         <button
                                                                             onClick={handleImagenNew}
                                                                             className={`flex  rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
@@ -311,7 +311,7 @@ const ProgramaAdmin = () => {
                                                         <input
                                                             type="file"
                                                             onChange={handlePortada}
-                                                            multiple // Permite seleccionar múltiples imágenes
+                                                            multiple // Permite seleccionar mÃºltiples imÃ¡genes
                                                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                         />
                                                     </>

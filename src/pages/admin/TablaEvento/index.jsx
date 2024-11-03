@@ -3,34 +3,38 @@ import {
     flexRender,
     getCoreRowModel,
     useReactTable,
-} from '@tanstack/react-table'
+} from '@tanstack/react-table';
 import React, { useEffect, useState } from 'react';
-import { obtenerEventosPag } from '../../../Api/eventos';
+import { obtenerEventosPag, EliminarEvento } from '../../../Api/eventos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
-const TablaEvento = () => {
+import { MdDeleteForever } from "react-icons/md";
 
+const TablaEvento = () => {
     const [eventos, setEventos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
 
-    useEffect(() => {
-        const fetch = async (page) => {
-            try {
-                setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerEventosPag({ params: { page: Number(page), limit: 10 } });
-                setEventos(response.data.eventos);
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsLoading(false); // Finalizar estado de carga
-            }
+    // Función para obtener los eventos con paginación
+    const fetchEventos = async (page) => {
+        try {
+            setIsLoading(true); // Iniciar estado de carga
+            const response = await obtenerEventosPag({ params: { page: Number(page), limit: 10 } });
+            setEventos(response.data.eventos); // Actualizar el estado con los eventos
+            setCurrentPage(response.data.currentPage); // Actualizar la página actual
+            setTotalPages(response.data.totalPages); // Actualizar el total de páginas
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false); // Finalizar estado de carga
         }
-        fetch(currentPage);
+    };
+
+    // Llamada inicial para cargar los datos al montar el componente
+    useEffect(() => {
+        fetchEventos(currentPage);
     }, [currentPage]);
 
     const columnHelper = createColumnHelper();
@@ -38,11 +42,11 @@ const TablaEvento = () => {
     const columns = [
         columnHelper.accessor('_id', {
             header: 'ID',
-            cell: info => null, // No muestra el valor en la celda
+            cell: info => null,
             enableColumnFilter: false,
-            size: 0, // Mantén el tamaño en 0 para ocupar menos espacio
+            size: 0,
             meta: {
-                hidden: true, // Puedes usar esta propiedad para marcar que está oculta
+                hidden: true,
             },
         }),
         columnHelper.accessor('titulo', {
@@ -70,6 +74,14 @@ const TablaEvento = () => {
     });
 
     const navigate = useNavigate();
+
+    // Función para manejar la eliminación de un evento y refrescar los datos
+    const handleDelete = async (id) => {
+        const success = await EliminarEvento({ id }); // Llamada a la función de eliminación
+        if (success) { // Verifica si la eliminación fue exitosa
+            fetchEventos(currentPage); // Refresca los datos después de eliminar
+        }
+    };
 
     const EditarEvento = (id) => {
         navigate(`tablaevento/${id}`);
@@ -138,14 +150,20 @@ const TablaEvento = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="px-4 py-2 text-center border border-gray-300">
+                                    <td className="w-20 px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarEvento(row.original._id)}
-                                            className="text-blue-500 transition-colors hover:text-blue-600">
-
+                                            className="text-blue-500 transition-colors hover:text-blue-600"
+                                        >
                                             <MdEditDocument size={20} />
-                                            
+                                        </button>
+                                        <button
+                                            type='button'
+                                            onClick={() => handleDelete(row.original._id)} // Uso de la función handleDelete
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
                                         </button>
                                     </td>
                                 </tr>
