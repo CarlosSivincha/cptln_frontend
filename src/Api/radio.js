@@ -6,8 +6,8 @@ export const actualizarDatosDeRadio = (data) => axios.post(`admin/radio`, data)
 
 // Secciones
 export const obtenerSecciones = () => axios.get(`/admin/radio/secciones` )
-export const agregarSeccion = (data) => axios.get(`/admin/radio/secciones`, data )
+export const agregarSeccion = (data) => axios.post(`/admin/radio/secciones`, data )
 export const obtenerSeccion = (id) => axios.get(`/admin/radio/secciones/${id}` )
-export const modificarSeccion = (id, data) => axios.get(`/admin/radio/secciones/${id}`, data)
+export const modificarSeccion = (id, data) => axios.post(`/admin/radio/secciones/${id}`, data)
 
 // Contenido

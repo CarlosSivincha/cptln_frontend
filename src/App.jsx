@@ -225,7 +225,7 @@ const App = () => {
                     <Route path="radioconfig" element={<RadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones" element={<TablaRadioSecciones/>}/>
                     <Route path="radioconfig/tablasecciones/agregar" element={<SeccionRadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion" element={<SeccionRadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<RadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<RadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<RadioAdmin/>}/>
