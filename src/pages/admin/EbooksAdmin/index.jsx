@@ -35,7 +35,7 @@ const EbooksAdmin = () => {
     }, [id]);
 
     const handleTitulo = (event) => setTitulo(event.target.value);
-    
+
     const handlePortada = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
@@ -46,9 +46,9 @@ const EbooksAdmin = () => {
             setImagenError("Por favor, sube un archivo de imagen válido para la portada.");
         }
     };
-    
+
     const handleDescripcion = (event) => setDescripcion(event.target.value);
-    
+
     const handlePdf = (event) => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
@@ -103,7 +103,6 @@ const EbooksAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_r-600" title={`${id ? 'Editar Ebook' : 'Agregar Ebook'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">{id ? "Editar Ebook" : "Agregar un nuevo Ebook"}</h2>
                 {error && <p className="text-center text-red-500">{error}</p>}
@@ -134,17 +133,21 @@ const EbooksAdmin = () => {
                             className="flex flex-col items-center justify-center p-4 mb-4 border-2 border-gray-400 border-dashed"
                         >
                             {previewUrl ? (
-                                <img src={previewUrl} alt="Imagen subida" className="object-cover w-full h-32" />
+                                <>
+                                    <img src={previewUrl} alt="Imagen subida" className="object-cover w-full h-32" />
+                                    <button
+                                        type="button"
+                                        onClick={clearImage}
+                                        className="mt-2 text-sm font-semibold text-red-600 hover:underline"
+                                    >
+                                        Eliminar imagen
+                                    </button>
+                                </>
                             ) : (
                                 <p>Arrastra y suelta una imagen aquí</p>
                             )}
-                            <button
-                                type="button"
-                                onClick={clearImage}
-                                className="mt-2 text-sm font-semibold text-red-600 hover:underline"
-                            >
-                                Eliminar imagen
-                            </button>
+
+
                             {imagenError && <p className="text-red-600">{imagenError}</p>}
                         </div>
                         <div>
