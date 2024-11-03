@@ -17,8 +17,10 @@ const ProgramaAdmin = () => {
     const [abreviatura, setAbreviatura] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
-    const [color, setColor] = useState("#ffffff");
+    const [color, setColor] = useState(null);
     const [enlace, setEnlace] = useState("");
+    const [portada, setPortada] = useState([])
+    const [showPortada, setShowPortada] = useState(null)
 
     // Guardar categorias para el select option
     const [categorias, setCategorias] = useState([]);
@@ -32,12 +34,27 @@ const ProgramaAdmin = () => {
     const handleImagenesAdicionales = (event) => {
         setImagenesAdicionales(event.target.files);
     };
+    const handlePortada = (event) => setPortada(event.target.files[0])
 
     // Intercambiar entre datos o agregar un enlace
     const [panelEnlaceDatos, setPanelEnlaceDatos] = useState(false)
     const handlePanelEnlaceDatos = () => {
         setPanelEnlaceDatos(!panelEnlaceDatos)
     }
+
+    const [imagenNew, setImagenNew] = useState(false)
+    const handleImagenNew = () => {
+        setImagenNew(!imagenNew)
+    }
+
+
+    //Colores
+    const colorOptions = [
+        { name: "Color 1", value: "#45787C" },
+        { name: "Color 2", value: "#9B1B31" },
+        { name: "Color 3", value: "#CC5F27" },
+        { name: "Color 4", value: "#B9B239" },
+    ];
 
     // Traer las categorias para el formulario
     useEffect(() => {
@@ -60,7 +77,8 @@ const ProgramaAdmin = () => {
                 setAbreviatura(response.data.abreviatura)
                 setColor(response.data.color)
                 setImagenesAdicionales(response.data.imagenes)
-                setEnlace(response.data.enlace)
+                setEnlace(response.data.enlace[0].url)
+                setShowPortada(response.data.enlace[0].portada)
             }
             fetch()
         }
@@ -82,6 +100,7 @@ const ProgramaAdmin = () => {
                 });
             } else {
                 formData.append('enlace', enlace);
+                formData.append('portada', portadaForm)
             }
             const respuesta = await crearPrograma(formData);
             console.log(respuesta);
@@ -106,6 +125,9 @@ const ProgramaAdmin = () => {
                 });
             } else {
                 formData.append('enlace', enlace);
+                if (imagenNew) {
+                    formData.append('portada', portada);
+                }
             }
             const respuesta = await editarPrograma(id, formData);
             console.log(respuesta);
@@ -133,7 +155,7 @@ const ProgramaAdmin = () => {
                         name="titulo"
                         value={titulo}
                         onChange={handleTitulo}
-                        placeholder="Título"
+                        placeholder="TÃ­tulo"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <input
@@ -167,15 +189,24 @@ const ProgramaAdmin = () => {
                         </select>
                     </div>
 
-                    <div className="space-y-2">
-                        <label className="block font-semibold text-gray-700">Escoge un Color</label>
-                        <input
-                            type="color"
-                            name="color"
-                            value={color}
-                            onChange={handleColor}
-                            className="w-full h-16 border border-gray-300 rounded-lg cursor-pointer"
-                        />
+                    <div className="flex gap-4">
+                        {colorOptions.map((option) => (
+                            <label key={option.value} className="flex items-center cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="color"
+                                    value={option.value}
+                                    checked={color === option.value}
+                                    onChange={handleColor}
+                                    className="hidden"
+                                />
+                                <span
+                                    className={`w-10 h-10 rounded-full border-2 ${color === option.value ? "border-black" : "border-gray-300"}`}
+                                    style={{ backgroundColor: option.value }}
+                                ></span>
+                                <span className="ml-2">{option.name}</span>
+                            </label>
+                        ))}
                     </div>
 
                     <div className="grid grid-cols-2">
@@ -189,19 +220,20 @@ const ProgramaAdmin = () => {
                         </button>
                     </div>
 
-                    <div className="border border-gray-300 p-2">
+                    <div className="p-2 border border-gray-300">
+
                         {panelEnlaceDatos ?
                             (
                                 <>
                                     <div className={`space-y-10 transition-all duration-200 ${panelEnlaceDatos ? 'opacity-100' : 'opacity-0'}`}>
                                         <div className="flex">
                                             <div>
-                                                <label className="block mb-2 text-gray-600">Imágenes adicionales (2 o más)</label>
+                                                <label className="block mb-2 text-gray-600">ImÃ¡genes adicionales (2 o mÃ¡s)</label>
                                                 <input
                                                     type="file"
                                                     name="imagenes"
                                                     onChange={handleImagenesAdicionales}
-                                                    multiple // Permite seleccionar múltiples imágenes
+                                                    multiple // Permite seleccionar mÃºltiples imÃ¡genes
                                                     className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                 />
                                             </div>
@@ -213,13 +245,75 @@ const ProgramaAdmin = () => {
                             :
                             (
                                 <>
-                                    <div className={`flex flex-col transition-all duration-200 ${panelEnlaceDatos ? 'opacity-0' : 'opacity-100'}`}>
-                                        <input type="text"
-                                            value={enlace}
-                                            onChange={handleEnlace}
-                                            placeholder="Añadir url"
-                                            className="p-4 rounded-md border border-gray-300 placeholder:italic"
-                                        />
+                                    <div className={`flex flex-col space-y-5 transition-all duration-200 ${panelEnlaceDatos ? 'opacity-0' : 'opacity-100'}`}>
+                                        <div>
+                                            <label className="block mb-2 text-gray-600">URL</label>
+                                            <input type="text"
+                                                value={enlace}
+                                                onChange={handleEnlace}
+                                                placeholder="Añadir url"
+                                                className="w-full p-4 border border-gray-300 rounded-md placeholder:italic"
+                                            />
+                                        </div>
+                                        <div>
+                                            {(id) ?
+                                                (
+                                                    imagenNew ?
+                                                        (
+                                                            <>
+                                                                <label className="block mb-2 text-gray-600">Imagen</label>
+                                                                <div className="flex space-x-5">
+                                                                    <div className={`flex flex-col ${portada ? 'w-2/3' : 'w-full'} `}>
+                                                                        <input
+                                                                            type="file"
+                                                                            onChange={handlePortada}
+                                                                            multiple // Permite seleccionar mÃºltiples imÃ¡genes
+                                                                            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                                                        />
+                                                                    </div>
+                                                                    {portada && (
+                                                                        <div className="flex items-center justify-center w-1/3">
+                                                                            <button
+                                                                                onClick={handleImagenNew}
+                                                                                className={`rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
+                                                                                {imagenNew ? 'Cancelar' : 'Cambiar Imagen'}
+                                                                            </button>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </>
+                                                        )
+                                                        :
+                                                        (
+                                                            <>
+                                                                <div className="flex">
+                                                                    <img src={showPortada} alt="" className="flex w-1/2" />
+                                                                    <div className="flex items-center justify-center w-1/2">
+                                                                        <button
+                                                                            onClick={handleImagenNew}
+                                                                            className={`flex  rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
+                                                                            {imagenNew ? 'Cancelar' : 'Cambiar Imagen'}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        )
+                                                )
+                                                :
+                                                (
+                                                    <>
+                                                        <label className="block mb-2 text-gray-600">Imagen</label>
+                                                        <input
+                                                            type="file"
+                                                            onChange={handlePortada}
+                                                            multiple // Permite seleccionar mÃºltiples imÃ¡genes
+                                                            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                                        />
+                                                    </>
+
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </>
                             )

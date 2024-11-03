@@ -17,6 +17,8 @@ const EventsAdmin = () => {
     const [ubicacion, setUbicacion] = useState("");
     const [caracteresRestantes, setCaracteresRestantes] = useState(200); // Para controlar el límite de caracteres
 
+    const [error, setError] = useState(""); // Estado para manejar el mensaje de error
+
 
     const handleTitulo = (event) => setTitulo(event.target.value);
     const handleCuerpo = (html) => {
@@ -53,41 +55,47 @@ const EventsAdmin = () => {
         }
     }, [])
 
-    
-
     const enviarEvento = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('cuerpo', cuerpo);
-        formData.append('fecha', fecha);
-        formData.append('hora', hora);
-        formData.append('ubicacion', ubicacion);
-
+        if (!cuerpo) { // Verifica si 'cuerpo' está vacío
+            setError("Por favor, ingresa el contenido de Eventos.");
+            return;
+        }
         try {
-            // Aquí iría la función para registrar el evento
+            const formData = new FormData();
+            formData.append('titulo', titulo);
+            formData.append('cuerpo', cuerpo);
+            formData.append('fecha', fecha);
+            formData.append('hora', hora);
+            formData.append('ubicacion', ubicacion);
             const respuesta = await registrarEvento(formData);
-            console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin");
         } catch (error) {
             console.log(error);
         }
+       
+            
     };
     const ModificarEvento = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('cuerpo', cuerpo);
-        formData.append('fecha', fecha);
-        formData.append('hora', hora);
-        formData.append('ubicacion', ubicacion);
-
+        if (!cuerpo) { // Verifica si 'cuerpo' está vacío
+            setError("Por favor, ingresa el contenido de Eventos.");
+            return;
+        }
         try {
-            // Aquí iría la función para registrar el evento
-            const respuesta = await EditarEventos(id,formData);
-            console.log(respuesta);
+            const formData = new FormData();
+            formData.append('titulo', titulo);
+            formData.append('cuerpo', cuerpo);
+            formData.append('fecha', fecha);
+            formData.append('hora', hora);
+            formData.append('ubicacion', ubicacion);
+            
+            // Asegúrate de que el id se envíe en la solicitud
+            const respuesta = await EditarEventos(id, formData); 
+            if (respuesta.status === 200) navigate("/admin");
         } catch (error) {
             console.log(error);
-        }
+        }       
     };
 
     const modules = {
@@ -111,6 +119,7 @@ const EventsAdmin = () => {
                         onChange={handleTitulo}
                         placeholder="Título"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                        required
                     />
                     <ReactQuill
                         className="bg-white rounded-lg"
@@ -120,6 +129,7 @@ const EventsAdmin = () => {
                         onChange={handleCuerpo}
                         placeholder="Cuerpo del evento (máximo 200 caracteres)"
                     />
+                       {error && <p className="text-red-600">{error}</p>} {/* Muestra el mensaje de error */}
                     <p className="text-sm text-gray-600">Caracteres restantes: {caracteresRestantes}</p>
                     <div
                         className="space-y-4 md:flex md:space-x-6 md:space-y-0">
@@ -129,6 +139,7 @@ const EventsAdmin = () => {
                             value={fecha}
                             onChange={handleFecha}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                         <input
                             type="time"
@@ -136,6 +147,7 @@ const EventsAdmin = () => {
                             value={hora}
                             onChange={handleHora}
                             className="w-full p-4 text-lg text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
 
@@ -150,6 +162,7 @@ const EventsAdmin = () => {
                             onChange={handleUbicacion}
                             placeholder="Ubicación del evento"
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
                     <button
