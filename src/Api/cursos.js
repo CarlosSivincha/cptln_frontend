@@ -14,6 +14,8 @@ export const EditarCurso =  (id, data) => axios.post(`cursos/${id}`,data)
 
 export const obtenerCursoPag = (parametros) => axios.get("cursos/pagination",parametros)
 
+export const obtenerCapitulosCursoPag = (id, parametros) => axios.get(`/cursos/capitulos/pagination/${id}`,parametros) 
+
 export const buscarCapituloEspecifico = (idcurso, id) => axios.get(`/cursos/capitulos/${idcurso}/${id}`)
 
 export const editarCapituloCurso = (idcurso, id) => axios.post(`/cursos/capitulos/${idcurso}/${id}`)

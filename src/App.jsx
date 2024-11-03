@@ -3,7 +3,7 @@ import { StrictMode, lazy, Suspense } from "react";
 import PageLoader from "./pages/client/components/Loaders/PageLoader";
 import CursosBiblico from "./pages/client/pages/CursosBiblicos";
 import { AuthProvider } from "./context/Usuario_context";
-import PruebaCustom from "./Prueba";
+import Slider from "./Prueba";
 const AboutUs = lazy(() => import("@/pages/client/pages/AboutUs"));
 const Programas = lazy(() => import("@/pages/client/pages/Programs"));
 const Niños = lazy(() => import("@/pages/client/pages/Programs/Niños"));
@@ -68,6 +68,9 @@ const TablaresEbooks = lazy(() => import("@/pages/admin/TablaresEbooks"))
 const TablaCursos = lazy(() => import("@/pages/admin/TablaCurso"))
 const CapituloCursosAdmin = lazy(() => import("@/pages/admin/CapitulosCursosAdmin"))
 const TablaCapituloCurso = lazy(() => import("@/pages/admin/TablaCapituloCurso"))
+const RadioAdmin = lazy(()=>import('@/pages/admin/RadioAdmin'))
+const TablaRadioSecciones = lazy(()=>import('@/pages/admin/TablaRadioSecciones'))
+const SeccionRadioAdmin = lazy(()=>import('@/pages/admin/SeccionRadioAdmin'))
 
 const App = () => {
   return (
@@ -112,17 +115,17 @@ const App = () => {
                     />
                     <Route
                       path="programas/:nombre"
-                      element={<ProgramaEspecifico/>}
+                      element={<ProgramaEspecifico />}
                     />
 
                     <Route
                       path="programas/:categoria/programa/:programa"
-                      element={<ProgramaDescripcion/>}
+                      element={<ProgramaDescripcion />}
                     />
 
                     <Route
                       path="programa/:programa"
-                      element={<ProgramaDescripcion/>}
+                      element={<ProgramaDescripcion />}
                     />
 
                     {/* <Route path="/programas/joel" element={<Joel/>}/>
@@ -163,7 +166,7 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                   </Route>
 
-                  
+
                   {/* <Route path="/admin" element={<Administracion />}>
                     <Route path="register" element={<RegisterAdmin />} />
                     <Route path="devoAd" element={<DevoAd />} />
@@ -179,7 +182,7 @@ const App = () => {
                     <Route path="tabladevocional/:id" element={<DevoAd />} />
                     <Route path="tablanews" element={<TablaNews />} />
                   </Route> */}
-                  <Route path="/admin" element={<Administracion/>}>
+                  <Route path="/admin" element={<Administracion />}>
                     <Route path="register" element={<RegisterAdmin />} />
                     <Route path="devoAd" element={<DevoAd />} />
                     <Route path="login" element={<LoginAdmin />} />
@@ -190,40 +193,49 @@ const App = () => {
                     <Route path="programas" element={<ProgramaAdmin />} />
                     <Route path="programas/contenido/:id" element={<ProgramaContenidoAdmin />} />
                     <Route path="cursos" element={<CursoAdmin />} />
-                    <Route path="capitulocur" element={<CapituloCursosAdmin />} /> 
+                    <Route path="cursos/capitulos/:idcurso" element={<CapituloCursosAdmin />} />
 
                     <Route index element={<TablaEvento />} />
                     <Route path="tablaevento/:id" element={<EventsAdmin />} />
                     <Route path="tabladevocional" element={<TablaDevocional />} />
-                    <Route path="tabladevocional/:id" element={<DevoAd/>} />
+                    <Route path="tabladevocional/:id" element={<DevoAd />} />
                     <Route path="tablanews" element={<TablaNews />} />
                     <Route path="tablanews/:id" element={<NewsAdmin />} />
-                    <Route path="tablaebooks" element={<TablaEbooks/>} />
-                    <Route path="tablaebooks/:id" element={<EbooksAdmin/>} />
-                    
+                    <Route path="tablaebooks" element={<TablaEbooks />} />
+                    <Route path="tablaebooks/:id" element={<EbooksAdmin />} />
 
-                    <Route path="tablaoracion" element={<TablaOracion/>} />
-                    <Route path="tablacontactos" element={<TablaContactanos/>} />
+
+                    <Route path="tablaoracion" element={<TablaOracion />} />
+                    <Route path="tablacontactos" element={<TablaContactanos />} />
 
 
                     <Route path="tablacategoria" element={<TablaCategoria />} />
                     <Route path="tablacategoria/:id" element={<CategoriaAdmin />} />
-                    <Route path="tablaprogramas" element={<TablaProgramas/>}/>
-                    <Route path="tablaprogramas/:id" element={<ProgramaAdmin/>}/>
-                    <Route path="tablaprogramas/:id/tablacontenido" element={<TablaProgramaContenidoAdmin/>}/>
-                    <Route path="tablaprogramas/:idprograma/tablacontenido/:id" element={<ProgramaContenidoAdmin/>}/>
-                    <Route path="tablacursos" element={<TablaCursos/>}/>
-                    <Route path="tablacursos/:id" element={<CursoAdmin/>}/>
+                    <Route path="tablaprogramas" element={<TablaProgramas />} />
+                    <Route path="tablaprogramas/:id" element={<ProgramaAdmin />} />
+                    <Route path="tablaprogramas/:id/tablacontenido" element={<TablaProgramaContenidoAdmin />} />
+                    <Route path="tablaprogramas/:idprograma/tablacontenido/:id" element={<ProgramaContenidoAdmin />} />
+                    <Route path="tablacursos/" element={<TablaCursos />} />
+                    <Route path="tablacursos/:idcurso" element={<CursoAdmin />} />
+                    <Route path="tablacursos/:idcurso/tablacapitulos" element={<TablaCapituloCurso />} />
+                    <Route path="tablacursos/:idcurso/tablacapitulos/:id" element={<CapituloCursosAdmin />} />
 
-                    <Route path="tablacursosbi" element={<Tablacursosbiblicos/>}/>
-                    <Route path="tablapeticionebooks" element={<TablaresEbooks/>}/>
+                    <Route path="tablacursosbi" element={<Tablacursosbiblicos />} />
+                    <Route path="tablapeticionebooks" element={<TablaresEbooks />} />
+                    <Route path="radioconfig" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones" element={<TablaRadioSecciones/>}/>
+                    <Route path="radioconfig/tablasecciones/agregar" element={<SeccionRadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<RadioAdmin/>}/>
+
                     {/* <Route path="tablaprogramas"/> */}
 
                     {/* <Route path="test" element={<TestView />} /> */}
                     {/* <Route path="/programas" element={<Programs/>} /> */}
                   </Route>
-                  <Route path="custom" element={<PruebaCustom/>} /> 
-
+                <Route path="/pruebas" element={<Slider/>}/>
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>
