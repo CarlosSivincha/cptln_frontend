@@ -2,7 +2,7 @@ import axios from "./axios";
 
 export const registrarNoticia = event => axios.post("noticias",event)
 
-export const obtenerNoticia = () => axios.get("noticias")
+export const obtenerNoticia = ({limit}) => axios.get("noticias", {params: {limit}})
 
 export const obtenerNoticiaID = (id) => axios.get(`noticias/${id}`)
 

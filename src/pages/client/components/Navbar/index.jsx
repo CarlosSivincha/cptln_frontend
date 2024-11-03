@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import OriginalLogo from "../../../../assets/OriginalLogo.png";
 import {Outlet} from "react-router-dom";
 import WhiteIcon from "../../../../assets/WhiteIcon.png";
+
+import { obtenerProgramas } from "@/Api/programas";
+import { obtenerCategorias } from "@/Api/categorias";
 // Importar los iconos de react-icons
 import {
   FaHome,
@@ -25,6 +28,34 @@ const Navbar = () => {
   const [timeoutId, setTimeoutId] = useState(null); // Para almacenar el ID del timeout
   const [isHoveringMenu, setIsHoveringMenu] = useState(false); // Estado para saber si el mouse está sobre el menú desplegable
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Estado para el menú móvil
+  const [fetchProgramas, setFetchProgramas] = useState([]);
+  const [isLoadingPrograms, setIsLoadingPrograms] = useState(true);
+  const [ fetchCategorias, setFetchCategorias ] = useState([])
+  const [ isLoadingCategorias, setIsLoadingCategorias ] = useState(true);
+
+  function convertirTexto(texto) {
+    return texto ? texto.trim().toLowerCase().replace(/\s+/g, '-') : '';
+  }
+
+  useEffect(() => {  
+    const fetch = async () => {
+    const response = await obtenerCategorias()
+        // console.log(response)
+        setFetchCategorias(response.data)
+        setIsLoadingCategorias(false);
+    }
+    fetch();
+  }, []);
+
+  useEffect(() => {  
+      const fetch = async () => {
+      const response = await obtenerProgramas()
+          // console.log(response)
+          setFetchProgramas(response.data)
+          setIsLoadingPrograms(false);
+      }
+      fetch();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -175,7 +206,57 @@ const Navbar = () => {
                 <div
                   className="absolute left-0 w-48 py-2 mt-2 bg-white rounded-md shadow-lg"
                 >
-                  <a
+                  {isLoadingCategorias // Mientras está cargando, muestra los skeletons
+                    ? Array(3) // Crear 6 skeletons como placeholders
+                        .fill()
+                        .map((_) => (
+                          <span
+                              className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
+                            >
+                              Loading...
+                          </span>
+                        ))
+                    : fetchCategorias.map((categoria, index) => {
+                      //console.log(program); // Para ver si los datos son correctos
+                      // console.log(fetchProgramas)
+                      return (
+                        
+                        <a
+                          href={`/programas/${convertirTexto(categoria.nombre)}`}
+                          className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
+                          key={index}
+                        >
+                          {categoria.nombre}
+                        </a>
+                      );
+                    })
+                  }
+                  {isLoadingPrograms // Mientras está cargando, muestra los skeletons
+                    ? Array(3) // Crear 6 skeletons como placeholders
+                        .fill()
+                        .map((_) => (
+                          <span
+                              className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
+                            >
+                              Loading...
+                          </span>
+                        ))
+                    : fetchProgramas.map((program, index) => {
+                      return(
+                        program.categoria == "" && (
+                          <a
+                            href={`/programa/${convertirTexto(program.titulo)}`}
+                            className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
+                            key={index}
+                          >
+                            {program.abreviatura}
+                          </a>
+                        )
+                      )
+
+                    })
+                  }
+                  {/* <a
                     href="/programas/niños-adolescentes"
                     className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
                   >
@@ -192,7 +273,7 @@ const Navbar = () => {
                     className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
                   >
                     Creciendo en Familia
-                  </a>
+                  </a> */}
                 </div>
               )}
             </li>

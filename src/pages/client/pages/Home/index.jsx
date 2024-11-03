@@ -48,6 +48,10 @@ export const Home = () => {
   const [isLoadingEvents, setIsLoadingEventes] = useState(true); // Nuevo estado de carga
   const [isLoadingPrograms, setIsLoadingPrograms] = useState(true); // Nuevo estado de carga
 
+  function convertirTexto(texto) {
+    return texto ? texto.trim().toLowerCase().replace(/\s+/g, '-') : '';
+  }
+
   useEffect(() => {
     const fetchProgram = async () => {
       const response = await obtenerProgramas();
@@ -57,7 +61,7 @@ export const Home = () => {
     };
     fetchProgram();
     const fetch = async () => {
-      const response = await obtenerNoticia();
+      const response = await obtenerNoticia({"limit":6});
       // console.log(response)
       setFetchNoticias(response.data);
       setIsLoadingNews(false);
@@ -122,10 +126,11 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28 mx-5">
+      <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28 ">
         {/* Sección de Programas */}
 
-        <div className="container min-[768px]:px-10 min-[1024px]:px-12 min-[1280px]:px-16 min-[1440px]:px-6 mx-auto">
+        {/* <div className="container min-[768px]:px-10 min-[1024px]:px-12 min-[1280px]:px-16 min-[1440px]:px-6 mx-auto"> */}
+        <div className="mx-auto w-[90%] max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] lg:w-[95%] 2xl:w-[98%] min-[1650px]:w-full">
           <div className="flex items-center gap-4 mb-8">
             <h2 className="h3-subtitles">Programas</h2>
             <a href="/programas">
@@ -136,7 +141,8 @@ export const Home = () => {
           </div>
 
           {/* Carrusel de Programas */}
-          <div className="min-[768px]:px-5 min-[1024px]:px-6 min-[1280px]:px-8 min-[1440px]:px-10 min-[1920px]:px-12 mx-auto">
+          {/* <div className="mx-1 min-[768px]:px-5 min-[1024px]:px-6 min-[1280px]:px-8 min-[1440px]:px-10 min-[1920px]:px-12 "> */}
+          <div className="grid grid-cols-1">
             <Slider {...carouselSettings}>
               {/* {fetchProgramas.map((program, index) => {
                 //console.log(program); // Para ver si los datos son correctos
@@ -159,9 +165,9 @@ export const Home = () => {
                   // console.log(fetchProgramas)
                   return (
                     
-                    <div key={index} className="relative px-2">
+                    <a key={index} className="relative px-2" href={`${program.categoria && `programas/${convertirTexto(program.categoria)}`}/programa/${convertirTexto(program.titulo)}`}>
                       <HomeProgramsCard program={program} />
-                    </div>
+                    </a>
                   );
                 })
               }
@@ -170,9 +176,10 @@ export const Home = () => {
         </div>
         
 
-        {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]">
-          <div className="flex flex-col justify-between w-full 2xl:w-1/2">
-              <div>
+        {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]"> */}
+        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] xl:px-16 2xl:px-20 min-[1650px]:w-full gap-4 2xl:gap-10">
+          <div className="flex flex-col justify-between w-full">
+              <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6">
                   <h3 className="h3-subtitles">Creciendo en Familia</h3>
                   <p className="standard-paragraph">knfalskf nsfklsnfkls nfalksfn asklfn asfnkls nflksdfn asnfdk sdnfklsdf aksdnfksanf kasnfksdanf</p>
               </div>
@@ -182,20 +189,20 @@ export const Home = () => {
                   </button>
               </a>
           </div>
-          <div className="relative w-full 2xl:w-1/2 overflow-hidden">
+          <div className="relative overflow-hidden">
               <video 
                   src={video} 
                   controls 
-                  className="w-full max-w-[90%] h-auto object-contain rounded-t-xl lg:rounded-t-none lg:rounded-md"
+                  className="w-full h-auto object-contain rounded-t-xl lg:rounded-t-none lg:rounded-md"
               />
           </div>
-      </div> */}
+      </div>
 
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
-        <div className="flex mx-3 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">
-          <div className="min-[310px]:mx-auto">
+        <div className="flex mx-4 sm:mx-10 md:mx-auto lg:mx-16 min-[1110px]:mx-auto min-[1110px]:max-w-[1145px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]">
+          <div className="min-[310px]:mx-auto min-[1110px]:mx-10 2xl:mx-auto">
             <h3 className="h3-subtitles mb-5">Noticias</h3>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3">
               {isLoadingNews // Mientras está cargando, muestra los skeletons
                 ? Array(6) // Crear 6 skeletons como placeholders
                     .fill()
@@ -216,9 +223,9 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className=" min-[360px]:mx-auto">
+          <div className="w-full min-[360px]:mx-auto md:max-w-[630px] 2xl:max-w-[530px] ">
             <h3 className="h3-subtitles mb-5">Eventos</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]">
+            <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 && "md:grid-cols-2" } lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]`}>
               {isLoadingEvents // Mientras está cargando, muestra los skeletons
                 ? Array(3) // Crear 6 skeletons como placeholders
                     .fill()
