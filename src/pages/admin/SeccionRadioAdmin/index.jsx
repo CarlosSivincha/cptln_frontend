@@ -6,7 +6,7 @@ import { crearPrograma, editarPrograma, buscarPrograma } from "../../../Api/prog
 import { useParams } from "react-router-dom";
 import { obtenerCategorias } from "../../../Api/categorias";
 
-const ProgramaAdmin = () => {
+const SeccionRadioAdmin = () => {
 
     // Obtener el parametro ID
     const { id } = useParams()
@@ -27,26 +27,6 @@ const ProgramaAdmin = () => {
 
     // Modificar valores del formulario
     const handleTitulo = (event) => setTitulo(event.target.value);
-    const handleAbreviatura = (event) => setAbreviatura(event.target.value);
-    const handleDescripcion = (html) => setDescripcion(html);
-    const handleColor = (event) => setColor(event.target.value);
-    const handleEnlace = (event) => setEnlace(event.target.value);
-    const handleImagenesAdicionales = (event) => {
-        setImagenesAdicionales(event.target.files);
-    };
-    const handlePortada = (event) => setPortada(event.target.files[0])
-
-    // Intercambiar entre datos o agregar un enlace
-    const [panelEnlaceDatos, setPanelEnlaceDatos] = useState(false)
-    const handlePanelEnlaceDatos = () => {
-        setPanelEnlaceDatos(!panelEnlaceDatos)
-    }
-
-    const [imagenNew, setImagenNew] = useState(false)
-    const handleImagenNew = () => {
-        setImagenNew(!imagenNew)
-    }
-
 
     //Colores
     const colorOptions = [
@@ -56,7 +36,7 @@ const ProgramaAdmin = () => {
         { name: "Color 4", value: "#B9B239" },
     ];
 
-    // Traer las categorias para el formulario
+    // Obtener datos de la Seccion
     useEffect(() => {
         const fech = async () => {
             const response = await obtenerCategorias()
@@ -71,83 +51,25 @@ const ProgramaAdmin = () => {
         if (id) {
             const fetch = async () => {
                 const response = await buscarPrograma(id)
-                setSelectcategoria(response.data.categoria)
                 setTitulo(response.data.titulo)
-                setDescripcion(response.data.descripcion)
-                setAbreviatura(response.data.abreviatura)
-                setColor(response.data.color)
-                setImagenesAdicionales(response.data.imagenes)
-                setEnlace(response.data.enlace)
-                setShowPortada(response.data.portada)
-                if(enlace) {
-                    setPanelEnlaceDatos(true)
-                } else {
-                    setPanelEnlaceDatos(false)
-                }
             }
             fetch()
         }
     }, [])
 
-    // Crear Programa
+    // Agregar Seccion
     const enviarPrograma = async (event) => {
         event.preventDefault();
-        try {
-            const formData = new FormData();
-            formData.append('titulo', titulo.trim().replace(/\s+/g, ' '));
-            formData.append('descripcion', descripcion);
-            formData.append('color', color);
-            formData.append('abreviatura', abreviatura);
-            formData.append('categoria', selectcategoria);
-            if (panelEnlaceDatos) {
-                [...imagenesAdicionales].forEach((file) => {
-                    formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
-                });
-            } else {
-                formData.append('enlace', enlace);
-                formData.append('portada', portada)
-            }
-            const respuesta = await crearPrograma(formData);
-            console.log(respuesta);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    // Modificar Programa
-    const ModificarProgramas = async (event) => {
-        event.preventDefault();
-        try {
-            const formData = new FormData();
-            formData.append('titulo', titulo.trim().replace(/\s+/g, ' '));
-            formData.append('descripcion', descripcion);
-            formData.append('abreviatura', abreviatura);
-            formData.append('color', color);
-            formData.append('categoria', selectcategoria);
-            if (panelEnlaceDatos) {
-                [...imagenesAdicionales].forEach((file) => {
-                    formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
-                });
-            } else {
-                formData.append('enlace', enlace);
-                if (imagenNew) {
-                    formData.append('portada', portada);
-                }
-            }
-            const respuesta = await editarPrograma(id, formData);
-            console.log(respuesta);
-        } catch (error) {
-            console.log(error);
-        }
+        const formData = new FormData();
+        formData.append('nombre', titulo.trim().replace(/\s+/g, ' '));
     }
 
-    // Configuracion de ReactQuill
-    const modules = {
-        toolbar: [
-            ['bold', 'italic', 'underline'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        ],
-    };
+    // Modificar Seccion
+    const ModificarProgramas = async (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('nombre', titulo.trim().replace(/\s+/g, ' '));
+    }
 
     return (
         <>
@@ -160,7 +82,7 @@ const ProgramaAdmin = () => {
                         name="titulo"
                         value={titulo}
                         onChange={handleTitulo}
-                        placeholder="TÃ­tulo"
+                        placeholder="Título"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <input
@@ -233,12 +155,12 @@ const ProgramaAdmin = () => {
                                     <div className={`space-y-10 transition-all duration-200 ${panelEnlaceDatos ? 'opacity-100' : 'opacity-0'}`}>
                                         <div className="flex">
                                             <div>
-                                                <label className="block mb-2 text-gray-600">ImÃ¡genes adicionales (2 o mÃ¡s)</label>
+                                                <label className="block mb-2 text-gray-600">Imágenes adicionales (2 o más)</label>
                                                 <input
                                                     type="file"
                                                     name="imagenes"
                                                     onChange={handleImagenesAdicionales}
-                                                    multiple // Permite seleccionar mÃºltiples imÃ¡genes
+                                                    multiple // Permite seleccionar múltiples imágenes
                                                     className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                 />
                                             </div>
@@ -339,4 +261,4 @@ const ProgramaAdmin = () => {
     );
 };
 
-export default ProgramaAdmin;
+export default SeccionRadioAdmin;

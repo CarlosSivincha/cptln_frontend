@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
 import { obtenerProgramasPagination } from '../../../Api/programas';
-import { MdEditDocument, MdEditNote   } from "react-icons/md";
+import { MdEditDocument, MdEditNote } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
 
@@ -71,7 +71,7 @@ const TablaProgramas = () => {
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
-    
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -134,7 +134,7 @@ const TablaProgramas = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="grid grid-cols-3 place-items-center space-x-2 justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
+                                    <td className="grid grid-cols-2 place-items-center space-x-2 justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
                                         <div>
                                             <button
                                                 type='button'
@@ -150,11 +150,11 @@ const TablaProgramas = () => {
                                                     <FaLink size={20} className='fill-gray-400' />
                                                 </a>
                                             ) : row.original.contenido && (
-                                                <button 
+                                                <button
                                                     type='button'
-                                                    onClick={()=>EditorContenido((row.original._id))}
+                                                    onClick={() => EditorContenido((row.original._id))}
                                                     className='flex'>
-                                                    <MdEditNote  size={30}/>
+                                                    <MdEditNote size={30} />
                                                 </button>
                                             )}
                                         </div>

@@ -94,7 +94,7 @@ const TablaCursos = () => {
         }
     };
     return (
-        <div className="flex justify-center mt-10"> 
+        <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold text-gray-700">Cursos</h3>
@@ -144,7 +144,7 @@ const TablaCursos = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                     <td className="px-4 py-2 text-center border border-gray-300">
+                                    <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarCursos(row.original._id)}
@@ -152,12 +152,12 @@ const TablaCursos = () => {
 
                                             <MdEditDocument size={20} />
                                         </button>
-                                       
+
                                         <button
                                             type='button'
-                                            onClick={() => EditarCursos(row.original._id)}
+                                            onClick={() => navigate(`${row.original._id}/tablacapitulos/`)}
                                             className="text-green-700 transition-colors hover:text-green-900">
-                                            <MdLibraryAdd size={20}/>
+                                            <MdLibraryAdd size={20} />
                                         </button>
                                     </td>
                                 </tr>

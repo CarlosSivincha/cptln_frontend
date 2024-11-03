@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import OriginalLogo from "../../../assets/OriginalLogo.png";
 import { Outlet } from "react-router-dom";
-import { FaPrayingHands, FaNewspaper, FaCalendarDay, FaObjectGroup} from "react-icons/fa";
+import { FaPrayingHands, FaNewspaper, FaCalendarDay, FaObjectGroup } from "react-icons/fa";
 import { GiOpenBook } from "react-icons/gi";
 import { TbCategoryFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { MdCameraFront } from "react-icons/md";
 import { ImBooks } from "react-icons/im";
-import { IoIosPeople } from "react-icons/io";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosRadio, IoIosPeople  } from "react-icons/io";
 import { MdCastForEducation } from "react-icons/md";
 const Administracion = () => {
-    const [showSubmenu, setShowSubmenu] = useState(false); 
+    const [showSubmenu, setShowSubmenu] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false); // Estado para el tamaño del menú
 
     // Función que maneja la expansión/contracción del menú y oculta el submenú
@@ -81,15 +80,35 @@ const Administracion = () => {
                                 <ImBooks className="block group-hover:hidden size-8" />
                             </li>
                         </Link>
-                        {/* <Link to="/admin/tablacursos" className="w-full">
+                        <Link to="/admin/tablacursos" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
                                     Cursos
                                 </span>
-                                <MdCastForEducation className="block group-hover:hidden size-8"/>
+                                <MdCastForEducation className="block group-hover:hidden size-8" />
                             </li>
-                        </Link>  */}
+                        </Link>
+
                         
+
+                        <Link to="/admin/tablaprogramas" className="w-full">
+                            <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
+                                <span className="hidden ml-4 text-xl group-hover:inline-block">
+                                    Programas
+                                </span>
+                                <FaObjectGroup className="block group-hover:hidden size-8" />
+                            </li>
+                        </Link>
+
+                        <Link to="/admin/radioconfig" className="w-full">
+                            <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
+                                <span className="hidden ml-4 text-xl group-hover:inline-block">
+                                    Radio
+                                </span>
+                                <IoIosRadio className="block group-hover:hidden size-8" />
+                            </li>
+                        </Link>
+
                         {/* Menú desplegable de "Peticiones" */}
                         <Link to="#" className="w-full">
                             <li
@@ -97,14 +116,13 @@ const Administracion = () => {
                                 onClick={() => setShowSubmenu(prev => !prev)}
                             >
                                 <span className="hidden ml-4 text-xl group-hover:inline-flex">
-                                    Peticiones <IoIosArrowDown className='mt-1.5 ml-1'/>
+                                    Peticiones <IoIosArrowDown className='mt-1.5 ml-1' />
                                 </span>
                                 <IoIosPeople className="block group-hover:hidden size-8" />
                             </li>
-                        </Link>
-
-                        {/* Submenú para "Peticiones" */}
-                        {showSubmenu && (
+                            
+                            {/* Submenú para "Peticiones" */}
+                            {showSubmenu && (
                             <ul className="bg-white rounded-md shadow-md">
                                 <Link to="/admin/tablaoracion" className="w-full">
                                     <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
@@ -123,14 +141,8 @@ const Administracion = () => {
                                 </Link>
                             </ul>
                         )}
-                        <Link to="/admin/tablaprogramas" className="w-full">
-                            <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
-                                <span className="hidden ml-4 text-xl group-hover:inline-block">
-                                    Programas
-                                </span>
-                                <FaObjectGroup className="block group-hover:hidden size-8" />
-                            </li>
-                        </Link>
+                        </Link>                        
+
                     </ul>
                 </div>
                 <div className="flex flex-col w-full transition-all duration-300 bg-[#EAE9E5] overflow-y-auto h-[calc(100vh-5rem)]">

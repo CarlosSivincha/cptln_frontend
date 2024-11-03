@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { buscarContenidoDelCurso } from '../../../Api/cursos';
+import { obtenerCapitulosCursoPag } from '../../../Api/cursos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
@@ -14,19 +14,22 @@ import { MdDeleteForever } from "react-icons/md";
 
 const TablaCapituloCurso = () => {
 
-    const {id} = useParams
+    const { idcurso } = useParams()
 
     const [capitulosCur, setCapitulosCur] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); // Página actual
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
 
+    
+
     useEffect(() => {
         const fetch = async (page) => {
+            console.log(idcurso);
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await buscarContenidoDelCurso(id,{ params: { page: Number(page), limit: 10 } });
-                setCapitulosCur(response.data.capitulosCur);
+                const response = await obtenerCapitulosCursoPag(idcurso, { params: { page: Number(page), limit: 10 } });
+                setCapitulosCur(response.data.capitulosCurso);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {
@@ -54,11 +57,6 @@ const TablaCapituloCurso = () => {
             header: "Titulo",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('pdf', {
-            header: "PDF",
-            cell: info => info.getValue(),
-        }),
-
     ];
 
     const table = useReactTable({
@@ -85,12 +83,12 @@ const TablaCapituloCurso = () => {
         }
     };
     return (
-        <div className="flex justify-center mt-10"> 
+        <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold text-gray-700">Capitulo del curso</h3>
                     <button
-                        onClick={() => navigate(`/admin/cursos/capitulos/capitulo/${id}}`)}
+                        onClick={() => navigate(`/admin/cursos/capitulos/${idcurso}`)}
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">
                         Agregar
                         <FaPlus className="ml-1" size={13} />
@@ -135,22 +133,22 @@ const TablaCapituloCurso = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                     <td className="px-4 py-2 text-center border border-gray-300">
+                                    <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarCapituloCurso(row.original._id)}
                                             className="text-blue-500 transition-colors hover:text-blue-600">
 
                                             <MdEditDocument size={20} />
-                                        
+
                                         </button>
                                         <button
                                             type='button'
-                                           // onClick={() => EditarCapituloCurso(row.original._id)}
+                                            // onClick={() => EditarCapituloCurso(row.original._id)}
                                             className="text-red-500 transition-colors hover:text-red-600">
-                                              <MdDeleteForever  size={20} />
+                                            <MdDeleteForever size={20} />
                                         </button>
-                                      
+
                                     </td>
                                 </tr>
                             ))}

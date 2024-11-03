@@ -5,8 +5,8 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerContenidoProgramaPagination } from '../../../Api/programas';
-import { MdEditDocument, MdEditNote   } from "react-icons/md";
+import { obtenerContenidoProgramaPagination, ordenarListaDeContenido } from '../../../Api/programas';
+import { MdEditDocument, MdEditNote, MdDragIndicator } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
 import { useParams } from 'react-router-dom';
@@ -30,7 +30,7 @@ const TablaProgramaContenidoAdmin = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerContenidoProgramaPagination(id,{ params: { page: Number(page), limit: 10 } });
+                const response = await obtenerContenidoProgramaPagination(id, { params: { page: Number(page), limit: 10 } });
                 setContenido(response.data.contenidoPrograma);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
@@ -61,7 +61,7 @@ const TablaProgramaContenidoAdmin = () => {
         }),
         columnHelper.accessor('parrafo', {
             header: "Categoria",
-            cell: info => <div dangerouslySetInnerHTML={{__html: info.getValue()}}/>
+            cell: info => <div dangerouslySetInnerHTML={{ __html: info.getValue() }} />
         }),
     ];
 
@@ -70,7 +70,7 @@ const TablaProgramaContenidoAdmin = () => {
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
-    
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -81,6 +81,33 @@ const TablaProgramaContenidoAdmin = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
+    };
+
+    // Gurdar el indice del objeto seleccionado
+    const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+    const [isHovering, setIsHovering] = useState(false);
+
+    // Evento que inicializa al arrastrar el objeto
+    const handleDragStart = (index) => {
+        setDraggedItemIndex(index);
+    };
+
+    // Evento que ocurre durante toda la interacccion de arrastrar, en este caso, previene que al momemnto de arrastrar
+    // el objeto, se regrese automaticamente
+    const handleDragOver = (event) => {
+        event.preventDefault();
+        setIsHovering(true)
+    };
+
+    // Evento al soltar el objeto arrastrado
+    const handleDrop = async (index) => {
+        const formData = new FormData()
+        formData.append('indexSeleccionado', draggedItemIndex)
+        formData.append('indexInsertar', index)
+        const response = await ordenarListaDeContenido(id, formData)
+        setContenido(response.data);
+        setDraggedItemIndex(null);
+        setIsHovering(false);
     };
 
     return (
@@ -97,7 +124,7 @@ const TablaProgramaContenidoAdmin = () => {
                     </button>
                 </div>
                 {/* Tabla */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
                     <table className="min-w-full border border-collapse border-gray-300 table-auto">
                         <thead>
                             {table.getHeaderGroups().map(headerGroup => (
@@ -123,8 +150,13 @@ const TablaProgramaContenidoAdmin = () => {
                             {table.getRowModel().rows.map((row, index) => (
                                 <tr
                                     key={row.id}
-                                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                                    draggable
+                                    onDragStart={() => handleDragStart(index)}
+                                    onDragOver={handleDragOver}
+                                    onDrop={() => handleDrop(index)}
+                                    className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} transition duration-300`}
                                 >
+
                                     {row.getVisibleCells().map(cell => (
                                         <td
                                             key={cell.id}

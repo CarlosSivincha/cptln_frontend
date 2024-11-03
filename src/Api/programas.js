@@ -23,3 +23,5 @@ export const crearContenidoPrograma = (id, data) => axios.post(`/programa/conten
 export const editarPrograma = (id, data) => axios.post(`programa/editar/${id}`,data)
 
 export const editarProgramaContenido = (idprograma, id, data) => axios.post(`programa/contenido/${idprograma}/${id}`,data)
+
+export const ordenarListaDeContenido = (id, data) => axios.post(`/programa/contenido/ordenar/${id}`,data)
