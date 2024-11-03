@@ -5,17 +5,18 @@ import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import { registrarDevo, obtenerDevocionalID, EditarDevocional } from "../../../Api/devocionales";
 import "react-quill/dist/quill.snow.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AudioPlayer from "../../client/components/AudioPlayer";
 
 const DevocionalesAdmin = () => {
 
     //const navigate = useNavigate()
+    const navigate = useNavigate()
     const { id } = useParams()
 
     const [imagenurl, setImagenurl] = useState('');
     const [audiourl, setAudiourl] = useState('');
-    
+
 
     const [imagen, setImagen] = useState("");
     const [audio, setAudio] = useState("");
@@ -23,6 +24,8 @@ const DevocionalesAdmin = () => {
     const [versiculo, setVersiculo] = useState("");
     const [parrafo, setParrafo] = useState("");
     const [fecha, setFecha] = useState("");
+
+    const [error, setError] = useState("");
 
     const handleImagen = (event) => setImagen(event.target.files[0]);
     const handleAudio = (event) => setAudio(event.target.files[0]);
@@ -48,22 +51,31 @@ const DevocionalesAdmin = () => {
         }
     }, [])
 
-    useEffect(()=> {
+    useEffect(() => {
         console.log(imagen)
-    },[imagen])
+    }, [imagen])
 
     const subirdevo = async (event) => {
         event.preventDefault();
+        if (!parrafo) {
+            setError("Por favor, ingresa el contenido de devocional.");
+            return;
+        }
         const formData = new FormData();
-        formData.append('imagen', imagen);
-        formData.append('audio', audio);
+
+        // Agregar solo si existen
+        if (imagen) formData.append('imagen', imagen);
+        if (audio) formData.append('audio', audio);
+
         formData.append('titulo', titulo);
         formData.append('versiculo', versiculo);
         formData.append('parrafo', parrafo);
         formData.append('fecha', fecha);
+
         try {
             const respuesta = await registrarDevo(formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tabladevocional");
         } catch (error) {
             console.log(error);
         }
@@ -71,22 +83,33 @@ const DevocionalesAdmin = () => {
 
     const ModificarDevocional = async (event) => {
         event.preventDefault();
+        if (!parrafo) {
+            setError("Por favor, ingresa el contenido de devocional.");
+            return;
+        }
         const formData = new FormData();
-        formData.append('imagen', imagen);
-        formData.append('audio', audio);
+
+        // Solo añadir la imagen y audio si el usuario selecciona nuevos archivos
+        if (imagen) formData.append('imagen', imagen);
+        if (audio) formData.append('audio', audio);
+
         formData.append('titulo', titulo);
         formData.append('versiculo', versiculo);
         formData.append('parrafo', parrafo);
         formData.append('fecha', fecha);
 
         try {
-            // Aquí iría la función para registrar el evento
             const respuesta = await EditarDevocional(id, formData);
             console.log(respuesta);
+            if (respuesta.status === 200) {
+                window.location.href = "/admin/tabladevocional";
+            }
+            
         } catch (error) {
             console.log(error);
         }
     };
+
 
     const modules = {
         toolbar: [
@@ -109,6 +132,7 @@ const DevocionalesAdmin = () => {
                             onChange={handleTitulo}
                             placeholder="Título"
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                         <input
                             type="date"
@@ -116,6 +140,7 @@ const DevocionalesAdmin = () => {
                             value={fecha}
                             onChange={handleFecha}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
                     <input
@@ -125,6 +150,7 @@ const DevocionalesAdmin = () => {
                         onChange={handleVersiculo}
                         placeholder="Versículo"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                        required
                     />
                     <ReactQuill
                         className="bg-white rounded-lg"
@@ -134,29 +160,29 @@ const DevocionalesAdmin = () => {
                         onChange={handleParrafo}
                         placeholder="Contenido del Devocional"
                     />
+                    {error && <p className="text-red-600">{error}</p>} {/* Muestra el mensaje de error */}
                     <div className="space-y-4 md:flex md:space-x-6 md:space-y-0">
                         <div>
-                         <label className="block mb-2 text-gray-600">Imágene para Devocional</label>
+                            <label className="block mb-2 text-gray-600">Imágene para Devocional</label>
                             {id && (
                                 <img src={imagenurl} alt="imagendevocional" />
                             )}
                             <input
                                 type="file"
                                 name="imagen"
-                                // value={imagenurl}
+                                accept="image/*"
                                 onChange={handleImagen}
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
                         </div>
                         <div>
-                        <label className="block mb-2 text-gray-600">Audio para Devocional</label>
-                             {id && (
-                                <AudioPlayer audio={audiourl}/>
+                            <label className="block mb-2 text-gray-600">Audio para Devocional</label>
+                            {id && (
+                                <AudioPlayer audio={audiourl} />
                             )}
                             <input
                                 type="file"
                                 name="audio"
-                               // value={audiourl}
                                 onChange={handleAudio}
                                 accept="audio/*, video/mp4"
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"

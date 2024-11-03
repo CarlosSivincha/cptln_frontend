@@ -71,8 +71,12 @@ const TablaNews = () => {
             header: "Fecha",
             cell: info => info.getValue(),
         }),
+        columnHelper.accessor('programaRef', { 
+            header: "Programa",
+            cell: info => info.getValue()
+        })
     ];
-
+    
     const table = useReactTable({
         data: noticias,
         columns,

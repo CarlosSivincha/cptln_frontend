@@ -160,7 +160,7 @@ const ProgramaAdmin = () => {
                         name="titulo"
                         value={titulo}
                         onChange={handleTitulo}
-                        placeholder="Título"
+                        placeholder="TÃ­tulo"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <input
@@ -233,12 +233,12 @@ const ProgramaAdmin = () => {
                                     <div className={`space-y-10 transition-all duration-200 ${panelEnlaceDatos ? 'opacity-100' : 'opacity-0'}`}>
                                         <div className="flex">
                                             <div>
-                                                <label className="block mb-2 text-gray-600">Imágenes adicionales (2 o más)</label>
+                                                <label className="block mb-2 text-gray-600">ImÃ¡genes adicionales (2 o mÃ¡s)</label>
                                                 <input
                                                     type="file"
                                                     name="imagenes"
                                                     onChange={handleImagenesAdicionales}
-                                                    multiple // Permite seleccionar múltiples imágenes
+                                                    multiple // Permite seleccionar mÃºltiples imÃ¡genes
                                                     className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                 />
                                             </div>

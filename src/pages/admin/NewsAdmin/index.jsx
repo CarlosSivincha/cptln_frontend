@@ -4,46 +4,65 @@ import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
 import { registrarNoticia, obtenerNoticiaID, EditarNoticia } from "../../../Api/noticias";
 import { obtenerProgramas } from "../../../Api/programas";
-import { useParams } from "react-router-dom";
-
+import { useParams,useNavigate } from "react-router-dom";
 
 const NewsFormComponent = () => {
-
-    const { id } = useParams()
+    
+    const navigate = useNavigate()
+    const { id } = useParams();
 
     const [categorias, setCategorias] = useState([]);
     const [selectcategoria, setSelectcategoria] = useState("");
-
     const [titulo, setTitulo] = useState("");
     const [cuerpo, setCuerpo] = useState("");
     const [imagenFondo, setImagenFondo] = useState(null);
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
     const [fecha, setFecha] = useState("");
+    const [error, setError] = useState(""); // Estado para manejar el mensaje de error
 
     const handleTitulo = (event) => setTitulo(event.target.value);
     const handleCuerpo = (html) => setCuerpo(html);
-    const handleImagenFondo = (event) => setImagenFondo(event.target.files[0]);
+    const handleImagenFondo = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            setImagenFondo(file);
+            setError("");
+        } else {
+            setError("Por favor, sube un archivo de imagen válido para la imagen de fondo.");
+        }
+    };
     const handleImagenesAdicionales = (event) => {
-        setImagenesAdicionales(event.target.files);
+        const files = Array.from(event.target.files);
+        const validImages = files.filter((file) => file.type.startsWith('image/'));
+    
+        if (validImages.length !== files.length) {
+            setError("Por favor, sube solo archivos de imagen.");
+        } else {
+            setImagenesAdicionales(validImages);
+            setError("");
+        }
     };
     const handleFecha = (event) => setFecha(event.target.value);
 
-
     const enviarNoticia = async (event) => {
         event.preventDefault();
+        if (!cuerpo) { // Verifica si 'cuerpo' está vacío
+            setError("Por favor, ingresa el contenido de la noticia.");
+            return;
+        }
         const formData = new FormData();
-        formData.append('programa', selectcategoria)
+        formData.append('programaRef', selectcategoria);
         formData.append('titulo', titulo);
         formData.append('cuerpo', cuerpo);
         formData.append('fecha', fecha);
         formData.append('portada', imagenFondo);
-        [...imagenesAdicionales].forEach((file) => {
-            formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
+        imagenesAdicionales.forEach((file) => {
+            formData.append('imagenes', file);
         });
         try {
-            // Aquí iría la función para registrar la noticia
-            const respuesta = await registrarNoticia(formData); // Función para manejar el envío
+            const respuesta = await registrarNoticia(formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tablanews");
         } catch (error) {
             console.log(error);
         }
@@ -51,51 +70,58 @@ const NewsFormComponent = () => {
 
     useEffect(() => {
         const fech = async () => {
-            const response = await obtenerProgramas()
-            setCategorias(response.data)
-        }
-        fech()
-    }, [])
+            const response = await obtenerProgramas();
+            setCategorias(response.data);
+        };
+        fech();
+    }, []);
+
     useEffect(() => {
-        console.log(id)
         if (id) {
             const fetch = async () => {
-                const response = await obtenerNoticiaID(id)
-                setSelectcategoria(response.data.programa)
-                setTitulo(response.data.titulo)
-                setCuerpo(response.data.cuerpo)
-                setImagenFondo(response.data.portada)
-                setImagenesAdicionales(response.data.imagenes)
-                setFecha(response.data.fecha)
-            }
-            fetch()
+                const response = await obtenerNoticiaID(id);
+                setSelectcategoria(response.data.programa);
+                setTitulo(response.data.titulo);
+                setCuerpo(response.data.cuerpo);
+                setImagenFondo(response.data.portada);
+                setImagenesAdicionales(response.data.imagenes);
+                setFecha(response.data.fecha);
+            };
+            fetch();
         }
-    }, [])
+    }, [id]);
+
     const ModificarNoticia = async (event) => {
         event.preventDefault();
+        if (!cuerpo) {
+            setError("Por favor, ingresa el contenido de la noticia.");
+            return;
+        }
         const formData = new FormData();
-        formData.append('programa', selectcategoria)
+        formData.append('programaRef', selectcategoria);
         formData.append('titulo', titulo);
         formData.append('cuerpo', cuerpo);
         formData.append('fecha', fecha);
         formData.append('portada', imagenFondo);
         [...imagenesAdicionales].forEach((file) => {
-            formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
+            formData.append('imagenes', file);
         });
         try {
-            // Aquí iría la función para registrar el evento
             const respuesta = await EditarNoticia(id, formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tablanews");
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
     const modules = {
         toolbar: [
             ['bold', 'italic', 'underline'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ],
     };
+
     return (
         <>
             <Header color="bg-l_color_y-600" title={'Crear Noticia'} />
@@ -109,6 +135,7 @@ const NewsFormComponent = () => {
                         onChange={handleTitulo}
                         placeholder="Título"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                        required
                     />
                     <ReactQuill
                         className="bg-white rounded-lg"
@@ -118,13 +145,16 @@ const NewsFormComponent = () => {
                         onChange={handleCuerpo}
                         placeholder="Contenido de la Noticia"
                     />
+                    {error && <p className="text-red-600">{error}</p>} {/* Muestra el mensaje de error */}
                     <div>
                         <label className="block mb-2 text-gray-600">Imagen de fondo</label>
                         <input
                             type="file"
                             name="portada"
+                            accept="image/*"
                             onChange={handleImagenFondo}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
                     <div>
@@ -132,9 +162,11 @@ const NewsFormComponent = () => {
                         <input
                             type="file"
                             name="imagenes"
+                            accept="image/*"
                             onChange={handleImagenesAdicionales}
-                            multiple // Permite seleccionar múltiples imágenes
+                            multiple
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
                     <input
@@ -143,22 +175,19 @@ const NewsFormComponent = () => {
                         value={fecha}
                         onChange={handleFecha}
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                        required
                     />
                     <select value={selectcategoria} onChange={(event) => setSelectcategoria(event.target.value)}>
                         {Array.isArray(categorias) && categorias.map((programa) => (
-                            
-                                <option key={programa._id}>{programa.titulo}</option>
-                            
+                            <option key={programa._id}>{programa.titulo}</option>
                         ))}
                     </select>
-
                     <button
                         type="submit"
                         className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                     >
                         {id ? 'Modificar Noticia' : 'Enviar Noticia'}
                     </button>
-
                 </form>
             </div>
         </>

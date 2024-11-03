@@ -6,142 +6,146 @@ import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 
 const CategoriaAdmin = () => {
-
     const navigate = useNavigate();
     const { id } = useParams();
 
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [color, setColor] = useState("#ffffff");
+    const [color, setColor] = useState(null);
     const [imagenes, setImagenes] = useState([]);
-    const [imagenesResponse, setImagenesResponse] = useState([])
-    const [changeImagenes, setChangeImagenes] = useState(false)
+    const [imagenesResponse, setImagenesResponse] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [error, setError] = useState("");
+    const [colorError, setColorError] = useState("");
+    const [imagenError, setImagenError] = useState("");
+
     const handleNombre = (event) => setNombre(event.target.value);
-    const handleColor = (event) => setColor(event.target.value);
+    const handleColor = (color) => {
+        setColor(color);
+        setColorError("");
+    };
+
     const handleDescripcion = (html) => setDescripcion(html);
 
-    const handleImagenes = (event) => setImagenes(event.target.files)
-
+    // Manejo de arrastrar y soltar imágenes
     const handleDrop = (e) => {
         e.preventDefault();
         const files = Array.from(e.dataTransfer.files);
-
-        // Filtrar solo archivos de imagen
-        const imageFiles = files.filter(file => file.type.startsWith('image/'));
-
-        // Agregar las nuevas imágenes al estado
-        setImagenes(prev => [...prev, ...imageFiles]);
+        const imageFiles = files.filter(file => file.type.startsWith("image/"));
+        setImagenes((prev) => [...prev, ...imageFiles]);
+        setImagenError("");  // Elimina el mensaje de error cuando se agregan imágenes
     };
 
-    const handleDragOver = (e) => {
-        e.preventDefault();
+    const handleDragOver = (e) => e.preventDefault();
+
+    // Botón para limpiar las imágenes seleccionadas
+    const clearImages = () => {
+        setImagenes([]);
+        setImagenError("Por favor, agrega al menos una imagen.");
     };
-
-    const [selectedOption, setSelectedOption] = useState(null);
-     const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-    }
-
 
     useEffect(() => {
         if (id) {
-            const fetch = async () => {
-                const response = await obtenerCategoriasID(id);
-                setNombre(response.data.nombre);
-                setDescripcion(response.data.descripcion);
-                setColor(response.data.color);
-                setImagenesResponse(response.data.imagenes)  
-                const estadoIndex = response.data.imagenes.findIndex(imagen => imagen.estado === true)
-                setSelectedOption(estadoIndex)
-                console.log(selectedOption)
-            }
-            fetch();
-        }
-    }, []);
-
-
-    useEffect(() => {
-        if (id) {
-            const fetch = async () => {
+            const fetchData = async () => {
                 const response = await obtenerCategoriasID(id);
                 setNombre(response.data.nombre);
                 setDescripcion(response.data.descripcion);
                 setColor(response.data.color);
                 setImagenesResponse(response.data.imagenes);
+                const estadoIndex = response.data.imagenes.findIndex((imagen) => imagen.estado === true);
+                setSelectedOption(estadoIndex);
             };
-            fetch();
+            fetchData();
         }
-    }, []);
+    }, [id]);
 
     const enviarCategoria = async (event) => {
         event.preventDefault();
+        if (!descripcion) {
+            setError("Por favor, ingresa el contenido de característica.");
+            return;
+        }
+        if (!color) {
+            setColorError("Por favor, selecciona un color.");
+            return;
+        }
+        if (imagenes.length === 0 && (!imagenesResponse || imagenesResponse.length === 0)) {
+            setImagenError("Por favor, agrega al menos una imagen.");
+            return;
+        }
+
         try {
             const formData = new FormData();
-            formData.append('nombre',nombre.trim().replace(/\s+/g, ' '));
-            formData.append('descripcion', descripcion);
-            formData.append('color', color);
-            [...imagenes].forEach((file) => {
-                formData.append('imagenes', file);
-            });
+            formData.append("nombre", nombre.trim().replace(/\s+/g, " "));
+            formData.append("descripcion", descripcion);
+            formData.append("color", color);
+            [...imagenes].forEach((file) => formData.append("imagenes", file));
             const respuesta = await registrarCategoria(formData);
-            if (respuesta.status == 200) {
-                navigate('/admin/tablacategoria')
-            }
-
+            if (respuesta.status === 200) navigate("/admin/tablacategoria");
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     const ModificarCategoria = async (event) => {
         event.preventDefault();
+        if (!descripcion) {
+            setError("Por favor, ingresa el contenido de característica.");
+            return;
+        }
+        if (!color) {
+            setColorError("Por favor, selecciona un color.");
+            return;
+        }
+        if (imagenes.length === 0 && (!imagenesResponse || imagenesResponse.length === 0)) {
+            setImagenError("Por favor, agrega al menos una imagen.");
+            return;
+        }
+
         try {
             const formData = new FormData();
-            formData.append('nombre', nombre);
-            formData.append('descripcion', descripcion);
-            formData.append('color', color);
-            // formData.append('objetivo', objetivo);
-            [...imagenes].forEach((file) => {
-                formData.append('imagenes', file);
-            });
+            formData.append("nombre", nombre);
+            formData.append("descripcion", descripcion);
+            formData.append("color", color);
+            [...imagenes].forEach((file) => formData.append("imagenes", file));
             const respuesta = await EditarCategorias(id, formData);
-            console.log(respuesta);
-
-            if (respuesta.status == 200) {
-                navigate('/admin/tablacategoria')
-
-            }
+            if (respuesta.status === 200) navigate("/admin/tablacategoria");
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     const modules = {
         toolbar: [
-            ['bold', 'italic', 'underline'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
         ],
     };
 
+    const colorOptions = [
+        { name: "Color 1", value: "#45787C" },
+        { name: "Color 2", value: "#9B1B31" },
+        { name: "Color 3", value: "#CC5F27" },
+        { name: "Color 4", value: "#B9B239" },
+    ];
+
     return (
         <>
-            <Header color="bg-l_color_v-600" title={`${id ? 'Editar Categoria' : 'Crear Categoria'}`} />
-
+            <Header color="bg-l_color_v-600" title={`${id ? "Editar Categoria" : "Crear Categoria"}`} />
             <div className="max-w-4xl px-5 py-10 lg:w-[1000px] w-[500px] m-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe la Categoria</h2>
                 <form onSubmit={id ? ModificarCategoria : enviarCategoria} className="space-y-8">
                     <div>
-                        <div className="space-y-2">
-                            <label className="block font-semibold text-gray-700">Nombre</label>
-                            <input
-                                type="text"
-                                name="nombre"
-                                value={nombre}
-                                onChange={handleNombre}
-                                placeholder="Nombre"
-                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            />
-                        </div>
+                        <label className="block font-semibold text-gray-700">Nombre</label>
+                        <input
+                            type="text"
+                            name="nombre"
+                            value={nombre}
+                            onChange={handleNombre}
+                            placeholder="Nombre"
+                            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
+                        />
                     </div>
 
                     <div className="space-y-4">
@@ -154,114 +158,66 @@ const CategoriaAdmin = () => {
                             onChange={handleDescripcion}
                             placeholder="Escribe la descripción"
                         />
-                    </div>
-                    {id && (
-                        changeImagenes ?
-                            (
-                                <>
-                                    <button className="p-2 text-white bg-red-700 rounded-md"
-                                        onClick={() => {
-                                            setChangeImagenes(false)
-                                            setImagenes([])
-                                        }}>
-                                        Cancelar
-                                    </button>
-                                    <div onDrop={handleDrop}
-                                        onDragOver={handleDragOver}
-                                        className="flex flex-col items-center justify-center p-4 mb-4 border-2 border-gray-400 border-dashed"
-                                    >
-                                        {imagenes.length > 0 ? (
-                                            <React.Fragment>
-                                                <div className="grid grid-cols-3 gap-2 mb-4">
-                                                    {imagenes.map((imagen, index) => (
-                                                        <img
-                                                            key={index}
-                                                            src={URL.createObjectURL(imagen)}
-                                                            alt={`Imagen ${index + 1}`}
-                                                            className="object-cover w-full h-32"
-                                                        />
-                                                    ))}
-                                                </div>
-                                                <p className="w-full text-4xl italic text-center text-gray-400">Aun puede añadir mas imagenes</p>
-                                            </React.Fragment>
-                                            ) 
-                                            :
-                                            (
-                                                <p>Arrastra y suelta imágenes aquí</p>
-                                            )
-                                        }
-                                    </div>
-                                </>
-                            )
-                            :
-                            (
-                                <div>
-                                    <button className="p-2 text-white bg-green-700 rounded-md"
-                                        onClick={() => {
-                                            setChangeImagenes(true)
-                                        }}>
-                                        Cambiar imagenes
-                                    </button>
-                                    <label className="block font-semibold text-gray-700">Imágenes actuales</label>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        {imagenesResponse.map((imagen, index) => (
-                                            <React.Fragment key={index}>
-                                                <img src={imagen.ruta} alt="" />
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </div>
-                            )
-
-                    )}
-
-                    {
-                        /* <div className="flex justify-center w-full items-centers">
-                            <input
-                                type="radio"
-                                value={index}
-                                checked={selectedOption == index}
-                                onChange={handleOptionChange}
-                                className="mr-2 scale-150"
-                            />
-                        </div> */
-                    }
-
-                    <div className="">
-                        <div className="space-y-2">
-                            <label className="block font-semibold text-gray-700">Imágenes</label>
-                            <input
-                                type="file"
-                                name="imagenes"
-                                onChange={handleImagenes}
-                                accept=".png, .jpg, .jpeg"
-                                multiple
-                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="block font-semibold text-gray-700">Escoge un Color</label>
-                            <input
-                                type="color"
-                                name="color"
-                                value={color}
-                                onChange={handleColor}
-                                className="w-full h-16 border border-gray-300 rounded-lg cursor-pointer"
-                            />
-                        </div>
+                        {error && <p className="text-red-600">{error}</p>}
                     </div>
 
+                    <div
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        className="flex flex-col items-center justify-center p-4 mb-4 border-2 border-gray-400 border-dashed"
+                    >
+                        {imagenes.length > 0 ? (
+                            <div className="grid grid-cols-3 gap-2 mb-4">
+                                {imagenes.map((imagen, index) => (
+                                    <img key={index} src={URL.createObjectURL(imagen)} alt={`Imagen ${index + 1}`} className="object-cover w-full h-32" />
+                                ))}
+                            </div>
+                        ) : (
+                            <p>Arrastra y suelta imágenes aquí</p>
+                        )}
+                        <button
+                            type="button"
+                            onClick={clearImages}
+                            className="mt-2 text-sm font-semibold text-red-600 hover:underline"
+                        >
+                            Eliminar imágenes
+                        </button>
+                        {imagenError && <p className="text-red-600">{imagenError}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="block font-semibold text-gray-700">Selecciona un Color</label>
+                        <div className="flex gap-4">
+                            {colorOptions.map((option) => (
+                                <label key={option.value} className="flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="color"
+                                        value={option.value}
+                                        checked={color === option.value}
+                                        onChange={() => handleColor(option.value)}
+                                        className="hidden"
+                                    />
+                                    <span
+                                        className={`w-10 h-10 rounded-full border-2 ${color === option.value ? "border-black" : "border-gray-300"}`}
+                                        style={{ backgroundColor: option.value }}
+                                    ></span>
+                                    <span className="ml-2">{option.name}</span>
+                                </label>
+                            ))}
+                        </div>
+                        {colorError && <p className="text-red-600">{colorError}</p>}
+                    </div>
                     <button
                         type="submit"
                         className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                     >
-                        {id ? 'Modificar Categoria' : 'Enviar Categoria'}
+                        {id ? "Modificar Categoria" : "Enviar Categoria"}
                     </button>
                 </form>
             </div>
         </>
     );
-
 };
 
 export default CategoriaAdmin;

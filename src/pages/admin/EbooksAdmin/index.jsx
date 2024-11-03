@@ -1,84 +1,103 @@
 import { useEffect, useState } from "react";
-
 import Header from "@/pages/client/components/Header";
 import { registrarEbooks, obtenerEbooksID, EditarEbooks } from "../../../Api/ebooks";
 import "react-quill/dist/quill.snow.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const EbooksAdmin = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
-    const [imagenurl, setImagenurl] = useState('');
+    const [imagen, setImagen] = useState(null);
     const [titulo, setTitulo] = useState("");
     const [portada, setPortada] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [pdf, setPdf] = useState("");
     const [error, setError] = useState("");
+    const [imagenError, setImagenError] = useState("");
+    const [previewUrl, setPreviewUrl] = useState("");
+
+    useEffect(() => {
+        if (id) {
+            const fetch = async () => {
+                try {
+                    const response = await obtenerEbooksID(id);
+                    setTitulo(response.data.titulo);
+                    setDescripcion(response.data.descripcion);
+                    setPdf(response.data.pdf);
+                    setPortada(response.data.portada);
+                    setPreviewUrl(response.data.portada); // Set preview with existing image
+                } catch (error) {
+                    setError("Error al cargar el ebook.");
+                }
+            };
+            fetch();
+        }
+    }, [id]);
 
     const handleTitulo = (event) => setTitulo(event.target.value);
+    
     const handlePortada = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
             setPortada(file);
-            setError(""); // Clear error if file type is correct
+            setPreviewUrl(URL.createObjectURL(file)); // Update preview
+            setImagenError("");
         } else {
-            setError("Por favor, sube un archivo de imagen válido para la portada.");
+            setImagenError("Por favor, sube un archivo de imagen válido para la portada.");
         }
     };
+    
     const handleDescripcion = (event) => setDescripcion(event.target.value);
+    
     const handlePdf = (event) => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             setPdf(file);
-            setError(""); // Clear error if file type is correct
+            setError("");
         } else {
             setError("Por favor, sube un archivo PDF válido.");
         }
     };
 
-    useEffect(() => {
-        if (id) {
-            const fetch = async () => {
-                const response = await obtenerEbooksID(id);
-                setTitulo(response.data.titulo);
-                setDescripcion(response.data.descripcion);
-                setPdf(response.data.pdf);
-                setPortada(response.data.portada);
-            };
-            fetch();
-        }
-    }, []);
-
-    const subirEbook = async (event) => {
-        event.preventDefault();
-        if (error) return; // Prevent submission if there's an error
-
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('descripcion', descripcion);
-        formData.append('portada', portada);
-        formData.append('pdf', pdf);
-        try {
-            const respuesta = await registrarEbooks(formData);
-            console.log(respuesta);
-        } catch (error) {
-            console.log(error);
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith("image/")) {
+            setImagen(file);
+            setPreviewUrl(URL.createObjectURL(file)); // Show preview for dropped image
+            setImagenError("");
+        } else {
+            setImagenError("Por favor, sube un archivo de imagen válido.");
         }
     };
 
-    const ModificarEbooks = async (event) => {
+    const handleDragOver = (e) => e.preventDefault();
+
+    const clearImage = () => {
+        setImagen(null);
+        setPreviewUrl("");
+        setImagenError("Por favor, agrega una imagen.");
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        if (error) return; // Prevent submission if there's an error
+        if (!imagen && !portada) {
+            setImagenError("Por favor, agrega una imagen.");
+            return;
+        }
+        if (error || imagenError) return;
 
         const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('descripcion', descripcion);
-        formData.append('portada', portada);
-        formData.append('pdf', pdf);
+        formData.append("titulo", titulo);
+        formData.append("descripcion", descripcion);
+        formData.append("portada", portada || imagen);
+        formData.append("pdf", pdf);
+
         try {
-            const respuesta = await EditarEbooks(id, formData);
-            console.log(respuesta);
+            const respuesta = id ? await EditarEbooks(id, formData) : await registrarEbooks(formData);
+            if (respuesta.status === 200) navigate("/admin/tablaebooks");
         } catch (error) {
-            console.log(error);
+            setError("Error al registrar el ebook.");
         }
     };
 
@@ -86,9 +105,9 @@ const EbooksAdmin = () => {
         <>
             <Header color="bg-l_color_r-600" title={`${id ? 'Editar Ebook' : 'Agregar Ebook'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
-                <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Agrega un nuevo Ebook</h2>
-                {error && <p className="text-center text-red-500">{error}</p>} {/* Show error message */}
-                <form onSubmit={id ? ModificarEbooks : subirEbook} className="space-y-6">
+                <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">{id ? "Editar Ebook" : "Agregar un nuevo Ebook"}</h2>
+                {error && <p className="text-center text-red-500">{error}</p>}
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-4 md:flex md:space-x-6 md:space-y-0">
                         <input
                             type="text"
@@ -97,29 +116,36 @@ const EbooksAdmin = () => {
                             onChange={handleTitulo}
                             placeholder="Título"
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                            required
                         />
                     </div>
-                    <input
-                        type="text"
+                    <textarea
                         name="descripcion"
                         value={descripcion}
                         onChange={handleDescripcion}
                         placeholder="Descripción"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                        required
                     />
                     <div className="space-y-4 md:flex md:space-x-6 md:space-y-0">
-                        <div>
-                            <label className="block mb-2 text-gray-600">Imagen para la Portada del Ebook</label>
-                            {id && imagenurl && (
-                                <img src={imagenurl} alt="Portada del Ebook" />
+                        <div
+                            onDrop={handleDrop}
+                            onDragOver={handleDragOver}
+                            className="flex flex-col items-center justify-center p-4 mb-4 border-2 border-gray-400 border-dashed"
+                        >
+                            {previewUrl ? (
+                                <img src={previewUrl} alt="Imagen subida" className="object-cover w-full h-32" />
+                            ) : (
+                                <p>Arrastra y suelta una imagen aquí</p>
                             )}
-                            <input
-                                type="file"
-                                name="portada"
-                                accept="image/*" 
-                                onChange={handlePortada}
-                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            />
+                            <button
+                                type="button"
+                                onClick={clearImage}
+                                className="mt-2 text-sm font-semibold text-red-600 hover:underline"
+                            >
+                                Eliminar imagen
+                            </button>
+                            {imagenError && <p className="text-red-600">{imagenError}</p>}
                         </div>
                         <div>
                             <label className="block mb-2 text-gray-600">PDF a subir</label>
