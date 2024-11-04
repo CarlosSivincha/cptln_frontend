@@ -9,6 +9,7 @@ import { obtenerProgramasPagination } from '../../../Api/programas';
 import { MdEditDocument, MdEditNote } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
+import { obtenerCategorias } from '../../../Api/categorias';
 
 const TablaProgramas = () => {
 
@@ -26,6 +27,7 @@ const TablaProgramas = () => {
     const [currentPage, setCurrentPage] = useState(1); // Página actual
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
+    const [categorias, setCategorias] = useState([])
 
     useEffect(() => {
         const fetch = async (page) => {
@@ -44,6 +46,14 @@ const TablaProgramas = () => {
         fetch(currentPage);
     }, [currentPage]);
 
+    useEffect(() => {
+        const fetch = async () => {
+            const response = await obtenerCategorias()
+            setCategorias(response.data)
+        }
+        fetch()
+    }, [])
+
     const columnHelper = createColumnHelper();
 
     const columns = [
@@ -60,9 +70,12 @@ const TablaProgramas = () => {
             header: "Titulo",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('categoria', {
+        columnHelper.accessor('categoria_id', {
             header: "Categoria",
-            cell: info => info.getValue(),
+            cell: info => {
+                const categoria = categorias.find(categoria => categoria._id === info.getValue())
+                return categoria ? categoria.nombre : ''
+            },
         }),
     ];
 
@@ -116,7 +129,7 @@ const TablaProgramas = () => {
                                                 )}
                                         </th>
                                     ))}
-                                    <th className="px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Acciones</th>
+                                    <th className="px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300 w-28">Acciones</th>
                                 </tr>
                             ))}
                         </thead>
@@ -134,7 +147,7 @@ const TablaProgramas = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="grid grid-cols-2 place-items-center space-x-2 justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
+                                    <td className="grid grid-cols-2 place-items-center space-x-2 justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300 w-28">
                                         <div>
                                             <button
                                                 type='button'
