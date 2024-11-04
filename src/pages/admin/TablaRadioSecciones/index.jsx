@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { FaPlus } from "react-icons/fa";
+import { MdEditDocument, MdEditNote } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { obtenerSecciones } from '../../../Api/radio';
 
@@ -87,14 +88,23 @@ const TablaRadioSecciones = () => {
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </td>
                                         ))}
-                                        <td className="px-4 py-2 text-center border border-gray-300">
-                                            <button
-                                                type='button'
-                                                onClick={() => EditarEvento(row.original._id)}
-                                                className="text-blue-500 transition-colors hover:text-blue-600">
-                                                editar
-                                                {/* <MdEditDocument size={20} /> */}
-                                            </button>
+                                        <td className="px-4 py-2 text-center border border-gray-300 w-20">
+                                            <div className='w-full grid grid-cols-2 place-content-center'>
+                                                <button
+                                                    title='Modificar Seccion'
+                                                    type='button'
+                                                    onClick={() => navigate(`${row.original._id}`)}
+                                                    className="text-blue-500 transition-colors hover:text-blue-600 flex justify-center">
+                                                    <MdEditDocument size={20} className='fill-yellow-400' />
+                                                </button>
+                                                <button
+                                                    title='Ver contenido'
+                                                    type='button'
+                                                    onClick={() => EditarEvento(row.original._id)}
+                                                    className="text-blue-500 transition-colors hover:text-blue-600 flex justify-center">
+                                                    <MdEditNote size={20} />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

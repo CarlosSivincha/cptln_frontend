@@ -3,10 +3,10 @@ import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import { registrarCurso, obtenerCursoID, EditarCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 
 const CursoAdmin = () => {
-
+    const navigate = useNavigate();
     //const navigate = useNavigate()
     const { idcurso } = useParams()
 
@@ -38,6 +38,7 @@ const CursoAdmin = () => {
         try {
             const respuesta = await registrarCurso(formData);
             console.log(respuesta);
+             if (respuesta.status === 200) navigate("/admin/tablacursos");
         } catch (error) {
             console.log(error);
         }
@@ -52,6 +53,7 @@ const CursoAdmin = () => {
             // Aquí iría la función para registrar el evento
             const respuesta = await EditarCurso(id, formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tablacursos");
         } catch (error) {
             console.log(error);
         }
@@ -66,10 +68,9 @@ const CursoAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_r-600" title={`${id ? 'Editar Devocional' : 'Crear Curso'}`} />
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
                 <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">Escribe el Curso</h2>
-                <form onSubmit={id ? ModificarCurso : CrearCurso} className="p-6 space-y-10 bg-white rounded-lg shadow-lg">
+                <form onSubmit={idcurso ? ModificarCurso : CrearCurso} className="p-6 space-y-10 bg-white rounded-lg shadow-lg">
                     <div className="space-y-6">
                         <input
                             type="text"
@@ -95,7 +96,7 @@ const CursoAdmin = () => {
                         type="submit"
                         className="w-full py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                     >
-                        {id ? 'Modificar Curso' : 'Enviar Curso'   }
+                        {idcurso ? 'Modificar Curso' : 'Enviar Curso'   }
                     </button>
                     </div>
                 </form>

@@ -107,10 +107,8 @@ const EventsAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_v-600" title={`${id ?'Editar Evento':'Crear Evento'}`} />
-            
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
-                <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe el Evento</h2>
+                <h2 className="mb-6 text-4xl font-bold text-center text-gray-800">Escribe el Evento</h2>
                 <form onSubmit={id ? ModificarEvento:enviarEvento} className="space-y-6">
                     <input
                         type="text"

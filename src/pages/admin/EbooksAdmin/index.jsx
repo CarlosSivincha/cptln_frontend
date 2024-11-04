@@ -53,11 +53,12 @@ const EbooksAdmin = () => {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             setPdf(file);
-            setError("");
+            setError(""); // Limpiar el error si el archivo es válido
         } else {
             setError("Por favor, sube un archivo PDF válido.");
         }
     };
+
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -81,16 +82,22 @@ const EbooksAdmin = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!imagen && !portada) {
-            setImagenError("Por favor, agrega una imagen.");
-            return;
+        if (!id) {
+            if (!imagen && !portada) {
+                setImagenError("Por favor, agrega una imagen.");
+                return;
+            }
+            if (!pdf) {
+                setError("Por favor, sube un archivo PDF válido.");
+                return;
+            }
         }
         if (error || imagenError) return;
 
         const formData = new FormData();
         formData.append("titulo", titulo);
         formData.append("descripcion", descripcion);
-        formData.append("portada", portada || imagen);
+        formData.append("portada", imagen || portada);
         formData.append("pdf", pdf);
 
         try {
@@ -152,9 +159,11 @@ const EbooksAdmin = () => {
                             <input
                                 type="file"
                                 name="pdf"
+                                accept="application/pdf" // Aceptar solo archivos PDF
                                 onChange={handlePdf}
                                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             />
+
                         </div>
                     </div>
                     <button
