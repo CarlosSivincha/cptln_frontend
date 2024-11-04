@@ -87,7 +87,7 @@ export const ProgramaEspecifico = () => {
                         img={programa.imagenes} // Asegúrate de que esto coincida con la estructura esperada por ProgramCard
                         description={programa.descripcion}
                         posicion={index % 2 === 0 ? "izquierda" : "derecha"}
-                        link={`/programas/${programa.categoria}/programa/${programa.titulo}`}
+                        link={`${programa.enlace ? programa.enlace: `/programas/${programa.categoria_id}/programa/${programa.titulo}`}`}
                     />
                 ))}
             </div>

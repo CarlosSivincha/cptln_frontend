@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "@/pages/client/components/Header";
 import { agregarSeccion, modificarSeccion, obtenerSeccion } from "../../../Api/radio";
 
 
@@ -45,7 +44,6 @@ const SeccionRadioAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_y-600" title={`${idseccion ? 'Modificar Seccion' : 'Agregar Seccion'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">{idseccion ? `Datos Actuales` : 'Nueva Seccion'}</h2>
                 <form onSubmit={idseccion ? modificarSeccionExistente : agregarSeccionNueva} className="space-y-6">
@@ -54,7 +52,7 @@ const SeccionRadioAdmin = () => {
                         name="titulo"
                         value={nombre}
                         onChange={handleNombre}
-                        placeholder="Título"
+                        placeholder="TÃ­tulo"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
                     <button

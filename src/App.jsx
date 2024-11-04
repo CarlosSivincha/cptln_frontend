@@ -9,6 +9,7 @@ const Programas = lazy(() => import("@/pages/client/pages/Programs"));
 const Niños = lazy(() => import("@/pages/client/pages/Programs/Niños"));
 const Familia = lazy(() => import("@/pages/client/pages/Programs/Familia"));
 const CreciendoEnFamilia = lazy(() => import("@/pages/client/pages/ProgramaDescripcion/CreciendoEnFamilia"));
+const CreciendoEnFamiliaSecciones = lazy(() => import("@/pages/client/pages/ProgramaDescripcion/CreciendoEnFamiliaSecciones"));
 const EquipandoSantos = lazy(() =>
   import("@/pages/client/pages/Programs/EquipandoSantos")
 );
@@ -71,6 +72,8 @@ const TablaCapituloCurso = lazy(() => import("@/pages/admin/TablaCapituloCurso")
 const RadioAdmin = lazy(()=>import('@/pages/admin/RadioAdmin'))
 const TablaRadioSecciones = lazy(()=>import('@/pages/admin/TablaRadioSecciones'))
 const SeccionRadioAdmin = lazy(()=>import('@/pages/admin/SeccionRadioAdmin'))
+const TablaRadioSeccionContenidoAdmin = lazy(()=>import('@/pages/admin/TablaRadioSeccionContenidoAdmin'))
+const ContenidoSeccionRadioAdmin = lazy(()=>import('@/pages/admin/ContenidoSeccionRadioAdmin'))
 
 const App = () => {
   return (
@@ -128,8 +131,8 @@ const App = () => {
                       element={<CreciendoEnFamilia />}
                     />
                     <Route
-                      path="programa/creciendo-en-familia/GA"
-                      element={<CreciendoEnFamilia />}
+                      path="programa/creciendo-en-familia/salud"
+                      element={<CreciendoEnFamiliaSecciones />}
                     />
                     <Route
                       path="programa/:programa"
@@ -234,9 +237,9 @@ const App = () => {
                     <Route path="radioconfig/tablasecciones" element={<TablaRadioSecciones/>}/>
                     <Route path="radioconfig/tablasecciones/agregar" element={<SeccionRadioAdmin/>}/>
                     <Route path="radioconfig/tablasecciones/:idseccion" element={<SeccionRadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<RadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<RadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<RadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<TablaRadioSeccionContenidoAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<ContenidoSeccionRadioAdmin/>}/>
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<ContenidoSeccionRadioAdmin/>}/>
 
                     {/* <Route path="tablaprogramas"/> */}
 

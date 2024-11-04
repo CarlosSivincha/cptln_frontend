@@ -42,6 +42,10 @@ export const OracionPeticion = () => {
         try {
             const respuesta = await registrarOraciones(formData);
             console.log(respuesta);
+            setNombres('')
+            setApellidos('')
+            setCorreo('')
+            setMensaje('')
         } catch (error) {
             console.log(error);
         }
@@ -169,14 +173,13 @@ export const OracionPeticion = () => {
                         </div>
 
                         {/* Información de contacto */}
-                        <div className="relative z-10 flex flex-col justify-center h-full p-8 text-white">
+                        {/* <div className="relative z-10 flex flex-col justify-center h-full p-8 text-white">
                             <h2 className="mb-4 font-semibold h3-subtitles">Únete a nuestro grupo de WhatsApp</h2>
                             <p className="mb-2 standard-paragraph">Cada dia enviaremos un devocional</p>
-                            {/* Icono de WhatsApp */}
                             <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
                                 <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
                             </a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

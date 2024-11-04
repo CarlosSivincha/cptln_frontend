@@ -9,7 +9,7 @@ import TransferImage3 from "../../../../assets/img_D_C.png";
 import TransferImage3_2 from "../../../../assets/img_N_card.png";
 import TransferImage4 from "../../../../assets/bcp-logo.png";
 import TransferImage5 from "../../../../assets/img_Yape.png";
-import TransferImage6 from "../../../../assets/img_QR.png";
+import Voluntario from "../../../../assets/Screenshot_3.png";
 
 import { obtenerNoticia } from "@/Api/noticias";
 const NewsLoader = lazy(() => import("@/pages/client/components/Loaders/NewsLoader.jsx"));
@@ -72,7 +72,7 @@ export const Donate = () => {
 
     useEffect(() => {
         const fetch = async () => {
-            const response = await obtenerNoticia()
+            const response = await obtenerNoticia({limit: null})
             setTrabajos(response.data)
             setIsLoadingTrabajos(false)
         }
@@ -113,10 +113,10 @@ export const Donate = () => {
                         </button>
                     </a>
                 </div> */}
-                <div className="border-4 border-l_color_r px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
-                    
-                </div>
-                <div className="border-4 border-l_color_v px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
+                {/* <div className=" rounded-xl w-1/3">
+                    <img src={Voluntario} alt="s" className="w-full h-full"/>
+                </div> */}
+                <div className="border-4 border-l_color_v px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8 ">
                     <h3 className="h3-subtitles text-center">Voluntariado</h3>
                     <p className="standard-paragraph text-justify">
                         ¿Tienes alguna habilidad y te gustaría enseñar a otras personas?
@@ -126,6 +126,9 @@ export const Donate = () => {
                         ¡Sé nuestro Voluntario!
                         <br />
                         ¡Juntos podemos hacer un gran trabajo!
+                        <br/>                        
+                        <br/>                        
+                        Estamos más que felices de trabajar con pastores y hermanos de la iglesia dispuestos a apoyar en los diferentes programas.
                     </p>
                     <a href="/contactanos">
                         <button className=" w-full flex gap-2 justify-center items-center py-2 rounded-md bg-l_color_v text-white text-sm sm:text-base xl:text-lg hover:bg-[#3a6567]">

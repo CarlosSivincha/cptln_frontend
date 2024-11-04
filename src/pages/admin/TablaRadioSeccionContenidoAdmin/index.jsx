@@ -1,38 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from 'react-router-dom'
+import { MdEditDocument, MdEditNote } from "react-icons/md";
+import { FaPlus, FaLink } from "react-icons/fa";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { FaPlus } from "react-icons/fa";
-import { MdEditDocument, MdEditNote } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
-import { obtenerSecciones } from '../../../Api/radio';
+import { obtenerSeccionContenidos, obtenerSeccion } from "../../../Api/radio"
 
+const TablaRadioSeccionContenidoAdmin = () => {
 
-const TablaRadioSecciones = () => {
-
-    // React Routes
     const navigate = useNavigate()
 
-    // Secciones de la radio
-    const [secciones, setSecciones] = useState([])
+    const { idseccion } = useParams()
+
+    const [contenidos, setContenidos] = useState([])
+    const [seccion, setSeccion] = useState("")
+
     useEffect(() => {
         const fetch = async () => {
-            const response = await obtenerSecciones()
-            setSecciones(response.data)
+            const response = await obtenerSeccionContenidos(idseccion)
+            setContenidos(response.data)
         }
         fetch()
     }, [])
 
-    // Configuracion de la tabla
+    useEffect(()=> {
+        const fetch = async() => {
+            const response = await obtenerSeccion(idseccion)
+            setSeccion(response.data.nombre)
+        }
+        fetch()
+    })
+
     const columnHelper = createColumnHelper();
 
     const columns = [
-        columnHelper.accessor('nombre', {
-            header: "Nombre",
+        columnHelper.accessor('descripcion', {
+            header: "Descripcion",
             cell: info => info.getValue(),
         }),
     ];
 
     const table = useReactTable({
-        data: secciones,
+        data: contenidos,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
@@ -42,7 +50,7 @@ const TablaRadioSecciones = () => {
             <div className="flex justify-center mt-10">
                 <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xl font-semibold text-gray-700">Secciones</h3>
+                        <h3 className="text-xl font-semibold text-gray-700">Contenido de {seccion}</h3>
                         <button
                             onClick={() => navigate('agregar')}
                             className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600">
@@ -97,13 +105,7 @@ const TablaRadioSecciones = () => {
                                                     className="text-blue-500 transition-colors hover:text-blue-600 flex justify-center">
                                                     <MdEditDocument size={20} className='fill-yellow-400' />
                                                 </button>
-                                                <button
-                                                    title='Ver contenido'
-                                                    type='button'
-                                                    onClick={() => navigate(`${row.original._id}/tablacontenidoseccion`)}
-                                                    className="text-blue-500 transition-colors hover:text-blue-600 flex justify-center">
-                                                    <MdEditNote size={20} />
-                                                </button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -111,11 +113,10 @@ const TablaRadioSecciones = () => {
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </>
     )
 }
 
-export default TablaRadioSecciones
+export default TablaRadioSeccionContenidoAdmin

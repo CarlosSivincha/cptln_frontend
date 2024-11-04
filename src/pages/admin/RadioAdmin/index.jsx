@@ -13,13 +13,10 @@ const RadioAdmin = () => {
     const [id, setID] = useState(null)
     const [nombre, setNombre] = useState(null)
     const [descripcion, setDescripcion] = useState(null)
-    const [portada, setPortada] = useState([])
-    const [portadaURL, setPortadaURL] = useState(null)
     const [imagenesExtra, setImagenesExtra] = useState([])
     const handleNombre = (e) => setNombre(e.target.value)
     const handleDescripcion = (html) => setDescripcion(html)
     const handleID = (value) => setID(value)
-    const handlePortada = (event) => setPortada(event.target.files[0])
     const handleImagenesExtra = (event) => setImagenesExtra(event.target.files)
 
     // Recuperar Datos
@@ -35,9 +32,6 @@ const RadioAdmin = () => {
             if (res.data.descripcion) {
                 setDescripcion(res.data.descripcion)
             }
-            if (res.data.portada) {
-                setPortadaURL(res.data.portada)
-            }
         }
         fetch()
     }, [])
@@ -50,9 +44,6 @@ const RadioAdmin = () => {
         formData.append('nombre', nombre)
         if (id) formData.append('id', id);
         if (descripcion) formData.append('descripcion', descripcion);
-        if (portada.length > 0) {
-            formData.append('portada', portada);
-        }
         if (imagenesExtra.length > 0) {
             [...imagenesExtra].forEach((file) => { formData.append('imagenes', file) });
         }
@@ -81,7 +72,7 @@ const RadioAdmin = () => {
                         name="Nombre de la estacion"
                         value={nombre}
                         onChange={handleNombre}
-                        placeholder="Título"
+                        placeholder="TÃ­tulo"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     />
 
@@ -94,11 +85,7 @@ const RadioAdmin = () => {
                         placeholder="Descripcion del Programa"
                     />
 
-                    <div className="grid grid-cols-2">
-                        <div className="flex flex-col w-full justify-center">
-                            <label htmlFor="">Portada de la radio</label>
-                            <input type="file" onChange={handlePortada} />
-                        </div>
+                    <div className="grid grid-cols-1">
                         <div className="flex flex-col w-full justify-center">
                             <label htmlFor="">Imagenes Extra</label>
                             <input type="file" onChange={handleImagenesExtra} multiple />

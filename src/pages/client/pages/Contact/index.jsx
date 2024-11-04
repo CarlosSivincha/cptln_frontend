@@ -8,11 +8,7 @@ import Logo_TikTok from "../../../../assets/tik-tok.png";
 import Fondo_C from "../../../../assets/Contactanos.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import TransferImage1 from "../../../../assets/img_D_C_2.png"; 
-import TransferImage2 from "../../../../assets/img_D_C_3.png"; 
-import TransferImage3 from "../../../../assets/img_D_C.png";
-import TransferImage3_2 from "../../../../assets/img_N_card.png";
+
 import { solicitudContactanos } from "../../../../Api/contactanos";
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
@@ -86,14 +82,24 @@ export const Contact = () => {
         formData.append('telefono', telefono);
         formData.append('ciudad', ciudad);
         formData.append('mensaje', mensaje);
+    
         try {
             const respuesta = await solicitudContactanos(formData);
-            (formData);
             console.log(respuesta);
+    
+            // Reset form fields after successful submission
+            setNombre('');
+            setApellido('');
+            setCorreo('');
+            setTelefono('');
+            setCiudad('');
+            setMensaje('');
+            
         } catch (error) {
             console.log(error);
-        };
-    }
+        }
+    };
+    
     return (
         <div className="flex flex-col gap-12 pb-12">
             {/* Header */}

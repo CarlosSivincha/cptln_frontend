@@ -1,17 +1,19 @@
 import { lazy, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import videotest from '../../../../assets/file.mp4';
 import WhiteIcon from "../../../../assets/WhiteIcon.png";
 import { solicitudCursos } from "../../../../Api/cursosbiblicos";
+import { CursoCart } from "./components/CursoCart"
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
-const YoutubeEmbed = lazy(() => import("@/pages/client/components/YoutubeEmbed"));
 
-const CursosBiblico = ({ 
-    video, 
-    titulo = "Dios se revela", 
-    descripcion = "Dios se revela es un curso que, haciendo uso de la tecnología y lenguaje modernos, explica la fe cristiana. En él se presenta la obra de salvación de Dios a través de Cristo, los principios fundamentales de la fe cristiana y diversos aspectos prácticos de la fe en la vida del creyente." 
-}) => {
+
+const CursosBiblico = () => {
+
+    const navigate = useNavigate();
+
     // Mover el estado dentro del componente
+    const [sessionValue, setSessionValue] = useState(false);
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
     const [correo, setCorreo] = useState("");
@@ -29,58 +31,40 @@ const CursosBiblico = ({
         try {
             const respuesta = await solicitudCursos(formData);
             console.log(respuesta);
+            guardarSessionStorage();
+            navigate("/recursos/cursos-biblicos/curso-completo");
+
+            setNombres('');
+            setApellidos('');
+            setCorreo('');
+
         } catch (error) {
             console.log(error);
         };
+    };
+
+    const guardarSessionStorage = () => {
+        
+        sessionStorage.setItem('validacion_cursos', true);
+        // console.log("Dato guardado en sessionStorage:", true);
+        setSessionValue(sessionStorage.getItem('validacion_cursos'))
+    };
+
+    const scrollToElement = () => {
+        const element = document.getElementById('formulario');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (
         <div className="flex flex-col gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28">
             <Header color="bg-l_color_o-600" title="Cursos Bíblicos" />
             <div className="flex md:max-w-[700px] box-content mx-[30px] md:items-center md:mx-auto lg:max-w-[1500px] min-[1580px]:mx-auto lg:mx-[40px] rounded-xl">
-                <div className="grid w-full grid-cols-1 lg:grid-cols-2">
-                    {/* Sección del video */}
-                    <div className="flex flex-col justify-center gap-5 lg:py-5 lg:px-8 lg:bg-l_color_o-600 lg:rounded-l-xl">
-                        <span className="block text-center max-md:text-[1.3em] max-lg:text-[1.5em] max-[1110px]:text-[1.7em] text-[1.9em] font-bold leading-[1.25em] lg:text-white">Capítulo 1: ¿Por qué Jesús?</span>
-                        <YoutubeEmbed videoId="osg_WmeLxQk" />
-                    </div>
-
-                    {/* Sección de información y capítulos */}
-                    <div className="flex flex-col gap-3 px-8 py-4 bg-white rounded-b-xl lg:rounded-b-none lg:rounded-r-xl">
-                        <div className="text-center">
-                            <span className="block h3-subtitles ">Curso "{!titulo ? 'Título' : titulo}"</span>
-                        </div>
-
-                        <div className="flex flex-grow">
-                            <span className="block text-justify standard-paragraph">{!descripcion ? 'Descripción' : descripcion}</span>
-                        </div>
-
-                        <h4 className="block max-md:text-[1.3em] max-lg:text-[1.5em] max-[1110px]:text-[1.7em] text-[1.9em] font-bold leading-[1.25em] xl:text-white">Capítulos de "Dios se revela"</h4>
-
-                        <ol className="space-y-2 list-decimal list-inside standard-paragraph columns-1 sm:columns-2">
-                            <li>¿Por qué Jesús?</li>
-                            <li>¿Por qué la Biblia?</li>
-                            <li>Los diez mandamientos</li>
-                            <li>La naturaleza de Dios</li>
-                            <li>La obra de Cristo</li>
-                            <li>El Espíritu Santo</li>
-                            <li>La oración</li>
-                            <li>El Bautismo</li>
-                            <li>Confesión y absolución</li>
-                            <li>La Santa Comunión</li>
-                            <li>El fin de los tiempos</li>
-                            <li>La vida cristiana</li>
-                        </ol>
-
-                        <div className="flex justify-end my-2">
-                            <button className="px-4 py-2 text-white transition-all duration-300 rounded-md bg-l_color_o-400 hover:shadow-md">
-                                Entrar al curso
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <CursoCart scrollToElement={scrollToElement} titulo = {"Dios se revela"} 
+    descripcion = "Dios se revela es un curso que, haciendo uso de la tecnología y lenguaje modernos, explica la fe cristiana. En él se presenta la obra de salvación de Dios a través de Cristo, los principios fundamentales de la fe cristiana y diversos aspectos prácticos de la fe en la vida del creyente." />
             </div>
-            <div className="h-auto max-[600px]:w-full flex max-lg:flex-col min-[600px]:mx-[30px] md:w-max-[700px] md:mx-auto lg:mx-[40px] box-content md:items-center min-[1580px]:max-w-[1500px] min-[1580px]:mx-auto min-[1580px]:w-full max-lg:gap-1">
+            <div className="h-auto max-[600px]:w-full flex max-lg:flex-col min-[600px]:mx-[30px] md:w-max-[700px] md:mx-auto lg:mx-[40px] box-content md:items-center min-[1580px]:max-w-[1500px] min-[1580px]:mx-auto min-[1580px]:w-full max-lg:gap-1" id="formulario">
                 <div className="flex flex-col justify-center gap-5 px-5 py-5 xl:px-10 max-lg:h-2/5 w-full bg-[#A3723B] text-white lg:text-black lg:bg-white text-center h-auto lg:h-96">
                     <p className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] ">¡Accede a los cursos llenando el formulario!</p>
                     <p className="font-light text-[1.125em] leading-[1.5em] max-[1100px]:text-[1em] max-[1100px]:leading-[1.4em] text-justify">Cada uno de los 12 videos contiene una guía de estudio con referencias bíblicas y preguntas de reflexión y discusión.</p>

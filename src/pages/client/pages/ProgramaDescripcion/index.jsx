@@ -96,12 +96,12 @@ const ProgramSelect = () => {
 
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
-            <Header color="bg-l_color_y-700" title={programaInfo.titulo} return returnText="Programas de niños y Adolescentes" linkReturn="/programas/niños-adolescentes"/>
+            <Header color="bg-l_color_y-700" title={programaInfo.titulo}/>
             {/* flex justify-between max-md:flex-col gap-10 max-w-[1280px] box-content px-10 max-[600px]:px-[30px] md:items-center md:mx-auto */}
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24 px-10 max-[600px]:px-[30px] md:items-center md:mx-auto max-w-[1280px]">
 
                 {
-                    contenidoPrograma.map((contenido, index) => (
+                    !loadingProgramaInfo && contenidoPrograma && contenidoPrograma.map((contenido, index) => (
 
                         <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center" key={index}>
                             <div className={`flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center ${index%2 == 1 ? " order-2 max-md:order-1" : ""}`}>

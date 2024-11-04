@@ -71,6 +71,10 @@ export const Ebooks = () => {
             const respuesta = await solicitudEbooks(formData);
             console.log(respuesta);
             formRef.current.reset();
+            setNombres('')
+            setApellidos('')
+            setCorreo('')
+            setCategoria('')
         } catch (error) {
             console.log(error);
         };

@@ -4,7 +4,7 @@ import { MediaSlider } from "../CreciendoEnFamilia/components/MediaSlider";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 
-export const RadioCard = ({descripcion}) =>{
+export const RadioCard = ({descripcion = "", contenido = []}) =>{
     const [isOpenDescription, setIsOpenDescription] = useState(false);
 
     function onClickDescription()  {
@@ -12,10 +12,10 @@ export const RadioCard = ({descripcion}) =>{
     }
     return(
     <div className="max-w-[400px] sm:max-w-[600px] max-h-[800px]">
-        <MediaSlider />
+        <MediaSlider contenido={contenido}/>
         <div
             className={`bg-white flex px-6 pb-2 pt-4 transition-all duration-500 ${
-                isOpenDescription ? 'max-h-[500px] overflow-y-auto' : 'max-h-[98px] min-[1100px]:max-h-[110px] overflow-hidden'
+                isOpenDescription ? 'max-h-[500px] overflow-y-auto' : 'max-h-[98px] min-[1100px]:max-h-[115px] overflow-hidden'
             }`} style={{scrollbarWidth: "none"}}
         >
             <p

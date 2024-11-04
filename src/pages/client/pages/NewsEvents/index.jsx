@@ -22,7 +22,7 @@ export const NewsEvents = () => {
 
   useEffect(() => {  
     const fetch = async () => {
-      const response = await obtenerNoticia()
+      const response = await obtenerNoticia({"limit":null})
       // console.log(response)
       setFetchNoticias(response.data)
       setIsLoadingNews(false);
@@ -40,50 +40,50 @@ export const NewsEvents = () => {
   return (
     <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28">
       <Header color="bg-l_color_o-600" title="Noticias y Eventos" />
-      <div className="flex mx-5 sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]  ">
-        <div className="min-[360px]:mx-auto">
-          <h3 class="h3-subtitles mb-5">Noticias</h3>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {isLoadingNews // Mientras está cargando, muestra los skeletons
-              ? Array(6) // Crear 6 skeletons como placeholders
-                  .fill()
-                  .map((_, index) => (
-                    <NewsLoader key={index} /> // loading={true} activa los skeletons
-                  ))
-              : fetchNoticias.map((not, index) => (
-                  <NewsCard
-                    key={not._id}
-                    title={not.titulo}
-                    date={not.fecha}
-                    description={not.cuerpo}
-                    link={not._id}
-                    imageSrc={not.portada}
-                    loading={false} // loading={false} oculta los skeletons
-                  />
-                ))}
+      <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
+          <div className="min-[310px]:mx-auto min-[1110px]:mx-10 2xl:mx-auto">
+            <h3 className="h3-subtitles mb-5">Noticias</h3>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3">
+              {isLoadingNews // Mientras está cargando, muestra los skeletons
+                ? Array(6) // Crear 6 skeletons como placeholders
+                    .fill()
+                    .map((_, index) => (
+                      <NewsLoader key={index} /> // loading={true} activa los skeletons
+                    ))
+                : fetchNoticias.map((not, index) => (
+                    <NewsCard
+                      key={not._id}
+                      title={not.titulo}
+                      date={not.fecha}
+                      description={not.cuerpo}
+                      link={not._id}
+                      imageSrc={not.portada}
+                      loading={false} // loading={false} oculta los skeletons
+                    />
+                  ))}
             </div>
-        </div>
+          </div>
 
-        <div className=" min-[360px]:mx-auto">
-          <h3 className="h3-subtitles mb-5">Eventos</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]">
-          {isLoadingEvents // Mientras está cargando, muestra los skeletons
-              ? Array(3) // Crear 6 skeletons como placeholders
-                  .fill()
-                  .map((_, index) => (
-                    <EventsLoader key={index} /> // loading={true} activa los skeletons
-                  ))
-              : fetchEventos.map((event, index) => (
-                <EventCard
-                key={event._id}
-                date={event.fecha}
-                hora={event.hora}
-                title={event.titulo}
-                description={event.cuerpo}
-                location={event.ubicacion}
-              />
-                ))}
-            {/* <EventCard
+          <div className="w-full min-[360px]:mx-auto md:max-w-[630px] lg:max-w-[950px] xl:max-w-[1280px] 2xl:max-w-[530px] ">
+            <h3 className="h3-subtitles mb-5">Eventos</h3>
+            <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 && "lg:grid-cols-2" } lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]`}>
+              {isLoadingEvents // Mientras está cargando, muestra los skeletons
+                ? Array(3) // Crear 6 skeletons como placeholders
+                    .fill()
+                    .map((_, index) => (
+                      <EventsLoader key={index} /> // loading={true} activa los skeletons
+                    ))
+                : fetchEventos.map((event, index) => (
+                    <EventCard
+                      key={event._id}
+                      date={event.fecha}
+                      hora={event.hora}
+                      title={event.titulo}
+                      description={event.cuerpo}
+                      location={event.ubicacion}
+                    />
+                  ))}
+              {/* <EventCard
               date="ABR 30 2024"
               title="Evento 1"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
@@ -101,8 +101,9 @@ export const NewsEvents = () => {
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
               location="Av. Independencia N° 100"
             /> */}
+            </div>
           </div>
-        </div>
+        
       </div>
     </div>
   );

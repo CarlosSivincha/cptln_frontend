@@ -54,7 +54,7 @@ export const DevocionalesDiarios = () => {
                     <Devocionales/>
                     <Devocionales/> */}
                 </div>
-                <div className="flex flex-col  max-w-[500px] xl:max-w-[300px] w-full max-xl:self-center h-max order-1 xl:order-2 max-xl:float">
+                {/* <div className="flex flex-col  max-w-[500px] xl:max-w-[300px] w-full max-xl:self-center h-max order-1 xl:order-2 max-xl:float">
                     <span className="font-bold text-2xl text-nowrap">Filtrar Devocionales</span>
                     <label className="font-semibold mt-3">Mes</label>
                     <select name="" id="" className="p-2 rounded-md accent-white">
@@ -77,7 +77,7 @@ export const DevocionalesDiarios = () => {
                     <button className="p-1 text-white bg-[#46797A] rounded-md">
                         Filtrar
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     )

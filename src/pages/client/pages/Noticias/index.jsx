@@ -17,12 +17,14 @@ const EventCard = lazy(() => import("@/pages/client/components/EventCard"));
 export const Noticia = () => {
   const { id } = useParams();
   const [noticia, setNoticia] = useState([]);
+  const [isLoadingNews, setIsLoadingNews] = useState([]);
   const [ fetchEventos, setFetchEventos ] = useState([])
-  const [loading, setLoading] = useState(true);
+  const [ isLoadingFetchEventos, setIsLoadingFetchEventos ] = useState([])
+  // const [loading, setLoading] = useState(true);
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchProgramas = async () => {
+    const fetchNoticias = async () => {
         try {
           const response = await obtenerNoticiaID(id)
           if (!response.data) {
@@ -31,7 +33,7 @@ export const Noticia = () => {
           } else {
             setNoticia(response.data)
             console.log(response.data)
-            setLoading(false);
+            setIsLoadingNews(false);
           }
         } catch (error) {
             
@@ -54,11 +56,12 @@ export const Noticia = () => {
       
     // }
     
-    fetchProgramas();
+    fetchNoticias();
     const fetchEvent = async () => {
       const response = await obtenerEventos()
       // console.log(response)
       setFetchEventos(response.data)
+      setIsLoadingFetchEventos(response.data)
       
     }
     if( noticia.length == 0 ){
@@ -104,11 +107,13 @@ export const Noticia = () => {
 
       {/* <div dangerouslySetInnerHTML={{__html: noticia.cuerpo}}></div> */}
 
+      
+
       <div className="flex max-2xl:flex-col mx-5 sm:mx-10 md:mx-20 lg:mx-24 min-[1110px]:max-w-[1100px] min-[1110px]:mx-10 min-[1210px]:mx-auto gap-10 2xl:gap-20 2xl:max-w-[1450px] 2xl:mx-16 min-[1600px]:mx-auto">
         <div className="flex flex-col gap-10 2xl:w-8/12">
           <p className="standard-paragraph whitespace-pre-line" dangerouslySetInnerHTML={{ __html: noticia.cuerpo}}></p>
           {
-            loading && noticia.imagenes && Array.isArray(noticia.imagenes) && noticia.imagenes.map((link, index) => (
+            setIsLoadingNews && noticia.imagenes && Array.isArray(noticia.imagenes) && noticia.imagenes.map((link, index) => (
               <img key={index} src={link} className="xl:w-[70%] self-center" alt={`imagen-${index}`} />
             ))
           }

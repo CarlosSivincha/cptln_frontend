@@ -165,7 +165,7 @@ export const Home = () => {
                   // console.log(fetchProgramas)
                   return (
                     
-                    <a key={index} className="relative px-2" href={`${program.categoria && `programas/${convertirTexto(program.categoria)}`}/programa/${convertirTexto(program.titulo)}`}>
+                    <a key={index} className="relative px-2" href={`${program.categoria_id ? `/programas/${convertirTexto(program.categoria_id)}` : ""}/programa/${convertirTexto(program.titulo)}`}>
                       <HomeProgramsCard program={program} />
                     </a>
                   );
@@ -181,9 +181,9 @@ export const Home = () => {
           <div className="flex flex-col justify-between w-full">
               <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6">
                   <h3 className="h3-subtitles">Creciendo en Familia</h3>
-                  <p className="standard-paragraph">knfalskf nsfklsnfkls nfalksfn asklfn asfnkls nflksdfn asnfdk sdnfklsdf aksdnfksanf kasnfksdanf</p>
+                  <p className="standard-paragraph">Descripcion de Creciendo en Familia</p>
               </div>
-              <a href="">
+              <a href="/programa/creciendo-en-familia">
                   <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
                       Ir a Creciendo en Familia
                   </button>
