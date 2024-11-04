@@ -13,7 +13,7 @@ const ProgramaAdmin = () => {
 
     // Guardar datos del formulario
     const [titulo, setTitulo] = useState("");
-    const [selectcategoria, setSelectcategoria] = useState("");
+    const [selectcategoria, setSelectcategoria] = useState(null);
     const [abreviatura, setAbreviatura] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
@@ -67,19 +67,19 @@ const ProgramaAdmin = () => {
 
     // Verificar si hay un ID en los parametros
     useEffect(() => {
-        console.log(id)
         if (id) {
             const fetch = async () => {
                 const response = await buscarPrograma(id)
-                setSelectcategoria(response.data.categoria)
+                setSelectcategoria(response.data.categoria_id)
                 setTitulo(response.data.titulo)
                 setDescripcion(response.data.descripcion)
                 setAbreviatura(response.data.abreviatura)
                 setColor(response.data.color)
                 setImagenesAdicionales(response.data.imagenes)
                 setEnlace(response.data.enlace)
-                setShowPortada(response.data.portada)
-                if(enlace) {
+                setShowPortada(response.data.portadaEnlace)
+                
+                if (response.data.enlace === null) {
                     setPanelEnlaceDatos(true)
                 } else {
                     setPanelEnlaceDatos(false)
@@ -98,14 +98,14 @@ const ProgramaAdmin = () => {
             formData.append('descripcion', descripcion);
             formData.append('color', color);
             formData.append('abreviatura', abreviatura);
-            formData.append('categoria', selectcategoria);
+            formData.append('categoria_id', selectcategoria || "");
             if (panelEnlaceDatos) {
                 [...imagenesAdicionales].forEach((file) => {
                     formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
                 });
             } else {
-                formData.append('enlace', enlace);
-                formData.append('portada', portada)
+                formData.append('enlace', enlace || "");
+                formData.append('portadaEnlace', portada)
             }
             const respuesta = await crearPrograma(formData);
             console.log(respuesta);
@@ -123,7 +123,7 @@ const ProgramaAdmin = () => {
             formData.append('descripcion', descripcion);
             formData.append('abreviatura', abreviatura);
             formData.append('color', color);
-            formData.append('categoria', selectcategoria);
+            formData.append('categoria_id', selectcategoria || "");
             if (panelEnlaceDatos) {
                 [...imagenesAdicionales].forEach((file) => {
                     formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
@@ -131,7 +131,7 @@ const ProgramaAdmin = () => {
             } else {
                 formData.append('enlace', enlace);
                 if (imagenNew) {
-                    formData.append('portada', portada);
+                    formData.append('portadaEnlace', portada);
                 }
             }
             const respuesta = await editarPrograma(id, formData);
@@ -151,8 +151,8 @@ const ProgramaAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_y-600" title={`${id ? 'Editar Programa' : 'Agregar Programa'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
+
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe el Programa</h2>
                 <form onSubmit={id ? ModificarProgramas : enviarPrograma} className="space-y-6">
                     <input
@@ -189,7 +189,7 @@ const ProgramaAdmin = () => {
                         >
                             <option value={""}>Sin categoria</option>
                             {Array.isArray(categorias) && categorias.map((categoria) => (
-                                <option key={categoria._id} value={categoria.nombre}>{categoria.nombre}</option>
+                                <option key={categoria._id} value={categoria._id}>{categoria.nombre}</option>
                             ))}
                         </select>
                     </div>
@@ -233,7 +233,7 @@ const ProgramaAdmin = () => {
                                     <div className={`space-y-10 transition-all duration-200 ${panelEnlaceDatos ? 'opacity-100' : 'opacity-0'}`}>
                                         <div className="flex">
                                             <div>
-                                                <label className="block mb-2 text-gray-600">ImÃ¡genes adicionales (2 o mÃ¡s)</label>
+                                                <label className="block mb-2 text-gray-600">Imagenes adicionales (2 o mas)</label>
                                                 <input
                                                     type="file"
                                                     name="imagenes"
@@ -262,47 +262,52 @@ const ProgramaAdmin = () => {
                                         </div>
                                         <div>
                                             {(id) ?
-                                                (
-                                                    imagenNew ?
-                                                        (
-                                                            <>
-                                                                <label className="block mb-2 text-gray-600">Imagen</label>
-                                                                <div className="flex space-x-5">
-                                                                    <div className={`flex flex-col ${portada ? 'w-2/3' : 'w-full'} `}>
+                                                (showPortada != null ? (
+                                                    <>
+                                                        <div className="flex w-full space-x-5">
+                                                            {imagenNew ? (
+                                                                <>
+                                                                    <div className="flex w-1/2">
                                                                         <input
                                                                             type="file"
                                                                             onChange={handlePortada}
-                                                                            multiple // Permite seleccionar mÃºltiples imÃ¡genes
+                                                                            multiple
                                                                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                                         />
                                                                     </div>
-                                                                    {portada && (
-                                                                        <div className="flex items-center justify-center w-1/3">
-                                                                            <button
-                                                                                onClick={handleImagenNew}
-                                                                                className={`rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
-                                                                                {imagenNew ? 'Cancelar' : 'Cambiar Imagen'}
-                                                                            </button>
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            </>
-                                                        )
-                                                        :
-                                                        (
-                                                            <>
-                                                                <div className="flex">
-                                                                    <img src={showPortada} alt="" className="flex w-1/2" />
-                                                                    <div className="flex items-center justify-center w-1/2">
-                                                                        <button
-                                                                            onClick={handleImagenNew}
-                                                                            className={`flex  rounded-md p-4 ${imagenNew ? 'bg-red-500' : 'bg-yellow-500'}`}>
-                                                                            {imagenNew ? 'Cancelar' : 'Cambiar Imagen'}
+                                                                    <div className="flex w-1/2 justify-center items-center">
+                                                                        <button className="flex p-4 rounded-md bg-red-500" onClick={handleImagenNew}>
+                                                                            Cancelar
                                                                         </button>
                                                                     </div>
-                                                                </div>
-                                                            </>
-                                                        )
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <div className="flex w-1/2">
+                                                                        <img src={showPortada} alt="" />
+                                                                    </div>
+                                                                    <div className="flex w-1/2 justify-center items-center">
+                                                                        <button className="flex p-4 rounded-md bg-yellow-500" onClick={handleImagenNew}>
+                                                                            Cambiar
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </>
+                                                )
+                                                    :
+                                                    (
+                                                        <>
+                                                            <label className="block mb-2 text-gray-600">Portada</label>
+                                                            <input
+                                                                type="file"
+                                                                onChange={handlePortada}
+                                                                multiple
+                                                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                                            />
+                                                        </>
+                                                    )
                                                 )
                                                 :
                                                 (
@@ -311,7 +316,7 @@ const ProgramaAdmin = () => {
                                                         <input
                                                             type="file"
                                                             onChange={handlePortada}
-                                                            multiple // Permite seleccionar mÃºltiples imÃ¡genes
+                                                            multiple
                                                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                         />
                                                     </>

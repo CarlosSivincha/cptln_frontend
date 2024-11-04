@@ -60,7 +60,7 @@ const TablaProgramaContenidoAdmin = () => {
             cell: info => info.getValue(),
         }),
         columnHelper.accessor('parrafo', {
-            header: "Categoria",
+            header: "Parrafo",
             cell: info => <div dangerouslySetInnerHTML={{ __html: info.getValue() }} />
         }),
     ];
@@ -142,7 +142,7 @@ const TablaProgramaContenidoAdmin = () => {
                                                 )}
                                         </th>
                                     ))}
-                                    <th className="px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Acciones</th>
+                                    <th className="px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300 w-28">Acciones</th>
                                 </tr>
                             ))}
                         </thead>
@@ -165,7 +165,7 @@ const TablaProgramaContenidoAdmin = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="flex items-center justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300">
+                                    <td className="flex items-center justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300 w-28">
                                         <div>
                                             <button
                                                 type='button'
