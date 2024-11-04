@@ -8,7 +8,7 @@ const AboutUs = lazy(() => import("@/pages/client/pages/AboutUs"));
 const Programas = lazy(() => import("@/pages/client/pages/Programs"));
 const Niños = lazy(() => import("@/pages/client/pages/Programs/Niños"));
 const Familia = lazy(() => import("@/pages/client/pages/Programs/Familia"));
-const CreciendoFamilia = lazy(() => import("@/pages/client/pages/Program/CreciendoFamilia"));
+const CreciendoEnFamilia = lazy(() => import("@/pages/client/pages/ProgramaDescripcion/CreciendoEnFamilia"));
 const EquipandoSantos = lazy(() =>
   import("@/pages/client/pages/Programs/EquipandoSantos")
 );
@@ -123,6 +123,14 @@ const App = () => {
                       element={<ProgramaDescripcion />}
                     />
 
+                    <Route
+                      path="programa/creciendo-en-familia"
+                      element={<CreciendoEnFamilia />}
+                    />
+                    <Route
+                      path="programa/creciendo-en-familia/GA"
+                      element={<CreciendoEnFamilia />}
+                    />
                     <Route
                       path="programa/:programa"
                       element={<ProgramaDescripcion />}

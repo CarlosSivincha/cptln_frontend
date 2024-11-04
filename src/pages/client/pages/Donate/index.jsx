@@ -96,6 +96,26 @@ export const Donate = () => {
             
             {/* Cuadro de Transferencias */}
             <div className="flex mx-6 sm:mx-10 md:mx-20  min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px] ">
+                {/* <div className="border-4 border-l_color_r px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
+                    <h3 className="h3-subtitles text-center">Donaciones</h3>
+                    <p className="standard-paragraph text-justify">
+                        ¿Tienes alguna habilidad y te gustaría enseñar a otras personas?
+                        <br /> <br />
+                        ¿Sabes algo en específico y quieres compartir tus conocimientos a la comunidad?, ¿Te gustaría trabajar como voluntario en nuestra organización?
+                        <br /> <br />
+                        ¡Sé nuestro Voluntario!
+                        <br />
+                        ¡Juntos podemos hacer un gran trabajo!
+                    </p>
+                    <a href="/contactanos">
+                        <button className=" w-full flex gap-2 justify-center items-center py-2 rounded-md bg-l_color_r text-white text-sm sm:text-base xl:text-lg hover:bg-[#d72738]">
+                            Contáctanos
+                        </button>
+                    </a>
+                </div> */}
+                <div className="border-4 border-l_color_r px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
+                    
+                </div>
                 <div className="border-4 border-l_color_v px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
                     <h3 className="h3-subtitles text-center">Voluntariado</h3>
                     <p className="standard-paragraph text-justify">
@@ -109,23 +129,6 @@ export const Donate = () => {
                     </p>
                     <a href="/contactanos">
                         <button className=" w-full flex gap-2 justify-center items-center py-2 rounded-md bg-l_color_v text-white text-sm sm:text-base xl:text-lg hover:bg-[#3a6567]">
-                            Contáctanos
-                        </button>
-                    </a>
-                </div>
-                <div className="border-4 border-l_color_r px-8 py-8 xl:px-10 xl:py-12 rounded-xl flex flex-col gap-4 xl:gap-8">
-                    <h3 className="h3-subtitles text-center">Donaciones</h3>
-                    <p className="standard-paragraph text-justify">
-                        ¿Tienes alguna habilidad y te gustaría enseñar a otras personas?
-                        <br /> <br />
-                        ¿Sabes algo en específico y quieres compartir tus conocimientos a la comunidad?, ¿Te gustaría trabajar como voluntario en nuestra organización?
-                        <br /> <br />
-                        ¡Sé nuestro Voluntario!
-                        <br />
-                        ¡Juntos podemos hacer un gran trabajo!
-                    </p>
-                    <a href="/contactanos">
-                        <button className=" w-full flex gap-2 justify-center items-center py-2 rounded-md bg-l_color_r text-white text-sm sm:text-base xl:text-lg hover:bg-[#d72738]">
                             Contáctanos
                         </button>
                     </a>
@@ -190,28 +193,7 @@ export const Donate = () => {
             <div className="mx-auto lg:px-8">
                 <h3 className="h3-subtitles mb-4 min-[500px]:pb-8 text-center text-black">NUESTROS TRABAJOS</h3>
                 <div className="mx-auto w-[90%] max-w-[760px] min-[1024px]:max-w-[1590px] lg:w-[95%]  grid grid-cols-1">
-                    <Slider {...settings}>
-                        {/* <div className="px-2">
-                            <div className="flex items-center justify-center h-64 overflow-hidden">
-                                <img src={TransferImage1} alt="Trabajo 1" className="object-contain w-full h-full" />
-                            </div>
-                        </div>
-                        <div className="px-2">
-                            <div className="flex items-center justify-center h-64 overflow-hidden">
-                                <img src={TransferImage2} alt="Trabajo 2" className="object-contain w-full h-full" />
-                            </div>
-                        </div>
-                        <div className="px-2">
-                            <div className="flex items-center justify-center h-64 overflow-hidden">
-                                <img src={TransferImage3} alt="Trabajo 3" className="object-contain w-full h-full" />
-                            </div>
-                        </div>
-                        <div className="px-2">
-                            <div className="flex items-center justify-center h-64 overflow-hidden">
-                                <img src={TransferImage3_2} alt="Trabajo 4" className="object-contain w-full h-full" />
-                            </div>
-                        </div> */}
-                        
+                    <Slider {...settings}>                       
                         {isLoadingTrabajos // Mientras está cargando, muestra los skeletons
                             ? Array(6) // Crear 6 skeletons como placeholders
                                 .fill()

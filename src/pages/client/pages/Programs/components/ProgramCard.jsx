@@ -28,7 +28,7 @@ export const ProgramCard = ({ posicion = "derecha", ...props }) => {
                     {props.img && Array.isArray(props.img) && props.img.map((image, index) => (
                         <img
                             key={index}
-                            src={image.ruta}
+                            src={image}
                             alt={`img-${index}`}
                             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'} max-md:rounded-t-[16px] md:rounded-l-[16px] lg:rounded-l-[0px] ${posicion === "izquierda" ? "lg:rounded-r-[12px]" : "lg:rounded-l-[12px]"}`}
                             style={{ transition: 'opacity 1s ease-in-out' }}

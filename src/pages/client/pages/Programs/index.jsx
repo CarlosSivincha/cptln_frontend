@@ -5,6 +5,7 @@ import EquipandoImg from "../../../../assets/Equipando_santos.jpg";
 import CreciendoFamilia from "../../../../assets/creciendo-en-familia.jpg";
 import { obtenerCategorias } from "@/Api/categorias";
 import { obtenerProgramas } from "@/Api/programas";
+import ImageNotFound from "../../../../assets/image_not_found.jpg";
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
 const ProgramCard = lazy(() => import("@/pages/client/pages/Programs/components/ProgramCard.jsx"));
@@ -42,26 +43,29 @@ export const Programs = () => {
             <Header color="bg-l_color_y-600" title="Programas"/>
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24">
                 {
-                fetchCategorias.map((categoria, index) => (
-                    <ProgramCard 
-                    key={categoria._id} // Recuerda también agregar una `key` única
-                    color={categoria.color} 
-                    title={categoria.nombre} 
-                    img={categoria.imagenes} 
-                    description={categoria.descripcion} 
-                    posicion={index % 2 === 0 ? "derecha" : "izquierda"} 
-                    link={`programas/${categoria.nombre}`}
-                    />
-                ))
-                }
+                isLoadingCategorias ? (
+                    <div>Loading...</div>
+                ) : (
+                    fetchCategorias.map((categoria, index) => (
+                        <ProgramCard 
+                            key={categoria._id}
+                            color={categoria.color} 
+                            title={categoria.nombre} 
+                            img={categoria.imagenes ? categoria.imagenes : ImageNotFound }  
+                            description={categoria.descripcion} 
+                            posicion={index % 2 === 0 ? "derecha" : "izquierda"} 
+                            link={`programas/${categoria.nombre}`}
+                        />
+                    ))
+                )}
                 {
                     fetchProgramasSinCategoria.map((programa, index) => (
-                        !programa.categoria && (
+                        !programa.categoria_id && (
                         <ProgramCard 
                         key={programa._id} // Recuerda también agregar una `key` única
                         color={programa.color} 
                         title={programa.titulo} 
-                        img={programa.imagenes}  
+                        img={programa.imagenes ? programa.imagenes : {ImageNotFound} }  
                         description={programa.descripcion} 
                         posicion={index % 2 == 0 ? "derecha" : "izquierda"} 
                         link={`programa/${programa.titulo}`}

@@ -1,7 +1,11 @@
 import { lazy, useState, useEffect } from "react";
 import OriginalLogo from "../../../../assets/OriginalLogo.png";
 import Logo_Wpp from "../../../../assets/Logo_Wpp.png";
-import Fondo_C from "../../../../assets/img_F_contactanos.png";
+import Logo_Facebook from "../../../../assets/facebook.png";
+import Logo_Instagram from "../../../../assets/instagram.png";
+import Logo_X from "../../../../assets/twitter.png";
+import Logo_TikTok from "../../../../assets/tik-tok.png";
+import Fondo_C from "../../../../assets/Contactanos.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -9,9 +13,7 @@ import TransferImage1 from "../../../../assets/img_D_C_2.png";
 import TransferImage2 from "../../../../assets/img_D_C_3.png"; 
 import TransferImage3 from "../../../../assets/img_D_C.png";
 import TransferImage3_2 from "../../../../assets/img_N_card.png";
-import { solicitudContactanos
-    
- } from "../../../../Api/contactanos";
+import { solicitudContactanos } from "../../../../Api/contactanos";
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
 export const Contact = () => {
@@ -93,7 +95,7 @@ export const Contact = () => {
         };
     }
     return (
-        <div className="flex flex-col gap-20">
+        <div className="flex flex-col gap-12 pb-12">
             {/* Header */}
             <Header color="bg-l_color_v-600" title="CONTÁCTANOS" />
             {/* Main Content */}
@@ -116,31 +118,31 @@ export const Contact = () => {
                                 <input type="text" name="telefono" placeholder="Teléfono" className="p-3 bg-gray-100 rounded-md" value={telefono} onChange={handleTelefono} />
                                 <select name="ciudad" className="flex-1 px-4 py-2 bg-gray-100 border rounded-full" value={ciudad} onChange={handleCiudad}>
                                     <option value="">Ciudad</option>
-                                            <option value="Amazonas">Amazonas</option>
-                                            <option value="Áncash">Áncash</option>
-                                            <option value="Apurímac">Apurímac</option>
-                                            <option value="Arequipa">Arequipa</option>
-                                            <option value="Ayacucho">Ayacucho</option>
-                                            <option value="Cajamarca">Cajamarca</option>
-                                            <option value="Callao">Callao</option>
-                                            <option value="Cusco">Cusco</option>
-                                            <option value="Huancavelica">Huancavelica</option>
-                                            <option value="Huánuco">Huánuco</option>
-                                            <option value="Ica">Ica</option>
-                                            <option value="Junín">Junín</option>
-                                            <option value="La Libertad">La Libertad</option>
-                                            <option value="Lambayeque">Lambayeque</option>
-                                            <option value="Lima">Lima</option>
-                                            <option value="Loreto">Loreto</option>
-                                            <option value="Madre de Dios">Madre de Dios</option>
-                                            <option value="Moquegua">Moquegua</option>
-                                            <option value="Pasco">Pasco</option>
-                                            <option value="Piura">Piura</option>
-                                            <option value="Puno">Puno</option>
-                                            <option value="San Martín">San Martín</option>
-                                            <option value="Tacna">Tacna</option>
-                                            <option value="Tumbes">Tumbes</option>
-                                            <option value="Ucayali">Ucayali</option>
+                                        <option value="Amazonas">Amazonas</option>
+                                        <option value="Áncash">Áncash</option>
+                                        <option value="Apurímac">Apurímac</option>
+                                        <option value="Arequipa">Arequipa</option>
+                                        <option value="Ayacucho">Ayacucho</option>
+                                        <option value="Cajamarca">Cajamarca</option>
+                                        <option value="Callao">Callao</option>
+                                        <option value="Cusco">Cusco</option>
+                                        <option value="Huancavelica">Huancavelica</option>
+                                        <option value="Huánuco">Huánuco</option>
+                                        <option value="Ica">Ica</option>
+                                        <option value="Junín">Junín</option>
+                                        <option value="La Libertad">La Libertad</option>
+                                        <option value="Lambayeque">Lambayeque</option>
+                                        <option value="Lima">Lima</option>
+                                        <option value="Loreto">Loreto</option>
+                                        <option value="Madre de Dios">Madre de Dios</option>
+                                        <option value="Moquegua">Moquegua</option>
+                                        <option value="Pasco">Pasco</option>
+                                        <option value="Piura">Piura</option>
+                                        <option value="Puno">Puno</option>
+                                        <option value="San Martín">San Martín</option>
+                                        <option value="Tacna">Tacna</option>
+                                        <option value="Tumbes">Tumbes</option>
+                                        <option value="Ucayali">Ucayali</option>
                                         {/* Agregar más ciudades */}
                                     </select>
                                 </div>
@@ -211,22 +213,26 @@ export const Contact = () => {
                         {/* Información de contacto */}
                         <div className="relative z-10 flex flex-col justify-center h-full p-8 text-white">
                             <h2 className="mb-4 font-semibold h3-subtitles">Contacto</h2>
-                            <p className="mb-2 standard-paragraph">Dirección: Urb. Villa Eléctrica, Edificio Apolo B-16, JLBR</p>
-                            <p className="mb-2 standard-paragraph">Teléfono:</p>
-                            <p>Email:</p>
+                            <p className="mb-2 standard-paragraph"><strong>Dirección:</strong> Urb. Villa Eléctrica, Edificio Apolo B-16, JLBR</p>
+                            <p className="mb-2 standard-paragraph"><strong>Teléfono:</strong> 959 423 634</p>
+                            <p className="mb-2 standard-paragraph"><strong>Email:</strong> cptln.peru@gmail.com</p>
+                            <p className="standard-paragraph font-bold">Nuestras Redes Sociales:</p>
                             {/* Icono de WhatsApp */}
                             <div className="flex gap-5">
-                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                <a href="https://wa.me/qr/L6TK7UDV2UFBF1" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
                                     <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
                                 </a>
-                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
-                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                <a href="https://www.facebook.com/cptln.peru" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_Facebook} alt="Facebook" className="w-8 h-8 sm:w-10 sm:h-10" />
                                 </a>
-                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
-                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                <a href="https://www.instagram.com/cptln.peru/" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_Instagram} alt="Instagram" className="w-8 h-8 sm:w-10 sm:h-10" />
                                 </a>
-                                <a href="https://chat.whatsapp.com/tu-enlace-al-grupo" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
-                                    <img src={Logo_Wpp} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                <a href="https://x.com/cptlnperu" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_X} alt="WhatsApp" className="w-8 h-8 sm:w-10 sm:h-10" />
+                                </a>
+                                <a href="https://www.tiktok.com/@cptln.peru" target="_blank" rel="noopener noreferrer" className="block mt-2 sm:mt-4">
+                                    <img src={Logo_TikTok} alt="WhatsApp" className="w-8 h-8 sm:w-12 sm:h-12" />
                                 </a>
                             </div>
                         </div>
@@ -235,7 +241,7 @@ export const Contact = () => {
             </div>
 
             {/* Carrusel de Imágenes */}
-            <div className="py-8 bg-l_color_Fondo">
+            {/* <div className="py-8 bg-l_color_Fondo">
                 <div className="container px-4 mx-auto lg:px-8">
                     <h3 className="mb-8 text-center text-black h3-subtitles">NUESTROS TRABAJOS</h3>
                     <Slider {...settings}>
@@ -261,7 +267,7 @@ export const Contact = () => {
                         </div>
                     </Slider>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

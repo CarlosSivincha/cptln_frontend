@@ -177,7 +177,7 @@ export const Home = () => {
         
 
         {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]"> */}
-        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] xl:px-16 2xl:px-20 min-[1650px]:w-full gap-4 2xl:gap-10">
+        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
           <div className="flex flex-col justify-between w-full">
               <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6">
                   <h3 className="h3-subtitles">Creciendo en Familia</h3>
@@ -199,7 +199,7 @@ export const Home = () => {
       </div>
 
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
-        <div className="flex mx-4 sm:mx-10 md:mx-auto lg:mx-16 min-[1110px]:mx-auto min-[1110px]:max-w-[1145px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]">
+        <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
           <div className="min-[310px]:mx-auto min-[1110px]:mx-10 2xl:mx-auto">
             <h3 className="h3-subtitles mb-5">Noticias</h3>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3">
@@ -223,9 +223,9 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="w-full min-[360px]:mx-auto md:max-w-[630px] 2xl:max-w-[530px] ">
+          <div className="w-full min-[360px]:mx-auto md:max-w-[630px] lg:max-w-[950px] xl:max-w-[1070px] 2xl:max-w-[530px] ">
             <h3 className="h3-subtitles mb-5">Eventos</h3>
-            <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 && "md:grid-cols-2" } lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]`}>
+            <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 && "lg:grid-cols-2" } lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]`}>
               {isLoadingEvents // Mientras está cargando, muestra los skeletons
                 ? Array(3) // Crear 6 skeletons como placeholders
                     .fill()

@@ -25,8 +25,10 @@ export const HomeProgramsCard = ({ program }) => {
   };
 
   const getImageUrl = () => {
-    if (program?.imagenes?.length > 0) {
-      return program.imagenes[0].ruta;
+    if (program?.imagenes?.length > 0 && !program.portadaEnlace) {
+      return program.imagenes[program.indicePortada - 1];
+    } else {
+      return program.portadaEnlace;
     }
     return ImageNotFound; // Imagen por defecto
   };
