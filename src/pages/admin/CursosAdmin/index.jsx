@@ -3,10 +3,10 @@ import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import { registrarCurso, obtenerCursoID, EditarCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 
 const CursoAdmin = () => {
-
+    const navigate = useNavigate();
     //const navigate = useNavigate()
     const { idcurso } = useParams()
 
@@ -38,6 +38,7 @@ const CursoAdmin = () => {
         try {
             const respuesta = await registrarCurso(formData);
             console.log(respuesta);
+             if (respuesta.status === 200) navigate("/admin/tablacursos");
         } catch (error) {
             console.log(error);
         }
@@ -52,6 +53,7 @@ const CursoAdmin = () => {
             // Aquí iría la función para registrar el evento
             const respuesta = await EditarCurso(id, formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tablacursos");
         } catch (error) {
             console.log(error);
         }

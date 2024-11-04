@@ -5,10 +5,11 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerEbooksPag } from '../../../Api/ebooks';
+import { obtenerEbooksPag, EliminarEbooks } from '../../../Api/ebooks';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 const TablaEbooks = () => {
 
@@ -17,22 +18,27 @@ const TablaEbooks = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
 
-    useEffect(() => {
-        const fetch = async (page) => {
-            try {
-                setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerEbooksPag({ params: { page: Number(page), limit: 10 } });
-                setEbooks(response.data.ebooks);
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsLoading(false); // Finalizar estado de carga
-            }
+
+
+    // Función para obtener los eventos con paginación
+    const fetchEbooks = async (page) => {
+        try {
+            setIsLoading(true); // Iniciar estado de carga
+            const response = await obtenerEbooksPag({ params: { page: Number(page), limit: 10 } });
+            setEbooks(response.data.ebooks); // Actualizar el estado con los eventos
+            setCurrentPage(response.data.currentPage); // Actualizar la página actual
+            setTotalPages(response.data.totalPages); // Actualizar el total de páginas
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false); // Finalizar estado de carga
         }
-        fetch(currentPage);
+    };
+    // Llamada inicial para cargar los datos al montar el componente
+    useEffect(() => {
+        fetchEbooks(currentPage);
     }, [currentPage]);
+
 
     const columnHelper = createColumnHelper();
     const truncateText = (text, maxLength) => {
@@ -68,6 +74,13 @@ const TablaEbooks = () => {
 
     const navigate = useNavigate();
 
+    // Función para manejar la eliminación de un evento y refrescar los datos
+    const handleDelete = async (id) => {
+        const success = await EliminarEbooks({ id }); // Llamada a la función de eliminación
+        if (success) { // Verifica si la eliminación fue exitosa
+            fetchEbooks(currentPage); // Refresca los datos después de eliminar
+        }
+    };
     const EditarEbooks = (id) => {
         navigate(`${id}`);
     };
@@ -94,10 +107,10 @@ const TablaEbooks = () => {
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar
-                        <FaPlus  className="ml-1"  size={13}/>
+                        <FaPlus className="ml-1" size={13} />
                     </button>
                 </div>
-    
+
                 {/* Tabla */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full border border-collapse border-gray-300 table-auto">
@@ -135,14 +148,21 @@ const TablaEbooks = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                     <td className="px-4 py-2 text-center border border-gray-300">
+                                    <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarEbooks(row.original._id)}
                                             className="text-blue-500 transition-colors hover:text-blue-600">
 
                                             <MdEditDocument size={20} />
-                                            
+
+                                        </button>
+                                        <button
+                                            type='button'
+                                            onClick={() => handleDelete(row.original._id)} // Uso de la función handleDelete
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
                                         </button>
                                     </td>
                                 </tr>
@@ -150,13 +170,13 @@ const TablaEbooks = () => {
                         </tbody>
                     </table>
                 </div>
-    
+
                 {/* Paginación */}
                 <div className="flex items-center justify-between mt-6">
                     <button
-                       className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                       onClick={handlePreviousPage}
-                       disabled={currentPage === 1 || isLoading}
+                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1 || isLoading}
                     >
                         Anterior
                     </button>
