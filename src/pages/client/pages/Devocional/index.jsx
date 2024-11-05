@@ -53,7 +53,7 @@ const Devocional = () => {
     return (
         <div className="flex flex-col gap-6 lg:gap-12 xl:gap-16 pb-4 lg:pb-8 xl:pb-16 items-center">
             <Header color="bg-l_color_y-600" title={'Devocional Diario'} />
-            <div className="xl:mx-56 lg:mx-40 md:mx-10 max-md:mx-5 my-10">
+            <div className="xl:mx-40 lg:mx-12 md:mx-10 max-md:mx-5 my-10">
                 <h3 className="h3-subtitles">{infoDevocional.titulo}</h3>
                 <p className="flex text-gray-500 italic my-5 text-xl xl:text-2xl break-all ">
                     {`Lectura: ${infoDevocional.versiculo}`}
@@ -93,13 +93,13 @@ const Devocional = () => {
                                 <DevocionalLoader key={index} /> // loading={true} activa los skeletons
                             ))
                         : fetchDevocionales.map((devocional, index) => (
-                            <a className="w-full" href={`/recursos/devocional/${devocional._id}`}>
-                            <Devocionales key={devocional._id} title={devocional.titulo} fecha={devocional.fecha} versiculo={devocional.versiculo}/>
+                            <a className="w-full" href={`/recursos/devocional/${devocional._id}`} key={devocional._id}>
+                            <Devocionales  title={devocional.titulo} fecha={devocional.fecha} versiculo={devocional.versiculo}/>
                             </a>
                     ))}
                     
                     
-    {/*                     
+                    {/*                     
                         <Devocionales/>
                         <Devocionales/>
                         <Devocionales/>

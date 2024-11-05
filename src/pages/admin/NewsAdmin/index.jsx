@@ -4,10 +4,10 @@ import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
 import { registrarNoticia, obtenerNoticiaID, EditarNoticia } from "../../../Api/noticias";
 import { obtenerProgramas } from "../../../Api/programas";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const NewsFormComponent = () => {
-    
+
     const navigate = useNavigate()
     const { id } = useParams();
 
@@ -34,7 +34,7 @@ const NewsFormComponent = () => {
     const handleImagenesAdicionales = (event) => {
         const files = Array.from(event.target.files);
         const validImages = files.filter((file) => file.type.startsWith('image/'));
-    
+
         if (validImages.length !== files.length) {
             setError("Por favor, sube solo archivos de imagen.");
         } else {
@@ -51,7 +51,7 @@ const NewsFormComponent = () => {
             return;
         }
         const formData = new FormData();
-        formData.append('programaRef', selectcategoria);
+        formData.append('programa_id', selectcategoria);
         formData.append('titulo', titulo);
         formData.append('cuerpo', cuerpo);
         formData.append('fecha', fecha);
@@ -83,8 +83,8 @@ const NewsFormComponent = () => {
                 setSelectcategoria(response.data.programa);
                 setTitulo(response.data.titulo);
                 setCuerpo(response.data.cuerpo);
-                setImagenFondo(response.data.portada);
-                setImagenesAdicionales(response.data.imagenes);
+          
+               
                 setFecha(response.data.fecha);
             };
             fetch();
@@ -98,7 +98,7 @@ const NewsFormComponent = () => {
             return;
         }
         const formData = new FormData();
-        formData.append('programaRef', selectcategoria);
+        formData.append('programa_id', selectcategoria);
         formData.append('titulo', titulo);
         formData.append('cuerpo', cuerpo);
         formData.append('fecha', fecha);
@@ -124,9 +124,8 @@ const NewsFormComponent = () => {
 
     return (
         <>
-            <Header color="bg-l_color_y-600" title={'Crear Noticia'} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
-                <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe la Noticia</h2>
+                <h2 className="mb-6 text-4xl font-bold text-center text-gray-800">Escribe la Noticia</h2>
                 <form onSubmit={id ? ModificarNoticia : enviarNoticia} className="space-y-6">
                     <input
                         type="text"
@@ -154,8 +153,9 @@ const NewsFormComponent = () => {
                             accept="image/*"
                             onChange={handleImagenFondo}
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            required
+                            required={!id} // Solo requerido al agregar (cuando no hay id)
                         />
+
                     </div>
                     <div>
                         <label className="block mb-2 text-gray-600">Imágenes adicionales (2 o más)</label>
@@ -166,8 +166,9 @@ const NewsFormComponent = () => {
                             onChange={handleImagenesAdicionales}
                             multiple
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            required
+                            required={!id} // Solo requerido al agregar (cuando no hay id)
                         />
+
                     </div>
                     <input
                         type="date"
@@ -179,7 +180,7 @@ const NewsFormComponent = () => {
                     />
                     <select value={selectcategoria} onChange={(event) => setSelectcategoria(event.target.value)}>
                         {Array.isArray(categorias) && categorias.map((programa) => (
-                            <option key={programa._id}>{programa.titulo}</option>
+                            <option value={programa._id}  key={programa._id}>{programa.titulo}</option>
                         ))}
                     </select>
                     <button

@@ -275,8 +275,8 @@ const ProgramaAdmin = () => {
                                                                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                                         />
                                                                     </div>
-                                                                    <div className="flex w-1/2 justify-center items-center">
-                                                                        <button className="flex p-4 rounded-md bg-red-500" onClick={handleImagenNew}>
+                                                                    <div className="flex items-center justify-center w-1/2">
+                                                                        <button className="flex p-4 bg-red-500 rounded-md" onClick={handleImagenNew}>
                                                                             Cancelar
                                                                         </button>
                                                                     </div>
@@ -286,8 +286,8 @@ const ProgramaAdmin = () => {
                                                                     <div className="flex w-1/2">
                                                                         <img src={showPortada} alt="" />
                                                                     </div>
-                                                                    <div className="flex w-1/2 justify-center items-center">
-                                                                        <button className="flex p-4 rounded-md bg-yellow-500" onClick={handleImagenNew}>
+                                                                    <div className="flex items-center justify-center w-1/2">
+                                                                        <button className="flex p-4 bg-yellow-500 rounded-md" onClick={handleImagenNew}>
                                                                             Cambiar
                                                                         </button>
                                                                     </div>

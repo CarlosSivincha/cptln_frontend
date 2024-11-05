@@ -67,8 +67,9 @@ export const Programs = () => {
                         title={programa.titulo} 
                         img={programa.imagenes ? programa.imagenes : {ImageNotFound} }  
                         description={programa.descripcion} 
-                        posicion={index % 2 == 0 ? "derecha" : "izquierda"} 
-                        link={`programa/${programa.titulo}`}
+                        posicion={index % 2 == 0 ? "derecha" : "izquierda"}
+                        enlace={programa.enlace != null ? true : false}
+                        link={programa.enlace != null ? programa.enlace : (`programa/${programa.titulo}`)}
                         />)
                     ))
                 }

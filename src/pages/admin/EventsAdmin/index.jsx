@@ -19,7 +19,6 @@ const EventsAdmin = () => {
 
     const [error, setError] = useState(""); // Estado para manejar el mensaje de error
 
-
     const handleTitulo = (event) => setTitulo(event.target.value);
     const handleCuerpo = (html) => {
         const textoPlano = html.replace(/<[^>]+>/g, ''); // Elimina el HTML para contar solo el texto

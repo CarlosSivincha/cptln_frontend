@@ -25,13 +25,22 @@ export const HomeProgramsCard = ({ program }) => {
   };
 
   const getImageUrl = () => {
-    if (program?.imagenes?.length > 0 && !program.portadaEnlace) {
-      return program.imagenes[program.indicePortada - 1];
+    if (program?.imagenes?.length > 0 || program.portadaEnlace){
+      if (!program.portadaEnlace) {
+        return program.imagenes[program.indicePortada - 1];
+      } else {
+        return program.portadaEnlace;
+      }
     } else {
-      return program.portadaEnlace;
+      return (ImageNotFound);
     }
-    return ImageNotFound; // Imagen por defecto
+     // Imagen por defecto
   };
+
+
+{/* <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <span className="text-gray-400">No image available</span>
+                        </div> */}
 
   return (
     <div

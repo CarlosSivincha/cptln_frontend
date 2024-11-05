@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import video from "../../../../../../assets/video_test.mp4"
+import video from "../../../../../../assets/video_test.mp4";
 
 const MOCK_MEDIA = [
   {
@@ -30,7 +30,7 @@ const MOCK_MEDIA = [
   }
 ];
 
-export const MediaSlider = ({ media = MOCK_MEDIA }) => {
+export const MediaSlider = ({ contenido = MOCK_MEDIA }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -39,8 +39,8 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
   const mediaRefs = useRef({});
 
   useEffect(() => {
-    if (!isDragging) {
-      const currentMedia = media[currentIndex];
+    if (!isDragging && contenido[currentIndex]) {
+      const currentMedia = contenido[currentIndex];
       if (currentMedia.type === 'video' || currentMedia.type === 'audio') {
         const mediaElement = mediaRefs.current[currentIndex];
         if (mediaElement) {
@@ -49,28 +49,24 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
         }
       }
     }
-  }, [isDragging, currentIndex]);
+  }, [isDragging, currentIndex, contenido]);
 
   useEffect(() => {
     Object.entries(mediaRefs.current).forEach(([index, mediaRef]) => {
-      if (parseInt(index) !== currentIndex) {
+      if (parseInt(index) !== currentIndex && mediaRef) {
         mediaRef.pause();
-      } else if (mediaRef && (media[currentIndex].type === 'video' || media[currentIndex].type === 'audio')) {
+      } else if (mediaRef && (contenido[currentIndex]?.type === 'video' || contenido[currentIndex]?.type === 'audio')) {
         mediaRef.play().catch(err => console.log('Error al reproducir:', err));
       }
     });
-  }, [currentIndex]);
+  }, [currentIndex, contenido]);
 
   const handleMediaEnd = () => {
-    if (currentIndex < media.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(0);
-    }
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % contenido.length);
   };
 
   const handleDragStart = (e) => {
-    if (media.length <= 1) return;
+    if (contenido.length <= 1) return;
     setIsDragging(true);
     setStartX(e.type === 'mousedown' ? e.pageX : e.touches[0].pageX);
   };
@@ -81,18 +77,17 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
     const currentX = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
     const diff = currentX - startX;
     const sliderWidth = sliderRef.current.offsetWidth;
-    const boundedTranslateX = Math.max(Math.min(diff, sliderWidth), -sliderWidth);
-    setTranslateX(boundedTranslateX);
+    setTranslateX(Math.max(Math.min(diff, sliderWidth), -sliderWidth));
   };
 
   const handleDragEnd = () => {
     if (!isDragging || !sliderRef.current) return;
     const sliderWidth = sliderRef.current.offsetWidth;
     const moveRatio = translateX / sliderWidth;
-    if (moveRatio < -0.2 && currentIndex < media.length - 1) {
-      setCurrentIndex(prev => prev + 1);
+    if (moveRatio < -0.2 && currentIndex < contenido.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
     } else if (moveRatio > 0.2 && currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1);
+      setCurrentIndex((prev) => prev - 1);
     }
     setIsDragging(false);
     setTranslateX(0);
@@ -103,28 +98,29 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
   };
 
   const renderMediaItem = (item, index) => {
-    const commonClasses = "max-w-full max-h-full w-auto h-auto object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2";
-    
     switch (item.type) {
       case 'video':
         return (
-          <video
-            ref={el => mediaRefs.current[index] = el}
-            src={video}
-            poster={item.poster}
-            className={`${commonClasses} w-full h-full object-cover`}
-            controls
-            playsInline
-            preload="metadata"
-          />
+          <div className="w-full h-full flex items-center justify-center bg-black">
+            <video
+              ref={el => (mediaRefs.current[index] = el)}
+              src={item.ruta}
+              poster={item.poster}
+              className="w-full h-full"
+              style={{ objectFit: 'contain' }}
+              controls
+              playsInline
+              preload="metadata"
+            />
+          </div>
         );
       case 'audio':
         return (
-          <div className="w-[90%] mx-auto h-full flex flex-col items-center justify-center">
+          <div className="w-full h-full flex flex-col items-center justify-center p-4">
             <audio
-              ref={el => mediaRefs.current[index] = el}
+              ref={el => (mediaRefs.current[index] = el)}
               src={item.ruta}
-              className="w-full max-w-md"
+              className="w-full max-w-2xl"
               controls
               preload="metadata"
             />
@@ -132,28 +128,23 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
         );
       default: // image
         return (
-          <img
-            src={item.ruta}
-            alt={item.alt || `Slide ${index + 1}`}
-            className={commonClasses}
-            draggable="false"
-          />
+          <div className="w-full h-full flex items-center justify-center bg-black">
+            <img
+              src={item.ruta}
+              alt={item.alt || `Slide ${index + 1}`}
+              className="w-full h-full"
+              style={{ objectFit: 'contain' }}
+              draggable="false"
+            />
+          </div>
         );
     }
   };
 
-  if (!media || media.length === 0) {
+  if (!contenido || contenido.length === 0) {
     return (
       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
         <span className="text-gray-400">No media available</span>
-      </div>
-    );
-  }
-
-  if (media.length === 1) {
-    return (
-      <div className="w-full aspect-video max-w-[800px] mx-auto bg-black relative">
-        {renderMediaItem(media[0], 0)}
       </div>
     );
   }
@@ -179,11 +170,8 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
             transform: `translateX(${translateValue}%)`,
           }}
         >
-          {media.map((item, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 w-full h-full bg-black relative"
-            >
+          {contenido.map((item, index) => (
+            <div key={index} className="flex-shrink-0 w-full h-full relative">
               {renderMediaItem(item, index)}
             </div>
           ))}
@@ -191,7 +179,7 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
       </div>
 
       <div className="absolute top-4 right-4 bg-black/50 text-white px-2 py-1 rounded-md text-sm font-medium">
-        {currentIndex + 1}/{media.length}
+        {currentIndex + 1}/{contenido.length}
       </div>
 
       {currentIndex > 0 && (
@@ -203,7 +191,7 @@ export const MediaSlider = ({ media = MOCK_MEDIA }) => {
           <span className="text-white font-bold">&lt;</span>
         </button>
       )}
-      {currentIndex < media.length - 1 && (
+      {currentIndex < contenido.length - 1 && (
         <button
           onClick={() => goToSlide(currentIndex + 1)}
           className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-black/20 hover:bg-black/40 transition-colors"

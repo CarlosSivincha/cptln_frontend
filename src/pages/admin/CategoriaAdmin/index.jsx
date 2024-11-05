@@ -131,9 +131,8 @@ const CategoriaAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_v-600" title={`${id ? "Editar Categoria" : "Crear Categoria"}`} />
             <div className="max-w-4xl px-5 py-10 lg:w-[1000px] w-[500px] m-auto md:px-8 lg:px-12">
-                <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe la Categoria</h2>
+                <h2 className="mb-6 text-4xl font-bold text-center text-gray-800">Escribe la Categoria</h2>
                 <form onSubmit={id ? ModificarCategoria : enviarCategoria} className="space-y-8">
                     <div>
                         <label className="block font-semibold text-gray-700">Nombre</label>

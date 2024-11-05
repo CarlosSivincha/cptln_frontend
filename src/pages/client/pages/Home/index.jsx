@@ -6,9 +6,10 @@ import Slider from "react-slick";
 // ../../../Api/Noticias.js
 import { obtenerNoticia } from "@/Api/noticias";
 import { obtenerEventos } from "@/Api/eventos";
-import { obtenerProgramas } from "@/Api/programas";
+import { obtenerDatosDeRadio } from "@/Api/radio";
+import { obtenerProgramasCliente } from "@/Api/programas";
 
-import video from "../../../../assets/file.mp4"
+import video from "../../../../assets/video_creciendo_familia.mp4"
 
 import data from "../../data.json";
 
@@ -44,9 +45,11 @@ export const Home = () => {
   const [fetchNoticias, setFetchNoticias] = useState([]);
   const [fetchEventos, setFetchEventos] = useState([]);
   const [fetchProgramas, setFetchProgramas] = useState([]);
+  const [fetchRadio, setFetchRadio] = useState([]);
   const [isLoadingNews, setIsLoadingNews] = useState(true); // Nuevo estado de carga
   const [isLoadingEvents, setIsLoadingEventes] = useState(true); // Nuevo estado de carga
   const [isLoadingPrograms, setIsLoadingPrograms] = useState(true); // Nuevo estado de carga
+  const [isLoadingRadio, setIsLoadingRadio] = useState(true); // Nuevo estado de carga
 
   function convertirTexto(texto) {
     return texto ? texto.trim().toLowerCase().replace(/\s+/g, '-') : '';
@@ -54,7 +57,7 @@ export const Home = () => {
 
   useEffect(() => {
     const fetchProgram = async () => {
-      const response = await obtenerProgramas();
+      const response = await obtenerProgramasCliente();
       // console.log(response)
       setFetchProgramas(response.data);
       setIsLoadingPrograms(false);
@@ -74,6 +77,13 @@ export const Home = () => {
       setIsLoadingEventes(false);
     };
     fetchEvent();
+    const fetchRadio = async () => {
+      const response = await obtenerDatosDeRadio();
+      // console.log(response)
+      setFetchRadio(response.data);
+      setIsLoadingRadio(false);
+    };
+    fetchRadio();
   }, []);
 
   const updateSlidesToShow = () => {
@@ -165,7 +175,7 @@ export const Home = () => {
                   // console.log(fetchProgramas)
                   return (
                     
-                    <a key={index} className="relative px-2" href={`${program.categoria_id ? `/programas/${convertirTexto(program.categoria_id)}` : ""}/programa/${convertirTexto(program.titulo)}`}>
+                    <a key={index} className="relative px-2" href={program.enlace != null ? program.enlace : (`${program.categoria_id ? `/programas/${convertirTexto(program.categoria_id)}` : ""}/programa/${convertirTexto(program.titulo)}`)} target={program.enlace != null ? "_blank" : "_self"}>
                       <HomeProgramsCard program={program} />
                     </a>
                   );
@@ -177,11 +187,11 @@ export const Home = () => {
         
 
         {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]"> */}
-        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
+        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-12">
           <div className="flex flex-col justify-between w-full">
-              <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6">
-                  <h3 className="h3-subtitles">Creciendo en Familia</h3>
-                  <p className="standard-paragraph">Descripcion de Creciendo en Familia</p>
+              <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6 mb-4">
+                  <h3 className="h3-subtitles">{fetchRadio.nombre}</h3>
+                  <p className="standard-paragraph text-justify line-clamp-[9] 2xl:line-clamp-[10]" dangerouslySetInnerHTML={{ __html: fetchRadio.descripcion}}></p>
               </div>
               <a href="/programa/creciendo-en-familia">
                   <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
@@ -189,11 +199,11 @@ export const Home = () => {
                   </button>
               </a>
           </div>
-          <div className="relative overflow-hidden">
+          <div className="max-h-[500px] bg-[#222126] rounded-t-xl lg:rounded-t-none lg:rounded-md">
               <video 
                   src={video} 
                   controls 
-                  className="w-full h-auto object-contain rounded-t-xl lg:rounded-t-none lg:rounded-md"
+                  className="w-full h-full object-contain "
               />
           </div>
       </div>
@@ -201,7 +211,15 @@ export const Home = () => {
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
         <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
           <div className="min-[310px]:mx-auto min-[1110px]:mx-10 2xl:mx-auto">
-            <h3 className="h3-subtitles mb-5">Noticias</h3>
+            {/* <h3 className="h3-subtitles mb-5">Noticias</h3> */}
+            <div className="flex items-center gap-4 mb-8">
+              <h2 className="h3-subtitles">Noticias</h2>
+              <a href="/noticias-y-eventos">
+                <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
+                  Ver todo
+                </button>
+              </a>
+            </div>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3">
               {isLoadingNews // Mientras está cargando, muestra los skeletons
                 ? Array(6) // Crear 6 skeletons como placeholders
