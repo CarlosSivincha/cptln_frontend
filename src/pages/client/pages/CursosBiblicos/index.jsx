@@ -1,4 +1,4 @@
-import { lazy, useState } from "react";
+import { lazy, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import videotest from '../../../../assets/file.mp4';
 import WhiteIcon from "../../../../assets/WhiteIcon.png";
@@ -7,6 +7,7 @@ import { CursoCart } from "./components/CursoCart"
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
 
+import { obtenerCurso } from "@/Api/cursos";
 
 const CursosBiblico = () => {
 
@@ -17,6 +18,9 @@ const CursosBiblico = () => {
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
     const [correo, setCorreo] = useState("");
+
+    const [cursos, setCursos] = useState([]);
+    const [isLoadingCursos, setIsLoadingCursos] = useState([]);
 
     const handleNombre = (event) => setNombres(event.target.value);
     const handleApellido = (event) => setApellidos(event.target.value);
@@ -32,7 +36,7 @@ const CursosBiblico = () => {
             const respuesta = await solicitudCursos(formData);
             console.log(respuesta);
             guardarSessionStorage();
-            navigate("/recursos/cursos-biblicos/curso-completo");
+            // navigate("/recursos/cursos-biblicos/curso-completo");
 
             setNombres('');
             setApellidos('');
@@ -42,6 +46,23 @@ const CursosBiblico = () => {
             console.log(error);
         };
     };
+
+    useEffect(() =>{
+        // console.log(sessionValue)
+        const value = sessionStorage.getItem('validacion_cursos')
+        if (value) {
+            setSessionValue(value)
+        }
+    }, [sessionValue])
+
+    useEffect(() => {
+        const fetchDevocional = async () =>{
+            const response = await obtenerCurso()
+            setCursos(response.data)
+            setIsLoadingCursos(false)
+        }
+        fetchDevocional()
+    }, [])
 
     const guardarSessionStorage = () => {
         
@@ -60,9 +81,13 @@ const CursosBiblico = () => {
     return (
         <div className="flex flex-col gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28">
             <Header color="bg-l_color_o-600" title="Cursos Bíblicos" />
-            <div className="flex md:max-w-[700px] box-content mx-[30px] md:items-center md:mx-auto lg:max-w-[1500px] min-[1580px]:mx-auto lg:mx-[40px] rounded-xl">
-                <CursoCart scrollToElement={scrollToElement} titulo = {"Dios se revela"} 
-    descripcion = "Dios se revela es un curso que, haciendo uso de la tecnología y lenguaje modernos, explica la fe cristiana. En él se presenta la obra de salvación de Dios a través de Cristo, los principios fundamentales de la fe cristiana y diversos aspectos prácticos de la fe en la vida del creyente." />
+            <div className="grid grid-cols-1 gap-12 lg:gap-16 xl:gap-28 mx-5 sm:mx-10 2xl:w-full max-w-[1500px] xl:mx-10 2xl:mx-auto rounded-xl">
+                {
+                    !isLoadingCursos && cursos && cursos.map((curso) => (
+                        <CursoCart scrollToElement={scrollToElement} titulo = {curso.titulo} descripcion = {curso.descripcion} capitulos = {curso.capitulos} preview = {curso.capitulos[0] && curso.capitulos[0].titulo} previewVideo = {curso.capitulos[0] && curso.capitulos[0].idYoutube} state={sessionValue} id = {curso._id}/>
+                    ))
+                }
+                
             </div>
             <div className="h-auto max-[600px]:w-full flex max-lg:flex-col min-[600px]:mx-[30px] md:w-max-[700px] md:mx-auto lg:mx-[40px] box-content md:items-center min-[1580px]:max-w-[1500px] min-[1580px]:mx-auto min-[1580px]:w-full max-lg:gap-1" id="formulario">
                 <div className="flex flex-col justify-center gap-5 px-5 py-5 xl:px-10 max-lg:h-2/5 w-full bg-[#A3723B] text-white lg:text-black lg:bg-white text-center h-auto lg:h-96">

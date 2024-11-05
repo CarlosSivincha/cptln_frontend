@@ -3,10 +3,17 @@ import { useState } from "react";
 // eslint-disable-next-line react/prop-types
 const NewsCard = ({ title, date, description, link, imageSrc }) => {
 
-  function convertirFechaPersonalizada(fecha) {
-    const fechaObj = new Date(fecha);
+  const handleDateUTC = (dateString) => {
+    const dateObj = new Date(dateString);
+    return new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
+  };
 
-    const dia = fechaObj.getDate()-1;
+  
+  function convertirFechaPersonalizada(date) {
+    const dateFormat = handleDateUTC(date);
+    const fechaObj = new Date(dateFormat);
+
+    const dia = fechaObj.getDate();
     const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
     const año = fechaObj.getFullYear();
 

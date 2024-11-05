@@ -13,7 +13,7 @@ export const ProgramaEspecifico = () => {
     const { nombre } = useParams();
     const [programasCategoria, setProgramasCategoria] = useState([]);
     const [loadingProgramas, setLoadingProgramas] = useState(true);
-    const [infoCategoria, setInfoCategoria] = useState([]);
+    const [infoCategoria, setInfoCategoria] = useState("");
     const [loadingCategoria, setLoadingCategorias] = useState(true);
 
     useEffect(() => {
@@ -43,10 +43,11 @@ export const ProgramaEspecifico = () => {
                     formData.append("nombre", nombre);
                     const response = await BuscarCategoriaPorNombre(formData);
                     setInfoCategoria(response.data);
+                    // console.log(infoCategoria.color);
                     setLoadingCategorias(false);
                 }
             } catch (error) {
-                console.error("Error fetching categoria:", error);
+                // console.error("Error fetching categoria:", error);
                 setLoadingCategorias(false);
             }
         };
@@ -57,17 +58,17 @@ export const ProgramaEspecifico = () => {
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
             {loadingCategoria ? (
-                <Header color="bg-l_color_y-600" title="Cargando..." />
-            ) : infoCategoria && infoCategoria.length > 0 ? (
+                <Header color={`#908A42`} title="Cargando..." />
+            ) : infoCategoria && infoCategoria.length ? (
                 <Header 
-                    color="bg-l_color_y-600" 
+                    color={infoCategoria[0].color} 
                     title={infoCategoria[0].nombre} 
                     return 
                     returnText="Programas" 
                     linkReturn="/programas" 
                 />
             ) : (
-                <Header color="bg-l_color_y-600" title="Categoría no encontrada" />
+                <Header color="#908A42" title="Categoría no encontrada" />
             )}
 
             {loadingCategoria ? (
@@ -80,15 +81,19 @@ export const ProgramaEspecifico = () => {
 
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24">
                 {!loadingProgramas && programasCategoria.map((programa, index) => (
+                    <>
                     <ProgramCard
                         key={programa._id}
                         color={programa.color}
                         title={programa.titulo}
-                        img={programa.imagenes} // Asegúrate de que esto coincida con la estructura esperada por ProgramCard
+                        img={programa.imagenes}
                         description={programa.descripcion}
                         posicion={index % 2 === 0 ? "izquierda" : "derecha"}
+                        enlace={programa.enlace != null ? true : false}
                         link={`${programa.enlace ? programa.enlace: `/programas/${programa.categoria_id}/programa/${programa.titulo}`}`}
                     />
+                    {console.log(programa.imagenes)}
+                    </>
                 ))}
             </div>
         </div>

@@ -8,6 +8,8 @@ export const obtenerInfoProgramaContenido = (programaEspecifico) => axios.post(`
 
 export const obtenerProgramas = () => axios.get("programa")
 
+export const obtenerProgramasCliente = () => axios.get("client/programa")
+
 export const obtenerProgramasPagination = (params) => axios.get('programa/pagination', params)
 
 export const obtenerContenidoProgramaPagination = (id, params) => axios.get(`/programa/contenido/pagination/${id}`, params )

@@ -17,3 +17,4 @@ export const obtenerSeccionCotenido = (idseccion, idcontenido) => axios.get(`/ad
 export const modificarSeccionContenido = (idseccion, idcontenido, data) => axios.post(`/admin/radio/secciones/${idseccion}/contenido/${idcontenido}`, data)
 
 export const obtenerRadioDataCliente = () => axios.get(`client/radio`)
+export const obtenerRadioDataSeccion = (id) => axios.get(`client/radio/seccion/${id}`)
