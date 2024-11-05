@@ -131,7 +131,7 @@ const App = () => {
                       element={<CreciendoEnFamilia />}
                     />
                     <Route
-                      path="programa/creciendo-en-familia/salud"
+                      path="programa/creciendo-en-familia/:id"
                       element={<CreciendoEnFamiliaSecciones />}
                     />
                     <Route
@@ -160,7 +160,7 @@ const App = () => {
                       element={<CursosBiblicos />}
                     />
                     <Route
-                      path="recursos/cursos-biblicos/curso-completo"
+                      path="recursos/cursos-biblicos/:id"
                       element={<CursosCompletos />}
                     />
                     <Route

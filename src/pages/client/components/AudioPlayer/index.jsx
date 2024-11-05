@@ -153,7 +153,7 @@ const AudioPlayer = ({ audio }) => {
           step='0.01'
           value={controlVolume}
           onChange={handleVolumeChange}
-          className='w-20 ml-2'
+          className='w-20 ml-2 hidden sm:block'
         />
       </div>
     </div>

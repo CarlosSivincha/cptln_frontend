@@ -8,6 +8,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import NewsCard from "../../components/NewsCard";
 import { obtenerInfoProgramaContenido } from "@/Api/programas";
+import { obtenerNoticiasPrograma } from "@/Api/noticias";
+
+const NewsLoader = lazy(() => import("@/pages/client/components/Loaders/NewsLoader.jsx"));
+
 import ImageNotFound from "@/assets/image_not_found.jpg";
 
 const Header = lazy(() => import("@/pages/client/components/Header"));
@@ -67,8 +71,12 @@ const ProgramSelect = () => {
 
     const { categoria, programa } = useParams();
     const [programaInfo, setProgramaInfo] = useState([]);
+
     const [contenidoPrograma, setContenidoPrograma] = useState([]);
     const [loadingProgramaInfo, setLoadingProgramaInfo] = useState(true);
+
+    const [noticias, setNoticias] = useState([])
+    const [isLoadingNoticias, setIsLoadingNoticias] = useState(true)
 
     const navigate = useNavigate()
 
@@ -80,6 +88,7 @@ const ProgramSelect = () => {
                     formData.append("nombre", programa);
                     const response = await obtenerInfoProgramaContenido(formData);
                     setProgramaInfo(response.data);
+                    console.log(response.data)
                     setContenidoPrograma(response.data.contenido)
                     setLoadingProgramaInfo(false);
                 }
@@ -92,11 +101,31 @@ const ProgramSelect = () => {
         fetchProgramas();
     }, [programa]);
 
+    useEffect(() => {
+        const fetch = async () => {
+            const response = await obtenerNoticiasPrograma({programa_id: programaInfo._id})
+            setNoticias(response.data)
+            setIsLoadingNoticias(false)
+            console.log(response.data)
+        }
+        fetch()
+    }, [programaInfo])
+
     
 
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
-            <Header color="bg-l_color_y-700" title={programaInfo.titulo}/>
+            {loadingProgramaInfo ? (
+                <Header color={`#908A42`} title="Cargando..." />
+            ) : programaInfo ? (
+                <Header 
+                    color={programaInfo.color} 
+                    title={programaInfo.titulo} 
+                />
+            ) : (
+                <Header color="#908A42" title="Programa no encontrada" />
+            )}
+            {/* <Header color="bg-l_color_y-700" title={programaInfo.titulo}/> */}
             {/* flex justify-between max-md:flex-col gap-10 max-w-[1280px] box-content px-10 max-[600px]:px-[30px] md:items-center md:mx-auto */}
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24 px-10 max-[600px]:px-[30px] md:items-center md:mx-auto max-w-[1280px]">
 
@@ -155,51 +184,39 @@ const ProgramSelect = () => {
                 </div> */}
                 
             </div>
-            {/* <div className="px-10 max-[600px]:px-[30px] md:px-[50px] lg:px-[80px] 2xl:mx-auto max-w-[1580px]">
-            <h3 className="h3-subtitles mb-6">Eventos pasados de JOEL</h3>
-                <Slider {...settings}>
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                    <NewsCard
-                        imageSrc={imgNoticia}
-                        title={'Noticia 1'}
-                        date={'15 Agosto, 2024'}
-                        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
-                </Slider>
-            </div> */}
+            <div className="px-10 max-[600px]:px-[30px] md:px-[50px] lg:px-[80px] 2xl:mx-auto max-w-[1580px]">
+                <h3 className="h3-subtitles mb-6">Eventos pasados de JOEL</h3>
+                <div className="grid grid-cols-1">
+
+                    <Slider {...settings}>
+                        {/* <NewsCard
+                            imageSrc={imgNoticia}
+                            title={'Noticia 1'}
+                            date={'15 Agosto, 2024'}
+                            description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.'} />
+                         */}
+
+                        {isLoadingNoticias // Mientras está cargando, muestra los skeletons
+                            ? Array(6) // Crear 6 skeletons como placeholders
+                                .fill()
+                                .map((_, index) => (
+                                    <NewsLoader key={index} />
+                                    // loading={true} activa los skeletons
+                                ))
+                            : noticias.map((not, index) => (
+                                <NewsCard
+                                    key={not._id}
+                                    title={not.titulo}
+                                    date={not.fecha}
+                                    description={not.cuerpo}
+                                    link={not._id}
+                                    imageSrc={not.portada}
+                                    loading={false} // loading={false} oculta los skeletons
+                                />
+                        ))}
+                    </Slider>
+                </div>
+            </div>
         </div>
 
     )

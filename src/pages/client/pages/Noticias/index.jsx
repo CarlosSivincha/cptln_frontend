@@ -70,10 +70,16 @@ export const Noticia = () => {
     
   }, [id, navigate]);
 
-  function convertirFechaPersonalizada(fecha) {
-    const fechaObj = new Date(fecha);
+  const handleDateUTC = (dateString) => {
+    const dateObj = new Date(dateString);
+    return new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
+  };
 
-    const dia = fechaObj.getDate()-1;
+  function convertirFechaPersonalizada(fecha) {
+    const dateFormat = handleDateUTC(fecha);
+    const fechaObj = new Date(dateFormat);
+
+    const dia = fechaObj.getDate();
     const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
     const año = fechaObj.getFullYear();
 
@@ -107,9 +113,7 @@ export const Noticia = () => {
 
       {/* <div dangerouslySetInnerHTML={{__html: noticia.cuerpo}}></div> */}
 
-      
-
-      <div className="flex max-2xl:flex-col mx-5 sm:mx-10 md:mx-20 lg:mx-24 min-[1110px]:max-w-[1100px] min-[1110px]:mx-10 min-[1210px]:mx-auto gap-10 2xl:gap-20 2xl:max-w-[1450px] 2xl:mx-16 min-[1600px]:mx-auto">
+      <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
         <div className="flex flex-col gap-10 2xl:w-8/12">
           <p className="standard-paragraph whitespace-pre-line" dangerouslySetInnerHTML={{ __html: noticia.cuerpo}}></p>
           {

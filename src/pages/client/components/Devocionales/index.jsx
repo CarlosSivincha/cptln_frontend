@@ -5,9 +5,14 @@ export const Devocionales = ({
     fecha,
     versiculo}) => {
 
+    const handleDateUTC = (dateString) => {
+        const dateObj = new Date(dateString);
+        return new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
+        };
+
     function convertirFechaPersonalizada(fecha) {
-        const fechaObj = new Date(fecha);
-    
+        const dateFormat = handleDateUTC(fecha);
+        const fechaObj = new Date(dateFormat);
         const dia = fechaObj.getDate();
         const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
         const año = fechaObj.getFullYear();

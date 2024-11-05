@@ -386,21 +386,57 @@ const Navbar = () => {
           {/* Submenú de Programas */}
           {isProgramsOpen && (
             <ul className="pl-6 space-y-2">
-              <li className="flex items-center space-x-2 text-gray-800 hover:text-gray-600">
-                <a href="/programas/niños-adolescentes" onClick={() => setIsOpen(false)}>
-                  Niños y Adolescentes
-                </a>
-              </li>
-              <li className="flex items-center space-x-2 text-gray-800 hover:text-gray-600">
-                <a href="/programas/familia" onClick={() => setIsOpen(false)}>
-                  Familia
-                </a>
-              </li>
-              <li className="flex items-center space-x-2 text-gray-800 hover:text-gray-600">
-                <a href="/programas/creciendo-en-familia" onClick={() => setIsOpen(false)}>
-                  Creciendo en Familia
-                </a>
-              </li>
+              
+              {isLoadingCategorias // Mientras está cargando, muestra los skeletons
+                    ? Array(3) // Crear 6 skeletons como placeholders
+                        .fill()
+                        .map((_) => (
+                          <li
+                              className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
+                            >
+                              Loading...
+                          </li>
+                        ))
+                    : fetchCategorias.map((categoria, index) => {
+                      //console.log(program); // Para ver si los datos son correctos
+                      // console.log(fetchProgramas)
+                      return (
+                        
+                        <a
+                          href={`/programas/${convertirTexto(categoria.nombre)}`}
+                          className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
+                          key={index}
+                        >
+                          {categoria.nombre}
+                        </a>
+                      );
+                    })
+                  }
+                  {isLoadingPrograms // Mientras está cargando, muestra los skeletons
+                    ? Array(3) // Crear 6 skeletons como placeholders
+                        .fill()
+                        .map((_) => (
+                          <li
+                              className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
+                            >
+                              Loading...
+                          </li>
+                        ))
+                    : fetchProgramas.map((program, index) => {
+                      return(
+                        program.categoria == "" && (
+                          <a
+                            href={`/programa/${convertirTexto(program.titulo)}`}
+                            className="flex items-center space-x-2 text-gray-800 hover:text-gray-600"
+                            key={index}
+                          >
+                            {program.abreviatura}
+                          </a>
+                        )
+                      )
+
+                    })
+                  }
             </ul>
           )}
 

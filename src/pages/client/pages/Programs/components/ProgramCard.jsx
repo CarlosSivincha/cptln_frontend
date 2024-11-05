@@ -65,7 +65,7 @@ export const ProgramCard = ({ posicion = "derecha", img = [], ...props }) => {
                         dangerouslySetInnerHTML={{ __html: props.description || '' }}
                     ></p>
                     <a 
-                        href={convertirTexto(props.link)} 
+                        href={props.enlace ? props.link : convertirTexto(props.link)} target={props.enlace ? "_black" : "_self"}
                         className="flex items-center gap-3 self-end mt-auto font-bold text-[1.2em] leading-[1.5em] max-[1100px]:text-[1.075em] max-[1100px]:leading-[1.4em] text-[#3C5050] hover:text-[#46797A] rounded-md"
                     >
                         <span>Conocer más</span>
