@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerCapitulosCursoPag } from '../../../Api/cursos';
+import { buscarContenidosDelCurso, ordenarListaDeCapitulos } from '../../../Api/cursos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
@@ -14,32 +14,27 @@ import { MdDeleteForever } from "react-icons/md";
 
 const TablaCapituloCurso = () => {
 
+    const navigate = useNavigate();
+
     const { idcurso } = useParams()
 
-    const [capitulosCur, setCapitulosCur] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1); // Página actual
-    const [totalPages, setTotalPages] = useState(1);
-    const [isLoading, setIsLoading] = useState(false); // Estado de carga
-
-    
+    const [capitulos, setCapitulos] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        const fetch = async (page) => {
-            console.log(idcurso);
+        const fetch = async () => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerCapitulosCursoPag(idcurso, { params: { page: Number(page), limit: 10 } });
-                setCapitulosCur(response.data.capitulosCurso);
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
+                const response = await buscarContenidosDelCurso(idcurso);
+                setCapitulos(response.data);
             } catch (error) {
                 console.log(error);
             } finally {
                 setIsLoading(false); // Finalizar estado de carga
             }
         }
-        fetch(currentPage);
-    }, [currentPage]);
+        fetch();
+    }, [capitulos]);
 
     const columnHelper = createColumnHelper();
 
@@ -60,28 +55,39 @@ const TablaCapituloCurso = () => {
     ];
 
     const table = useReactTable({
-        data: capitulosCur,
+        data: capitulos,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
 
-    const navigate = useNavigate();
 
-    const EditarCapituloCurso = (id) => {
-        navigate(`${id}`);
+    // Gurdar el indice del objeto seleccionado
+    const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+    const [isHovering, setIsHovering] = useState(false);
+
+    // Evento que inicializa al arrastrar el objeto
+    const handleDragStart = (index) => {
+        setDraggedItemIndex(index);
     };
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
+    // Evento que ocurre durante toda la interacccion de arrastrar, en este caso, previene que al momemnto de arrastrar
+    // el objeto, se regrese automaticamente
+    const handleDragOver = (event) => {
+        event.preventDefault();
+        setIsHovering(true)
     };
 
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
+    // Evento al soltar el objeto arrastrado
+    const handleDrop = async (index) => {
+        const formData = new FormData()
+        formData.append('indexSeleccionado', draggedItemIndex)
+        formData.append('indexInsertar', index)
+        const response = await ordenarListaDeCapitulos(idcurso, formData)
+        setContenido(response.data);
+        setDraggedItemIndex(null);
+        setIsHovering(false);
     };
+
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
@@ -123,6 +129,10 @@ const TablaCapituloCurso = () => {
                             {table.getRowModel().rows.map((row, index) => (
                                 <tr
                                     key={row.id}
+                                    draggable
+                                    onDragStart={() => handleDragStart(index)}
+                                    onDragOver={handleDragOver}
+                                    onDrop={() => handleDrop(index)}
                                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                                 >
                                     {row.getVisibleCells().map(cell => (
@@ -136,7 +146,7 @@ const TablaCapituloCurso = () => {
                                     <td className="px-4 py-2 text-center border border-gray-300">
                                         <button
                                             type='button'
-                                            onClick={() => EditarCapituloCurso(row.original._id)}
+                                            onClick={() => navigate(`${row.original._id}`)}
                                             className="text-blue-500 transition-colors hover:text-blue-600">
 
                                             <MdEditDocument size={20} />
@@ -144,7 +154,7 @@ const TablaCapituloCurso = () => {
                                         </button>
                                         <button
                                             type='button'
-                                            // onClick={() => EditarCapituloCurso(row.original._id)}
+                                            onClick={() => navigate(`${row.original._id}`)}
                                             className="text-red-500 transition-colors hover:text-red-600">
                                             <MdDeleteForever size={20} />
                                         </button>
@@ -154,24 +164,6 @@ const TablaCapituloCurso = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
-
-                {/* Paginación */}
-                <div className="flex items-center justify-between mt-6">
-                    <button
-                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={handlePreviousPage}
-                        disabled={currentPage === 1 || isLoading}
-                    >
-                        Anterior
-                    </button>
-                    <button
-                        className={`px-4 py-2 text-sm rounded-md  bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === totalPages || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages || isLoading}
-                    >
-                        Siguiente
-                    </button>
                 </div>
             </div>
         </div>

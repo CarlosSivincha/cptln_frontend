@@ -34,7 +34,7 @@ const ProgramaAdmin = () => {
     const handleImagenesAdicionales = (event) => {
         setImagenesAdicionales(event.target.files);
     };
-    const handlePortada = (event) => setPortada(event.target.files[0])
+    const handlePortada = (event) => setPortada(event.target.files)
 
     // Intercambiar entre datos o agregar un enlace
     const [panelEnlaceDatos, setPanelEnlaceDatos] = useState(false)
@@ -75,9 +75,7 @@ const ProgramaAdmin = () => {
                 setDescripcion(response.data.descripcion)
                 setAbreviatura(response.data.abreviatura)
                 setColor(response.data.color)
-                setImagenesAdicionales(response.data.imagenes)
                 setEnlace(response.data.enlace)
-                setShowPortada(response.data.portadaEnlace)
                 
                 if (response.data.enlace === null) {
                     setPanelEnlaceDatos(true)
@@ -101,11 +99,13 @@ const ProgramaAdmin = () => {
             formData.append('categoria_id', selectcategoria || "");
             if (panelEnlaceDatos) {
                 [...imagenesAdicionales].forEach((file) => {
-                    formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
+                    formData.append('imagenes', file || ""); // Todos los archivos bajo el mismo nombre 'imagenes'
                 });
             } else {
                 formData.append('enlace', enlace || "");
-                formData.append('portadaEnlace', portada)
+                [...portada].forEach((file) => {
+                    formData.append('imagenesEnlace', file || ""); // Todos los archivos bajo el mismo nombre 'imagenes'
+                })
             }
             const respuesta = await crearPrograma(formData);
             console.log(respuesta);
@@ -129,10 +129,10 @@ const ProgramaAdmin = () => {
                     formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
                 });
             } else {
-                formData.append('enlace', enlace);
-                if (imagenNew) {
-                    formData.append('portadaEnlace', portada);
-                }
+                formData.append('enlace', enlace || "");
+                [...portada].forEach((file) => {
+                    formData.append('imagenesEnlace', file || ""); // Todos los archivos bajo el mismo nombre 'imagenes'
+                })
             }
             const respuesta = await editarPrograma(id, formData);
             console.log(respuesta);

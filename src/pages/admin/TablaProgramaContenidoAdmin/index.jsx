@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
 import { obtenerContenidoProgramaPagination, ordenarListaDeContenido } from '../../../Api/programas';
-import { MdEditDocument, MdEditNote, MdDragIndicator } from "react-icons/md";
+import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
 import { useParams } from 'react-router-dom';

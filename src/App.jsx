@@ -229,7 +229,7 @@ const App = () => {
                     <Route path="tablacursos/" element={<TablaCursos />} />
                     <Route path="tablacursos/:idcurso" element={<CursoAdmin />} />
                     <Route path="tablacursos/:idcurso/tablacapitulos" element={<TablaCapituloCurso />} />
-                    <Route path="tablacursos/:idcurso/tablacapitulos/:id" element={<CapituloCursosAdmin />} />
+                    <Route path="tablacursos/:idcurso/tablacapitulos/:idcapitulo" element={<CapituloCursosAdmin />} />
 
                     <Route path="tablacursosbi" element={<Tablacursosbiblicos />} />
                     <Route path="tablapeticionebooks" element={<TablaresEbooks />} />

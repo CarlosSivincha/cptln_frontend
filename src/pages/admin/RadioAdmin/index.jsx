@@ -14,10 +14,12 @@ const RadioAdmin = () => {
     const [nombre, setNombre] = useState(null)
     const [descripcion, setDescripcion] = useState(null)
     const [imagenesExtra, setImagenesExtra] = useState([])
+    const [video, setVideo] = useState([])
     const handleNombre = (e) => setNombre(e.target.value)
     const handleDescripcion = (html) => setDescripcion(html)
     const handleID = (value) => setID(value)
     const handleImagenesExtra = (event) => setImagenesExtra(event.target.files)
+    const handleVideo = (event) => setVideo(event.target.files)
 
     // Recuperar Datos
     useEffect(() => {
@@ -46,6 +48,9 @@ const RadioAdmin = () => {
         if (descripcion) formData.append('descripcion', descripcion);
         if (imagenesExtra.length > 0) {
             [...imagenesExtra].forEach((file) => { formData.append('imagenes', file) });
+        }
+        if(video) {
+            formData.append('video', video)
         }
         try {
             const res = await actualizarDatosDeRadio(formData)
@@ -85,10 +90,14 @@ const RadioAdmin = () => {
                         placeholder="Descripcion del Programa"
                     />
 
-                    <div className="grid grid-cols-1">
+                    <div className="grid grid-cols-2">
                         <div className="flex flex-col w-full justify-center">
                             <label htmlFor="">Imagenes Extra</label>
                             <input type="file" onChange={handleImagenesExtra} multiple />
+                        </div>
+                        <div className="flex flex-col w-full justify-center">
+                            <label htmlFor="">Video Home</label>
+                            <input type="file" onChange={handleVideo} multiple />
                         </div>
                     </div>
 
