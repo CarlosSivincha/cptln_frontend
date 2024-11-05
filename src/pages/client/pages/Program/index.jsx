@@ -33,7 +33,7 @@ export const ProgramaEspecifico = () => {
         };
         
         fetchProgramas();
-    }, [nombre]);
+    }, []);
 
     useEffect(() => {
         const fetchCategoria = async () => {
@@ -53,7 +53,11 @@ export const ProgramaEspecifico = () => {
         };
         
         fetchCategoria();
-    }, [nombre]);
+    }, []);
+
+    useEffect(()=> {
+        console.log(programasCategoria)
+    },[programasCategoria])
 
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
@@ -81,7 +85,6 @@ export const ProgramaEspecifico = () => {
 
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24">
                 {!loadingProgramas && programasCategoria.map((programa, index) => (
-                    <>
                     <ProgramCard
                         key={programa._id}
                         color={programa.color}
@@ -92,8 +95,6 @@ export const ProgramaEspecifico = () => {
                         enlace={programa.enlace != null ? true : false}
                         link={`${programa.enlace ? programa.enlace: `/programas/${programa.categoria_id}/programa/${programa.titulo}`}`}
                     />
-                    {console.log(programa.imagenes)}
-                    </>
                 ))}
             </div>
         </div>
