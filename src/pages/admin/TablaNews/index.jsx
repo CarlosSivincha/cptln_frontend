@@ -5,32 +5,41 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerNoticiasPag } from '../../../Api/noticias';
+import { obtenerNoticiasPag, EliminarNoticia } from '../../../Api/noticias';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import { obtenerProgramas } from '../../../Api/programas';
+
 
 const TablaNews = () => {
+
+    const [categoria, setCategoria] = useState([]);
+
     const [noticias, setNoticias] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        const fetch = async (page) => {
-            try {
-                setIsLoading(true);
-                const response = await obtenerNoticiasPag({ params: { page: Number(page), limit: 5 } });
-                setNoticias(response.data.noticias);
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsLoading(false);
-            }
+
+     // Función para obtener los eventos con paginación
+     const fetchNoticias = async (page) => {
+        try {
+            setIsLoading(true); // Iniciar estado de carga
+            const response = await obtenerNoticiasPag({ params: { page: Number(page), limit: 10 } });
+            setNoticias(response.data.noticias); // Actualizar el estado con los eventos
+            setCurrentPage(response.data.currentPage); // Actualizar la página actual
+            setTotalPages(response.data.totalPages); // Actualizar el total de páginas
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false); // Finalizar estado de carga
         }
-        fetch(currentPage);
+    };
+       // Llamada inicial para cargar los datos al montar el componente
+       useEffect(() => {
+        fetchNoticias(currentPage);
     }, [currentPage]);
 
     const columnHelper = createColumnHelper();
@@ -39,6 +48,14 @@ const TablaNews = () => {
         if (!text) return '';
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     };
+
+    useEffect(() => {
+        const fetch = async () => {
+            const response = await obtenerProgramas()
+            setCategoria(response.data)
+        }
+        fetch()
+    }, [])
 
     const stripHtml = (html) => {
         const tempDiv = document.createElement("div");
@@ -71,9 +88,13 @@ const TablaNews = () => {
             header: "Fecha",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('programaRef', { 
+        columnHelper.accessor('programa_id', { 
             header: "Programa",
-            cell: info => info.getValue()
+            cell: info => {
+               const programagaa = categoria.find(programa => programa._id.toString()===info.getValue())
+                return programagaa ? programagaa.titulo : ''
+            }  
+            
         })
     ];
     
@@ -84,7 +105,14 @@ const TablaNews = () => {
     });
 
     const navigate = useNavigate();
-
+    
+    // Función para manejar la eliminación de un evento y refrescar los datos
+    const handleDelete = async (id) => {
+        const success = await EliminarNoticia({ id }); // Llamada a la función de eliminación
+        if (success) { // Verifica si la eliminación fue exitosa
+            fetchNoticias(currentPage); // Refresca los datos después de eliminar
+        }
+    };
     const EditarNoticias = (id) => {
         navigate(`${id}`);
     };
@@ -161,6 +189,13 @@ const TablaNews = () => {
 
                                             <MdEditDocument size={20} />
                                             
+                                        </button>
+                                        <button
+                                            type='button'
+                                            onClick={() => handleDelete(row.original._id)} // Uso de la función handleDelete
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
                                         </button>
                                     </td>
                                 </tr>

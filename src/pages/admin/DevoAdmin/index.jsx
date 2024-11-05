@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import ReactQuill from "react-quill";
-import Header from "@/pages/client/components/Header";
 import { registrarDevo, obtenerDevocionalID, EditarDevocional } from "../../../Api/devocionales";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
 import AudioPlayer from "../../client/components/AudioPlayer";
+import { useRef } from "react";
 
 const DevocionalesAdmin = () => {
 
     //const navigate = useNavigate()
-    const navigate = useNavigate()
-    const { id } = useParams()
+    const navigate = useNavigate();
+    const { id } = useParams();
 
     const [imagenurl, setImagenurl] = useState('');
     const [audiourl, setAudiourl] = useState('');
-
 
     const [imagen, setImagen] = useState("");
     const [audio, setAudio] = useState("");
@@ -24,11 +21,13 @@ const DevocionalesAdmin = () => {
     const [versiculo, setVersiculo] = useState("");
     const [parrafo, setParrafo] = useState("");
     const [fecha, setFecha] = useState("");
-
     const [error, setError] = useState("");
 
     const handleImagen = (event) => setImagen(event.target.files[0]);
-    const handleAudio = (event) => setAudio(event.target.files[0]);
+    const handleAudio = (event) => {
+        setAudio(event.target.files[0]); // Guarda el nuevo archivo de audio
+        setAudiourl(URL.createObjectURL(event.target.files[0])); // Carga el nuevo audio en el reproductor
+    };
     const handleTitulo = (event) => setTitulo(event.target.value);
     const handleVersiculo = (event) => setVersiculo(event.target.value);
     const handleParrafo = (html) => setParrafo(html);
@@ -39,17 +38,17 @@ const DevocionalesAdmin = () => {
         console.log(id)
         if (id) {
             const fetch = async () => {
-                const response = await obtenerDevocionalID(id)
-                setTitulo(response.data.titulo)
-                setVersiculo(response.data.versiculo)
-                setFecha(response.data.fecha)
-                setParrafo(response.data.parrafo)
-                setImagenurl(response.data.imagenURL)
-                setAudiourl(response.data.audioURL)
-            }
-            fetch()
+                const response = await obtenerDevocionalID(id);
+                setTitulo(response.data.titulo);
+                setVersiculo(response.data.versiculo);
+                setFecha(response.data.fecha);
+                setParrafo(response.data.parrafo);
+                setImagenurl(response.data.imagenURL);
+                setAudiourl(response.data.audioURL); // Carga el audio existente
+            };
+            fetch();
         }
-    }, [])
+    }, [id])
 
     useEffect(() => {
         console.log(imagen)
@@ -88,11 +87,8 @@ const DevocionalesAdmin = () => {
             return;
         }
         const formData = new FormData();
-
-        // Solo añadir la imagen y audio si el usuario selecciona nuevos archivos
         if (imagen) formData.append('imagen', imagen);
         if (audio) formData.append('audio', audio);
-
         formData.append('titulo', titulo);
         formData.append('versiculo', versiculo);
         formData.append('parrafo', parrafo);
@@ -100,16 +96,13 @@ const DevocionalesAdmin = () => {
 
         try {
             const respuesta = await EditarDevocional(id, formData);
-            console.log(respuesta);
             if (respuesta.status === 200) {
                 window.location.href = "/admin/tabladevocional";
             }
-            
         } catch (error) {
             console.log(error);
         }
     };
-
 
     const modules = {
         toolbar: [
@@ -120,9 +113,8 @@ const DevocionalesAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_r-600" title={`${id ? 'Editar Devocional' : 'Crear Devocional'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
-                <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">Escribe el Devocional</h2>
+                <h2 className="mb-6 text-4xl font-bold text-center text-gray-800">Escribe el Devocional</h2>
                 <form onSubmit={id ? ModificarDevocional : subirdevo} className="space-y-6">
                     <div className="space-y-4 md:flex md:space-x-6 md:space-y-0">
                         <input
@@ -160,7 +152,7 @@ const DevocionalesAdmin = () => {
                         onChange={handleParrafo}
                         placeholder="Contenido del Devocional"
                     />
-                    {error && <p className="text-red-600">{error}</p>} {/* Muestra el mensaje de error */}
+                    {error && <p className="text-red-600">{error}</p>}
                     <div className="space-y-4 md:flex md:space-x-6 md:space-y-0">
                         <div>
                             <label className="block mb-2 text-gray-600">Imágene para Devocional</label>
@@ -177,9 +169,7 @@ const DevocionalesAdmin = () => {
                         </div>
                         <div>
                             <label className="block mb-2 text-gray-600">Audio para Devocional</label>
-                            {id && (
-                                <AudioPlayer audio={audiourl} />
-                            )}
+
                             <input
                                 type="file"
                                 name="audio"
@@ -193,12 +183,19 @@ const DevocionalesAdmin = () => {
                         type="submit"
                         className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                     >
-                        {id ? 'Modificar Devocional' : ' Enviar Devocional'}
+                        {id ? 'Modificar Devocional' : 'Enviar Devocional'}
                     </button>
                 </form>
+
+                {/* Mover el AudioPlayer aquí, fuera del formulario */}
+                {id && audiourl && (
+                    <div className="flex items-center mt-6 space-x-4">
+                        <h3 className="text-xl font-semibold">Reproductor de Audio:</h3>
+                        <AudioPlayer audio={audiourl} />
+                    </div>
+                )}
             </div>
         </>
     );
 };
-
 export default DevocionalesAdmin;

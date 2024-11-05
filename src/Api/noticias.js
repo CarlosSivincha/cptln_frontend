@@ -10,3 +10,4 @@ export const EditarNoticia =  (id, data) => axios.post(`noticias/${id}`,data)
 
 export const obtenerNoticiasPag = (parametros) => axios.get("noticias/pagination",parametros)
 
+export const EliminarNoticia = ({id}) => axios.post("noticias/delete",{},{params: {id}} )

@@ -34,7 +34,7 @@ const ProgramaAdmin = () => {
     const handleImagenesAdicionales = (event) => {
         setImagenesAdicionales(event.target.files);
     };
-    const handlePortada = (event) => setPortada(event.target.files[0])
+    const handlePortada = (event) => setPortada(event.target.files)
 
     // Intercambiar entre datos o agregar un enlace
     const [panelEnlaceDatos, setPanelEnlaceDatos] = useState(false)
@@ -75,9 +75,7 @@ const ProgramaAdmin = () => {
                 setDescripcion(response.data.descripcion)
                 setAbreviatura(response.data.abreviatura)
                 setColor(response.data.color)
-                setImagenesAdicionales(response.data.imagenes)
                 setEnlace(response.data.enlace)
-                setShowPortada(response.data.portadaEnlace)
                 
                 if (response.data.enlace === null) {
                     setPanelEnlaceDatos(true)
@@ -101,11 +99,13 @@ const ProgramaAdmin = () => {
             formData.append('categoria_id', selectcategoria || "");
             if (panelEnlaceDatos) {
                 [...imagenesAdicionales].forEach((file) => {
-                    formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
+                    formData.append('imagenes', file || ""); // Todos los archivos bajo el mismo nombre 'imagenes'
                 });
             } else {
                 formData.append('enlace', enlace || "");
-                formData.append('portadaEnlace', portada)
+                [...portada].forEach((file) => {
+                    formData.append('imagenesEnlace', file || ""); // Todos los archivos bajo el mismo nombre 'imagenes'
+                })
             }
             const respuesta = await crearPrograma(formData);
             console.log(respuesta);
@@ -129,10 +129,10 @@ const ProgramaAdmin = () => {
                     formData.append('imagenes', file); // Todos los archivos bajo el mismo nombre 'imagenes'
                 });
             } else {
-                formData.append('enlace', enlace);
-                if (imagenNew) {
-                    formData.append('portadaEnlace', portada);
-                }
+                formData.append('enlace', enlace || "");
+                [...portada].forEach((file) => {
+                    formData.append('imagenesEnlace', file || ""); // Todos los archivos bajo el mismo nombre 'imagenes'
+                })
             }
             const respuesta = await editarPrograma(id, formData);
             console.log(respuesta);
@@ -275,8 +275,8 @@ const ProgramaAdmin = () => {
                                                                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                                                                         />
                                                                     </div>
-                                                                    <div className="flex w-1/2 justify-center items-center">
-                                                                        <button className="flex p-4 rounded-md bg-red-500" onClick={handleImagenNew}>
+                                                                    <div className="flex items-center justify-center w-1/2">
+                                                                        <button className="flex p-4 bg-red-500 rounded-md" onClick={handleImagenNew}>
                                                                             Cancelar
                                                                         </button>
                                                                     </div>
@@ -286,8 +286,8 @@ const ProgramaAdmin = () => {
                                                                     <div className="flex w-1/2">
                                                                         <img src={showPortada} alt="" />
                                                                     </div>
-                                                                    <div className="flex w-1/2 justify-center items-center">
-                                                                        <button className="flex p-4 rounded-md bg-yellow-500" onClick={handleImagenNew}>
+                                                                    <div className="flex items-center justify-center w-1/2">
+                                                                        <button className="flex p-4 bg-yellow-500 rounded-md" onClick={handleImagenNew}>
                                                                             Cambiar
                                                                         </button>
                                                                     </div>
