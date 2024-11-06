@@ -79,7 +79,6 @@ const TablaUsuario = lazy(() => import('@/pages/admin/TablaUsuairo'))
 const App = () => {
   return (
     <>
-      <StrictMode>
         <div className="bg-[#EAE9E5]">
           <Suspense fallback={<PageLoader />}>
             {/* <Navbar color="bg-l_color_r-600"/>           */}
@@ -258,7 +257,6 @@ const App = () => {
           </Suspense>
         </div>
 
-      </StrictMode>
     </>
   );
 };

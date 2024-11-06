@@ -57,47 +57,33 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const checkLogin = async (token) => {
-        try {
-            const res = await verifyTokenRequest(token);
-            if (!res.data) {
-                setIsAuthenticated(false);
-                setUser(null);
-                return false;
-            } else {
-                setUser(res.data);
-                setIsAuthenticated(true);
-                return true;
-            }
-        } catch (error) {
-            console.error('Token verification error:', error);
-            setIsAuthenticated(false);
-            setUser(null);
-            return false;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-
     const hasRedirected = useRef(false); // Usamos un ref para evitar redirecciones múltiples
     // Verificación inicial al cargar
     useEffect(() => {
-        const initializeAuth = async () => {
-            const token = localStorage.getItem('token') || Cookies.get('token');
-
-            if (!isAuthenticated && location.pathname.includes('/admin') && !hasRedirected.current) {
-                hasRedirected.current = true;  // Marcamos que ya hemos redirigido
-                setIsAuthenticated(false);
+        const checkLogin = async () => {
+            try {
+                const res = await verifyTokenRequest()
+                if (!res.data) {
+                    if (location.pathname.includes('/admin') && !hasRedirected.current) {
+                        hasRedirected.current = true;  // Marcamos que ya hemos redirigido
+                        setIsAuthenticated(false);
+                        setLoading(false);
+                        navigate('/cptln/pe/admin/login');
+                        return;
+                    }
+                } else {
+                    setIsAuthenticated(true);
+                    setUser(res.data);
+                }
                 setLoading(false);
-                // navigate('/cptln/pe/admin/login');
-                return;
+            } catch (error) {
+                console.error('Token verification error:', error);
+                setIsAuthenticated(false);
+            } finally {
+                setLoading(false); // Asegúrate de que la carga se complete
             }
-
-            await checkLogin(token);
-        };
-
-        initializeAuth();
+        }
+        checkLogin();
     }, [location]);
 
     return (
