@@ -162,7 +162,7 @@ const TablaProgramas = () => {
                                                 <a href={row.original.enlace} target='_blank' className='flex'>
                                                     <FaLink size={20} className='fill-gray-400' />
                                                 </a>
-                                            ) : row.original.contenido && (
+                                            ) : (
                                                 <button
                                                     type='button'
                                                     onClick={() => EditorContenido((row.original._id))}

@@ -1,13 +1,18 @@
 import axios from "./axios";
 
-export const registrarEvento = event => axios.post("eventos",event)
-
+// Cliente
 export const obtenerEventos = () => axios.get("eventos")
 
-export const obtenerEventosID = (id) => axios.get(`eventos/${id}`)
 
-export const EditarEventos =  (id, data) => axios.post(`eventos/${id}`,data)
+// Admin
+export const obtenerEventosAdmin = () => axios.get("admin/eventos")
 
-export const obtenerEventosPag = (parametros) => axios.get("eventos/pagination",parametros)
+export const obtenerEventosID = (id) => axios.get(`admin/eventos/${id}`)
 
-export const EliminarEvento = ({id}) => axios.post("eventos/delete",{},{params: {id}} )
+export const registrarEvento = event => axios.post("admin/eventos",event)
+
+export const EditarEventos =  (id, data) => axios.post(`admin/eventos/${id}`,data)
+
+export const EliminarEvento = ({id}) => axios.post("admin/eventos/delete",{},{params: {id}} )
+
+export const obtenerEventosPag = (parametros) => axios.get("admin/eventos/pagination",parametros)

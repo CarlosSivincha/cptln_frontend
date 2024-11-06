@@ -50,13 +50,29 @@ const Devocional = () => {
         fetchDevocional()
     }, [])
 
+    const handleDateUTC = (dateString) => {
+        const dateObj = new Date(dateString);
+        return new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
+    };
+
+    function convertirFechaPersonalizada(date) {
+        const dateFormat = handleDateUTC(date);
+        const fechaObj = new Date(dateFormat);
+    
+        const dia = fechaObj.getDate();
+        const mes = fechaObj.toLocaleString('es-ES', { month: 'long' });
+        const año = fechaObj.getFullYear();
+    
+        return `${mes.charAt(0).toUpperCase() + mes.slice(1)} ${dia}, ${año}`;
+    }  
+
     return (
         <div className="flex flex-col gap-6 lg:gap-12 xl:gap-16 pb-4 lg:pb-8 xl:pb-16 items-center">
-            <Header color="bg-l_color_y-600" title={'Devocional Diario'} />
-            <div className="xl:mx-40 lg:mx-12 md:mx-10 max-md:mx-5 my-10">
+            <Header color="bg-l_color_y-600" title="Rincon de Gracia" text={!id ? `Devocional diario` : `Devocional ( ${convertirFechaPersonalizada(infoDevocional.fecha)} )`} />
+            <div className="xl:mx-48 lg:mx-12 md:mx-10 max-md:mx-5 my-10">
                 <h3 className="h3-subtitles">{infoDevocional.titulo}</h3>
                 <p className="flex text-gray-500 italic my-5 text-xl xl:text-2xl break-all ">
-                    {`Lectura: ${infoDevocional.versiculo}`}
+                    {`Lectura: "${infoDevocional.versiculo}"`}
                 </p>
 
                 <div className="flex w-full p my-2">

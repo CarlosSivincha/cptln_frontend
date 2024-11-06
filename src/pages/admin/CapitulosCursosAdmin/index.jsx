@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "@/pages/client/components/Header";
 import { crearCapituloCurso, buscarCapituloEspecifico, editarCapituloCurso } from "../../../Api/cursos";
+import { crearCapituloCurso, buscarCapituloEspecifico, editarCapituloCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
 import { useParams,useNavigate } from "react-router-dom";
 
@@ -20,9 +21,12 @@ const CapituloCursosAdmin = () => {
     useEffect(() => {
         console.log(idcurso)
         if ((idcurso && idcapitulo)) {
+        if ((idcurso && idcapitulo)) {
             const fetch = async () => {
                 const response = await buscarCapituloEspecifico(idcurso, idcapitulo)
+                const response = await buscarCapituloEspecifico(idcurso, idcapitulo)
                 setTitulo(response.data.titulo)
+                setYoutubelink(response.data.idYoutube)
                 setYoutubelink(response.data.idYoutube)
             }
             fetch()
@@ -54,6 +58,7 @@ const CapituloCursosAdmin = () => {
         try {
             // Aquí iría la función para registrar el evento
             const respuesta = await editarCapituloCurso(idcurso, idcapitulo, formData);
+            const respuesta = await editarCapituloCurso(idcurso, idcapitulo, formData);
             console.log(respuesta);
             if (respuesta.status === 200) navigate(`/admin/tablacursos/${idcurso}/tablacapitulos`);
         } catch (error) {
@@ -65,6 +70,7 @@ const CapituloCursosAdmin = () => {
         <>
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
                 <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">Capitulo para curso</h2>
+                <form onSubmit={(idcurso && idcapitulo) ? ModificarCapituloCurso : CrearCapituloCurso} className="p-6 space-y-5 bg-white rounded-lg shadow-lg">
                 <form onSubmit={(idcurso && idcapitulo) ? ModificarCapituloCurso : CrearCapituloCurso} className="p-6 space-y-5 bg-white rounded-lg shadow-lg">
                     <div>
                         <label className="block font-semibold text-gray-700">Titulo del Capitulo</label>
@@ -107,6 +113,7 @@ const CapituloCursosAdmin = () => {
                             type="submit"
                             className="w-full py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                         >
+                            {(idcurso && idcapitulo) ? 'Modificar Capitulo' : 'Enviar Capitulo'}
                             {(idcurso && idcapitulo) ? 'Modificar Capitulo' : 'Enviar Capitulo'}
                         </button>
                     </div>

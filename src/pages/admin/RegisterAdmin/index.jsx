@@ -1,6 +1,32 @@
+import { useState } from "react";
 import OriginalLogo from "../../../../src/assets/OriginalLogo.png";
+import { useAuth } from "../../../context/Usuario_context"; 
 
 export const RegisterAdmin = () => {
+
+  const { RegisterUser } = useAuth()
+
+  // Formulario
+  const [nombres, setNombre] = useState("")
+  const [apellidos, setApellidos] = useState("")
+  const [correo, setCorreo] = useState("")
+  const [contraseña, setContraseña] = useState("")
+  const handleNombres = (event) => setNombre(event.target.value)
+  const handleApellidos = (event) => setApellidos(event.target.value)
+  const handleCorreo = (event) => setCorreo(event.target.value)
+  const handleContraseña = (event) => setContraseña(event.target.value)
+
+
+  const registrarUsuario = (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('nombres',nombres)
+    formData.append('apellidos',apellidos)
+    formData.append('correo',correo)
+    formData.append('password',contraseña)
+    const response = RegisterUser(formData)
+    console.log(response);
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#EAE9E5]">
       {/* Contenedor del formulario */}
@@ -17,17 +43,19 @@ export const RegisterAdmin = () => {
           </div>
 
           {/* Formulario */}
-          <form>
+          <form onSubmit={registrarUsuario}>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <input
                 type="text"
                 placeholder="Nombre"
+                onChange={handleNombres}
                 className="p-3 bg-gray-100 rounded-md"
                 required
               />
               <input
                 type="text"
                 placeholder="Apellido"
+                onChange={handleApellidos}
                 className="p-3 bg-gray-100 rounded-md"
                 required
               />
@@ -36,6 +64,7 @@ export const RegisterAdmin = () => {
             <div className="mb-4">
               <input
                 type="email"
+                onChange={handleCorreo}
                 placeholder="Correo Electrónico"
                 className="w-full p-3 bg-gray-100 rounded-md"
                 required
@@ -46,6 +75,7 @@ export const RegisterAdmin = () => {
               <input
                 type="password"
                 placeholder="Contraseña"
+                onChange={handleContraseña}
                 className="w-full p-3 bg-gray-100 rounded-md"
                 required
               />
@@ -59,6 +89,7 @@ export const RegisterAdmin = () => {
                 required
               />
             </div>
+
 
             {/* Botón de registro */}
             <button

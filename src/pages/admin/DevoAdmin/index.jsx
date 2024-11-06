@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
-import { registrarDevo, obtenerDevocionalID, EditarDevocional } from "../../../Api/devocionales";
+import { registrarDevo, obtenerDevocionalIDAdmin, EditarDevocional } from "../../../Api/devocionales";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
 import AudioPlayer from "../../client/components/AudioPlayer";
@@ -38,7 +38,7 @@ const DevocionalesAdmin = () => {
         console.log(id)
         if (id) {
             const fetch = async () => {
-                const response = await obtenerDevocionalID(id);
+                const response = await obtenerDevocionalIDAdmin(id);
                 setTitulo(response.data.titulo);
                 setVersiculo(response.data.versiculo);
                 setFecha(response.data.fecha);

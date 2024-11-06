@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerDevocionalPag } from '../../../Api/devocionales';
+import { obtenerDevocionalPagAdmin } from '../../../Api/devocionales';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
@@ -21,7 +21,7 @@ const TablaDevocional = () => {
         const fetch = async (page) => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerDevocionalPag({ params: { page: Number(page), limit: 10 } });
+                const response = await obtenerDevocionalPagAdmin({ params: { page: Number(page), limit: 10 } });
                 setDevocionales(response.data.devocionales);
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
