@@ -17,6 +17,7 @@ import { MdDeleteForever } from "react-icons/md";
 
 const TablaUsuario = () => {
 
+    // Gaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const [usuario, setUsuario] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);

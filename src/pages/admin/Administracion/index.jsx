@@ -9,6 +9,8 @@ import { MdCameraFront } from "react-icons/md";
 import { ImBooks } from "react-icons/im";
 import { IoIosArrowDown, IoIosRadio, IoIosPeople  } from "react-icons/io";
 import { MdCastForEducation } from "react-icons/md";
+import { FaUserPen } from "react-icons/fa6";
+
 const Administracion = () => {
     const [showSubmenu, setShowSubmenu] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false); // Estado para el tamaño del menú
@@ -89,8 +91,6 @@ const Administracion = () => {
                             </li>
                         </Link>
 
-                        
-
                         <Link to="/admin/tablaprogramas" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
@@ -106,6 +106,15 @@ const Administracion = () => {
                                     Radio
                                 </span>
                                 <IoIosRadio className="block group-hover:hidden size-8" />
+                            </li>
+                        </Link>
+                        <Link to="/admin/radioconfig" className="w-full">
+                            <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
+                                <span className="hidden ml-4 text-xl group-hover:inline-block">
+                                    Usuarios
+                                </span>
+                               
+                                <FaUserPen className="block group-hover:hidden size-8"/>
                             </li>
                         </Link>
 
