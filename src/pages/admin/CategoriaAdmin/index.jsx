@@ -11,7 +11,7 @@ const CategoriaAdmin = () => {
 
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [color, setColor] = useState(null);
+    const [color, setColor] = useState("#47797A");
     const [imagenes, setImagenes] = useState([]);
     const [imagenesResponse, setImagenesResponse] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -123,10 +123,18 @@ const CategoriaAdmin = () => {
     };
 
     const colorOptions = [
-        { name: "Color 1", value: "#45787C" },
-        { name: "Color 2", value: "#9B1B31" },
-        { name: "Color 3", value: "#CC5F27" },
-        { name: "Color 4", value: "#B9B239" },
+        { name: "Color 1", value: "#47797A" },
+        { name: "Color 2", value: "#3C5050" },
+        { name: "Color 3", value: "#A7A692" },
+        { name: "Color 4", value: "#9D1A2E" },
+        { name: "Color 5", value: "#742732" },
+        { name: "Color 6", value: "#791524" },
+        { name: "Color 7", value: "#CD612D" },
+        { name: "Color 8", value: "#d78157" },
+        { name: "Color 9", value: "#A25F3B" },
+        { name: "Color 10", value: "#BBB237" },
+        { name: "Color 11", value: "#908A42" },
+        { name: "Color 12", value: "#65633F" },
     ];
 
     return (
@@ -186,7 +194,7 @@ const CategoriaAdmin = () => {
 
                     <div className="space-y-2">
                         <label className="block font-semibold text-gray-700">Selecciona un Color</label>
-                        <div className="flex gap-4">
+                        <div className="grid grid-cols-4 lg:grid-cols-6 gap-4">
                             {colorOptions.map((option) => (
                                 <label key={option.value} className="flex items-center cursor-pointer">
                                     <input

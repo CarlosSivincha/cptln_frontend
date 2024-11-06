@@ -100,7 +100,7 @@ export const Ebooks = () => {
                 />
             </div>
             
-            <div className="2xl:max-w-[1300px] 2xl:w-full grid gap-x-10 gap-y-12 min-[710px]:gap-x-16 min-[710px]:gap-y-20 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-8 2xl:px-auto ">
+            <div className="2xl:max-w-[1300px] 2xl:w-full grid gap-x-10 gap-y-12 min-[710px]:gap-x-16 min-[710px]:gap-y-20 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-8 2xl:px-auto max-lg:mb-16">
 
                 {/* {isLoadingEbooks &&
                     fetchEbooks.map((ebook) => (
@@ -130,12 +130,12 @@ export const Ebooks = () => {
             </div>
 
             <div className="h-auto max-[600px]:w-full flex max-lg:flex-col min-[600px]:mx-[30px] md:w-max-[700px] md:mx-auto lg:mx-[40px] box-content md:items-center min-[1580px]:max-w-[1500px] min-[1580px]:mx-auto min-[1580px]:w-full max-lg:gap-1" id="formulario">
-                <div className="flex flex-col justify-center gap-5 px-5 py-5 xl:px-10 max-lg:h-2/5 w-full bg-[#A3723B] text-white lg:text-black lg:bg-white text-center h-auto lg:h-96">
+                <div className="flex flex-col justify-center gap-5 px-5 py-5 xl:px-10 max-lg:h-2/5 w-full bg-[#A7A692] text-white lg:text-black lg:bg-white text-center h-auto lg:h-96">
                     <p className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] ">¡Aquí puedes descargar todos los Ebooks que quieras!</p>
                     <p className="font-light text-[1.125em] leading-[1.5em] max-[1100px]:text-[1em] max-[1100px]:leading-[1.4em] ">Completa este simple formulario y accede a todos los ebooks de nuestra librería digital</p>
                     <p className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] ">¿Estás listo para comenzar?</p>
                 </div>
-                <div className="flex flex-col gap-5 max-lg:h-3/5 h-auto lg:h-96 w-full bg-[#A3723B] px-5 py-5 xl:px-10 justify-center">
+                <div className="flex flex-col gap-5 max-lg:h-4/5 h-auto lg:h-96 w-full bg-[#A7A692] px-5 py-5 xl:px-10 justify-center">
                     <img src={WhiteIcon} alt="" className="self-center w-12 my-4"/>
                     <form className="flex flex-col w-full gap-5" onSubmit={enviarDatos} ref={formRef}>
                         <div className="flex gap-5 max-md:flex-col">
