@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import Header from "@/pages/client/components/Header";
-import { crearCapituloCurso, obtenerCursoID, EditarCurso } from "../../../Api/cursos";
+import { crearCapituloCurso, buscarCapituloEspecifico, editarCapituloCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 const CapituloCursosAdmin = () => {
 
-    //const navigate = useNavigate()
-    const { idcurso, id } = useParams()
-
+    const navigate = useNavigate()
+    const { idcurso, idcapitulo } = useParams()
 
     const [titulo, setTitulo] = useState("");
     const [pdflink, setPdflink] = useState(null);
@@ -20,11 +19,11 @@ const CapituloCursosAdmin = () => {
 
     useEffect(() => {
         console.log(idcurso)
-        if ((idcurso && id)) {
+        if ((idcurso && idcapitulo)) {
             const fetch = async () => {
-                const response = await obtenerCursoID(idcurso)
+                const response = await buscarCapituloEspecifico(idcurso, idcapitulo)
                 setTitulo(response.data.titulo)
-                setDescripcion(response.data.descripcion)
+                setYoutubelink(response.data.idYoutube)
             }
             fetch()
         }
@@ -40,6 +39,7 @@ const CapituloCursosAdmin = () => {
         try {
             const respuesta = await crearCapituloCurso(idcurso,formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate(`/admin/tablacursos/${idcurso}/tablacapitulos`);
         } catch (error) {
             console.log(error);
         }
@@ -53,8 +53,9 @@ const CapituloCursosAdmin = () => {
         formData.append('youtube', youtubelink);
         try {
             // Aquí iría la función para registrar el evento
-            const respuesta = await EditarCurso(idcurso, formData);
+            const respuesta = await editarCapituloCurso(idcurso, idcapitulo, formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate(`/admin/tablacursos/${idcurso}/tablacapitulos`);
         } catch (error) {
             console.log(error);
         }
@@ -62,10 +63,9 @@ const CapituloCursosAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_r-600" title={`${(idcurso && id) ? 'Editar Devocional' : 'Crear Capitulo para Curso'}`} />
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
                 <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">Capitulo para curso</h2>
-                <form onSubmit={(idcurso && id) ? ModificarCapituloCurso : CrearCapituloCurso} className="p-6 space-y-5 bg-white rounded-lg shadow-lg">
+                <form onSubmit={(idcurso && idcapitulo) ? ModificarCapituloCurso : CrearCapituloCurso} className="p-6 space-y-5 bg-white rounded-lg shadow-lg">
                     <div>
                         <label className="block font-semibold text-gray-700">Titulo del Capitulo</label>
                         <input
@@ -107,7 +107,7 @@ const CapituloCursosAdmin = () => {
                             type="submit"
                             className="w-full py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
                         >
-                            {(idcurso && id) ? 'Modificar Capitulo' : 'Enviar Capitulo'}
+                            {(idcurso && idcapitulo) ? 'Modificar Capitulo' : 'Enviar Capitulo'}
                         </button>
                     </div>
                 </form>

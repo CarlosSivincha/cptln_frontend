@@ -74,6 +74,7 @@ const TablaRadioSecciones = lazy(()=>import('@/pages/admin/TablaRadioSecciones')
 const SeccionRadioAdmin = lazy(()=>import('@/pages/admin/SeccionRadioAdmin'))
 const TablaRadioSeccionContenidoAdmin = lazy(()=>import('@/pages/admin/TablaRadioSeccionContenidoAdmin'))
 const ContenidoSeccionRadioAdmin = lazy(()=>import('@/pages/admin/ContenidoSeccionRadioAdmin'))
+const TablaUsuario = lazy(()=>import('@/pages/admin/TablaUsuairo'))
 
 const App = () => {
   return (
@@ -215,6 +216,7 @@ const App = () => {
                     <Route path="tablaebooks" element={<TablaEbooks />} />
                     <Route path="tablaebooks/:id" element={<EbooksAdmin />} />
 
+                    <Route path="tablausuario" element={<TablaUsuario />} />
 
                     <Route path="tablaoracion" element={<TablaOracion />} />
                     <Route path="tablacontactos" element={<TablaContactanos />} />
