@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import Header from "@/pages/client/components/Header";
 import { crearCapituloCurso, buscarCapituloEspecifico, editarCapituloCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 const CapituloCursosAdmin = () => {
 
-    //const navigate = useNavigate()
+    const navigate = useNavigate()
     const { idcurso, idcapitulo } = useParams()
 
     const [titulo, setTitulo] = useState("");
@@ -39,6 +39,7 @@ const CapituloCursosAdmin = () => {
         try {
             const respuesta = await crearCapituloCurso(idcurso,formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate(`/admin/tablacursos/${idcurso}/tablacapitulos`);
         } catch (error) {
             console.log(error);
         }
@@ -53,7 +54,9 @@ const CapituloCursosAdmin = () => {
         try {
             // Aquí iría la función para registrar el evento
             const respuesta = await editarCapituloCurso(idcurso, idcapitulo, formData);
+        
             console.log(respuesta);
+            if (respuesta.status === 200) navigate(`/admin/tablacursos/${idcurso}/tablacapitulos`);
         } catch (error) {
             console.log(error);
         }
@@ -63,6 +66,7 @@ const CapituloCursosAdmin = () => {
         <>
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
                 <h2 className="mb-8 text-3xl font-bold text-center text-gray-800">Capitulo para curso</h2>
+               
                 <form onSubmit={(idcurso && idcapitulo) ? ModificarCapituloCurso : CrearCapituloCurso} className="p-6 space-y-5 bg-white rounded-lg shadow-lg">
                     <div>
                         <label className="block font-semibold text-gray-700">Titulo del Capitulo</label>

@@ -3,67 +3,79 @@ import ReactQuill from "react-quill";
 import { registrarCurso, obtenerCursoID, EditarCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const CursoAdmin = () => {
     const navigate = useNavigate();
-    //const navigate = useNavigate()
-    const { idcurso } = useParams()
+    const { idcurso } = useParams();
 
-    // Formulario
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
+    const [descripcionValida, setDescripcionValida] = useState(true);
+
     const handleTitulo = (event) => setTitulo(event.target.value);
-    const handleDescripcion = (html) => setDescripcion(html);
 
-    // Obtener Datos del curso
+    const handleDescripcion = (html) => {
+        setDescripcion(html);
+        setDescripcionValida(html.trim().length > 0); // Verifica si hay texto en la descripción
+    };
+
     useEffect(() => {
-        console.log(idcurso)
         if (idcurso) {
-            const fetch = async () => {
-                const response = await obtenerCursoID(idcurso)
-                setTitulo(response.data.titulo)
-                setDescripcion(response.data.descripcion)
-            }
-            fetch()
+            const fetchCurso = async () => {
+                const response = await obtenerCursoID(idcurso);
+                setTitulo(response.data.titulo);
+                setDescripcion(response.data.descripcion);
+            };
+            fetchCurso();
         }
-    }, [])
+    }, [idcurso]);
 
-    // Agregar un curso
     const CrearCurso = async (event) => {
         event.preventDefault();
+        // Verifica si la descripción está vacía antes de enviar
+        if (!descripcion.trim()) {
+            setDescripcionValida(false);
+            return; // No envía el formulario si la descripción está vacía
+        }
+
         const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('descripcion', descripcion);
+        formData.append("titulo", titulo);
+        formData.append("descripcion", descripcion);
+
         try {
             const respuesta = await registrarCurso(formData);
-            console.log(respuesta);
             if (respuesta.status === 200) navigate("/admin/tablacursos");
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     // Modificar un curso
     const ModificarCurso = async (event) => {
         event.preventDefault();
+        if (!descripcion.trim()) {
+            setDescripcionValida(false);
+            return;
+        }
+
         const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('descripcion', descripcion);
+        formData.append("titulo", titulo);
+        formData.append("descripcion", descripcion);
+
         try {
-            // Aquí iría la función para registrar el evento
             const respuesta = await EditarCurso(idcurso, formData);
-            console.log(respuesta);
             if (respuesta.status === 200) navigate("/admin/tablacursos");
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     // Modulos de ReactQuill
     const modules = {
         toolbar: [
-            ['bold', 'italic', 'underline'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
         ],
     };
 
@@ -80,6 +92,7 @@ const CursoAdmin = () => {
                             value={titulo}
                             onChange={handleTitulo}
                             placeholder="Título"
+                            required // Hace que el título sea obligatorio
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                         />
                     </div>
@@ -92,20 +105,22 @@ const CursoAdmin = () => {
                             onChange={handleDescripcion}
                             placeholder="Descripción de este curso"
                         />
+                        {!descripcionValida && (
+                            <p className="mt-2 text-sm text-red-600">La descripción es obligatoria.</p>
+                        )}
                     </div>
                     <div className="py-2">
                         <button
                             type="submit"
-                            className="w-full py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
+                            className={`w-full py-3 font-semibold text-white transition duration-200 rounded-lg ${descripcionValida ? "bg-l_color_y-600 hover:bg-l_color_y-700" : "bg-gray-400 cursor-not-allowed"}`}
                         >
-                            {idcurso ? 'Modificar Curso' : 'Enviar Curso'}
+                            {idcurso ? "Modificar Curso" : "Enviar Curso"}
                         </button>
                     </div>
                 </form>
             </div>
         </>
     );
-
 };
 
 export default CursoAdmin;

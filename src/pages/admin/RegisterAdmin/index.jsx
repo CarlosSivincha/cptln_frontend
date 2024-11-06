@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OriginalLogo from "../../../../src/assets/OriginalLogo.png";
-import { useAuth } from "../../../context/Usuario_context"; 
+import { useAuth } from "../../../context/AuthContext"; 
 
 export const RegisterAdmin = () => {
 

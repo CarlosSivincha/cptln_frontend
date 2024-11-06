@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import OriginalLogo from "../../../assets/OriginalLogo.png";
 import { Outlet } from "react-router-dom";
 import { FaPrayingHands, FaNewspaper, FaCalendarDay, FaObjectGroup } from "react-icons/fa";
@@ -7,11 +7,28 @@ import { TbCategoryFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { MdCameraFront } from "react-icons/md";
 import { ImBooks } from "react-icons/im";
-import { IoIosArrowDown, IoIosRadio, IoIosPeople  } from "react-icons/io";
+import { IoIosArrowDown, IoIosRadio, IoIosPeople } from "react-icons/io";
 import { MdCastForEducation } from "react-icons/md";
+import { FaUserPen } from "react-icons/fa6";
+import { useAuth } from '../../../context/AuthContext';
+import { AiOutlineLogout } from "react-icons/ai";
+
+
+
 const Administracion = () => {
+
+    const { user, LogoutUser } = useAuth()
+
     const [showSubmenu, setShowSubmenu] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false); // Estado para el tamaño del menú
+
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(true);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     // Función que maneja la expansión/contracción del menú y oculta el submenú
     const toggleMenu = () => {
@@ -29,7 +46,20 @@ const Administracion = () => {
                     </span>
                 </div>
                 <div className="flex items-center font-bold text-white">
-                    Mario Usuario Admin
+                    {user ? (
+                        <div className='flex items-center space-x-5'>
+                            <p>
+                                {user.nombres + ' ' + user.apellidos}
+                            </p>
+                            <button onClick={() => LogoutUser()}>
+                                <AiOutlineLogout className='size-5'/>
+                            </button>
+                        </div>
+                    )
+                        :
+                        (
+                            <p></p>
+                        )}
                 </div>
             </nav>
             <div className="flex">
@@ -89,8 +119,6 @@ const Administracion = () => {
                             </li>
                         </Link>
 
-                        
-
                         <Link to="/admin/tablaprogramas" className="w-full">
                             <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
                                 <span className="hidden ml-4 text-xl group-hover:inline-block">
@@ -108,6 +136,15 @@ const Administracion = () => {
                                 <IoIosRadio className="block group-hover:hidden size-8" />
                             </li>
                         </Link>
+                        <Link to="/admin/tablausuario" className="w-full">
+                            <li className="flex items-center justify-center w-full py-4 transition-all duration-300 cursor-pointer group hover:bg-slate-400">
+                                <span className="hidden ml-4 text-xl group-hover:inline-block">
+                                    Usuarios
+                                </span>
+
+                                <FaUserPen className="block group-hover:hidden size-8" />
+                            </li>
+                        </Link>
 
                         {/* Menú desplegable de "Peticiones" */}
                         <Link to="#" className="w-full">
@@ -120,28 +157,28 @@ const Administracion = () => {
                                 </span>
                                 <IoIosPeople className="block group-hover:hidden size-8" />
                             </li>
-                            
+
                             {/* Submenú para "Peticiones" */}
                             {showSubmenu && (
-                            <ul className="bg-white rounded-md shadow-md">
-                                <Link to="/admin/tablaoracion" className="w-full">
-                                    <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
-                                        <span className="text-sm text-black">Oraciones</span>
-                                    </li>
-                                </Link>
-                                <Link to="/admin/tablapeticionebooks" className="w-full">
-                                    <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
-                                        <span className="text-sm text-black">Ebooks</span>
-                                    </li>
-                                </Link>
-                                <Link to="/admin/tablacursosbi" className="w-full">
-                                    <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
-                                        <span className="text-sm text-black">Cursos</span>
-                                    </li>
-                                </Link>
-                            </ul>
-                        )}
-                        </Link>                        
+                                <ul className="bg-white rounded-md shadow-md">
+                                    <Link to="/admin/tablaoracion" className="w-full">
+                                        <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
+                                            <span className="text-sm text-black">Oraciones</span>
+                                        </li>
+                                    </Link>
+                                    <Link to="/admin/tablapeticionebooks" className="w-full">
+                                        <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
+                                            <span className="text-sm text-black">Ebooks</span>
+                                        </li>
+                                    </Link>
+                                    <Link to="/admin/tablacursosbi" className="w-full">
+                                        <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
+                                            <span className="text-sm text-black">Cursos</span>
+                                        </li>
+                                    </Link>
+                                </ul>
+                            )}
+                        </Link>
 
                     </ul>
                 </div>

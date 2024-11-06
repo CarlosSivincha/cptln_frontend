@@ -1,30 +1,35 @@
 import OriginalLogo from "../../../assets/OriginalLogo.png";
-import { useState } from "react";
-import { useAuth } from "../../../context/Usuario_context";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const LoginAdmin = () => {
 
+  const navigate = useNavigate()
+
   const [correo, setCorreo] = useState("")
   const [contraseña, setContraseña] = useState("")
-  
-  const handleCorreo = (event) => { 
+
+  const handleCorreo = (event) => {
     setCorreo(event.target.value)
   }
 
-  const handleContraseña = (event) => { 
+  const handleContraseña = (event) => {
     setContraseña(event.target.value)
   }
 
-  const {loginUser} = useAuth()
+  const { loginUser, isAuthenticated } = useAuth()
 
-  const login = async(event) => {
+  const login = async (event) => {
     event.preventDefault()
     const formulario = new FormData()
-    formulario.append("correo",correo)
-    formulario.append("password",contraseña)
+    formulario.append("correo", correo)
+    formulario.append("password", contraseña)
     try {
-      const respuesta = await loginUser(formulario)
-      console.log(respuesta)
+      const response = await loginUser(formulario)
+      if (response){
+        navigate('/admin')
+      }
     } catch (error) {
       console.log(error)
     }
