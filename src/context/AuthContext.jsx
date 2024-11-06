@@ -86,13 +86,13 @@ export const AuthProvider = ({ children }) => {
         const initializeAuth = async () => {
             // const token = localStorage.getItem('token') || Cookies.get('token');
 
-            if (!isAuthenticated && location.pathname.includes('/admin') && !hasRedirected.current) {
-                hasRedirected.current = true;  // Marcamos que ya hemos redirigido
-                setIsAuthenticated(false);
-                setLoading(false);
-                navigate('/cptln/pe/admin/login');
-                return;
-            }
+            // if (!isAuthenticated && location.pathname.includes('/admin') && !hasRedirected.current) {
+            //     hasRedirected.current = true;  // Marcamos que ya hemos redirigido
+            //     setIsAuthenticated(false);
+            //     setLoading(false);
+            //     navigate('/cptln/pe/admin/login');
+            //     return;
+            // }
 
             // await checkLogin(token);
         };
