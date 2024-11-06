@@ -57,44 +57,44 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    // const checkLogin = async (token) => {
-    //     try {
-    //         const res = await verifyTokenRequest(token);
-    //         if (!res.data) {
-    //             setIsAuthenticated(false);
-    //             setUser(null);
-    //             return false;
-    //         } else {
-    //             setUser(res.data);
-    //             setIsAuthenticated(true);
-    //             return true;
-    //         }
-    //     } catch (error) {
-    //         console.error('Token verification error:', error);
-    //         setIsAuthenticated(false);
-    //         setUser(null);
-    //         return false;
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    const checkLogin = async (token) => {
+        try {
+            const res = await verifyTokenRequest(token);
+            if (!res.data) {
+                setIsAuthenticated(false);
+                setUser(null);
+                return false;
+            } else {
+                setUser(res.data);
+                setIsAuthenticated(true);
+                return true;
+            }
+        } catch (error) {
+            console.error('Token verification error:', error);
+            setIsAuthenticated(false);
+            setUser(null);
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     const hasRedirected = useRef(false); // Usamos un ref para evitar redirecciones múltiples
     // Verificación inicial al cargar
     useEffect(() => {
         const initializeAuth = async () => {
-            // const token = localStorage.getItem('token') || Cookies.get('token');
+            const token = localStorage.getItem('token') || Cookies.get('token');
 
-            // if (!isAuthenticated && location.pathname.includes('/admin') && !hasRedirected.current) {
-            //     hasRedirected.current = true;  // Marcamos que ya hemos redirigido
-            //     setIsAuthenticated(false);
-            //     setLoading(false);
-            //     navigate('/cptln/pe/admin/login');
-            //     return;
-            // }
+            if (!isAuthenticated && location.pathname.includes('/admin') && !hasRedirected.current) {
+                hasRedirected.current = true;  // Marcamos que ya hemos redirigido
+                setIsAuthenticated(false);
+                setLoading(false);
+                // navigate('/cptln/pe/admin/login');
+                return;
+            }
 
-            // await checkLogin(token);
+            await checkLogin(token);
         };
 
         initializeAuth();
