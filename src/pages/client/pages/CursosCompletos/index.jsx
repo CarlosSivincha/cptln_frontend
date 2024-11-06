@@ -35,7 +35,7 @@ export const CursosCompletos = () => {
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28">
             <Header color="bg-l_color_o-600" title={`Curso "${!isLoadingFetchCursosVideos && fetchCursosVideos.titulo}"`} />
-            <div className="flex flex-col px-20 rounded-xl justify-center">
+            <div className="flex flex-col px-7 sm:px-10 lg:px-20 2xl:px-40 rounded-xl justify-center">
                 <p className="standard-paragraph mb-6" dangerouslySetInnerHTML={{ __html: fetchCursosVideos.descripcion}}></p>
                 {/* <p className="standard-paragraph mb-6">Cada uno de los 12 videos contiene una guía de estudio con referencias bíblicas y preguntas de reflexión y discusión. Estas sesiones pueden ser utilizadas en las clases para nuevos miembros o como material de estudio de grupos, dado que a través de ellas ese Dios, que “no escatimó a su propio Hijo, sino que lo entregó por nosotros” (Romanos 6:32a) se revela para que lo conozcamos más y profundicemos así nuestra relación con él.</p> */}
                 <div className="grid gap-x-5 gap-y-5 grid-cols-1 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-10 ">

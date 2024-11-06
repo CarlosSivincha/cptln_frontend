@@ -116,14 +116,14 @@ const ProgramSelect = () => {
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
             {loadingProgramaInfo ? (
-                <Header color={`#908A42`} title="Cargando..." />
+                <Header color={`#C3C3C3`} title="Cargando..." />
             ) : programaInfo ? (
                 <Header 
                     color={programaInfo.color} 
                     title={programaInfo.titulo} 
                 />
             ) : (
-                <Header color="#908A42" title="Programa no encontrada" />
+                <Header color="#C3C3C3" title="Programa no encontrada" />
             )}
             {/* <Header color="bg-l_color_y-700" title={programaInfo.titulo}/> */}
             {/* flex justify-between max-md:flex-col gap-10 max-w-[1280px] box-content px-10 max-[600px]:px-[30px] md:items-center md:mx-auto */}
@@ -184,7 +184,7 @@ const ProgramSelect = () => {
                 
             </div>
             <div className="px-10 max-[600px]:px-[30px] md:px-[50px] lg:px-[80px] 2xl:mx-auto max-w-[1580px] w-full">
-                <h3 className="h3-subtitles mb-6">Eventos pasados de JOEL</h3>
+                <h3 className="h3-subtitles mb-6">Eventos pasados de {programaInfo.abreviatura}</h3>
                 <div className="grid grid-cols-1 w-full">
 
                     <Slider {...settings} className="w-full">

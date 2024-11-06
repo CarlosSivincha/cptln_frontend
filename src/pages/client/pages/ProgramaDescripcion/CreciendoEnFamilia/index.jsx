@@ -24,7 +24,12 @@ export const CreciendoEnFamilia = () => {
 
     return(
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
-            <Header color="bg-l_color_v-600" title={datosRadio && datosRadio.nombre}/>
+            {isLoadingDatos ? (
+                <Header color={`#C3C3C3`} title="Cargando..." />
+            ) : (
+                <Header color="bg-[#589898]" title={datosRadio && datosRadio.nombre}/>
+            ) }
+            {/* <Header color="bg-[#589898]" title={datosRadio && datosRadio.nombre}/> */}
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24">
                 <p className="standard-paragraph mx-6 sm:mx-auto md:mx-10 min-[930px]:mx-auto max-w-full max-md:max-w-[560px] max-lg:max-w-[800px] min-[880px]:mx-auto lg:mx-20 max-[1450px]:max-w-[1380px] xl:mx-24 min-[1700px]:mx-auto min-[1700px]:w-[1600px] min-[1800px]:w-[1550px]"  dangerouslySetInnerHTML={{ __html: datosRadio && datosRadio.descripcion}}></p>
 

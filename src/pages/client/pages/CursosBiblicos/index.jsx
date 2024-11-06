@@ -65,7 +65,10 @@ const CursosBiblico = () => {
     }, [])
 
     const guardarSessionStorage = () => {
-        
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
         sessionStorage.setItem('validacion_cursos', true);
         // console.log("Dato guardado en sessionStorage:", true);
         setSessionValue(sessionStorage.getItem('validacion_cursos'))

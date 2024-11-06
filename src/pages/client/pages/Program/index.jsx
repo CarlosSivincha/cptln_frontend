@@ -62,7 +62,7 @@ export const ProgramaEspecifico = () => {
     return (
         <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24">
             {loadingCategoria ? (
-                <Header color={`#908A42`} title="Cargando..." />
+                <Header color={`#C3C3C3`} title="Cargando..." />
             ) : infoCategoria && infoCategoria.length ? (
                 <Header 
                     color={infoCategoria[0].color} 
@@ -72,7 +72,7 @@ export const ProgramaEspecifico = () => {
                     linkReturn="/programas" 
                 />
             ) : (
-                <Header color="#908A42" title="Categoría no encontrada" />
+                <Header color="#C3C3C3" title="Categoría no encontrada" />
             )}
 
             {loadingCategoria ? (

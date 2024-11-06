@@ -45,10 +45,11 @@ export const Home = () => {
   const [fetchNoticias, setFetchNoticias] = useState([]);
   const [fetchEventos, setFetchEventos] = useState([]);
   const [fetchProgramas, setFetchProgramas] = useState([]);
-  const [fetchRadio, setFetchRadio] = useState([]);
   const [isLoadingNews, setIsLoadingNews] = useState(true); // Nuevo estado de carga
   const [isLoadingEvents, setIsLoadingEventes] = useState(true); // Nuevo estado de carga
   const [isLoadingPrograms, setIsLoadingPrograms] = useState(true); // Nuevo estado de carga
+
+  const [datosRadio, setdatosRadio] = useState([]);
   const [isLoadingRadio, setIsLoadingRadio] = useState(true); // Nuevo estado de carga
 
   function convertirTexto(texto) {
@@ -80,7 +81,7 @@ export const Home = () => {
     const fetchRadio = async () => {
       const response = await obtenerDatosDeRadio();
       // console.log(response)
-      setFetchRadio(response.data);
+      setdatosRadio(response.data);
       setIsLoadingRadio(false);
     };
     fetchRadio();
@@ -109,7 +110,7 @@ export const Home = () => {
     speed: 500,
     slidesToShow: fetchProgramas.length > 1 ? slidesToShow : 1,
     slidesToScroll: 1,
-    autoplay: true,
+    // autoplay: true,
     mobileFirst: true,
   };
 
@@ -164,6 +165,16 @@ export const Home = () => {
                   </div>
                 );
               })} */}
+              {
+                !isLoadingPrograms && (
+                  <a className="relative px-2" href="/programa/creciendo-en-familia">
+
+                  <HomeProgramsCard program={datosRadio} radio={true}/>
+                  </a>
+                )
+              }
+              
+
               {isLoadingPrograms // Mientras está cargando, muestra los skeletons
                 ? Array(6) // Crear 6 skeletons como placeholders
                     .fill()
@@ -187,11 +198,11 @@ export const Home = () => {
         
 
         {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]"> */}
-        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-12">
+        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 md:gap-8 2xl:gap-12">
           <div className="flex flex-col justify-between w-full">
               <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6 mb-4">
-                  <h3 className="h3-subtitles">{fetchRadio.nombre}</h3>
-                  <p className="standard-paragraph text-justify line-clamp-[9] 2xl:line-clamp-[10]" dangerouslySetInnerHTML={{ __html: fetchRadio.descripcion}}></p>
+                  <h3 className="h3-subtitles">{datosRadio.nombre}</h3>
+                  <p className="standard-paragraph text-justify line-clamp-[9] 2xl:line-clamp-[10]" dangerouslySetInnerHTML={{ __html: datosRadio.descripcion}}></p>
               </div>
               <a href="/programa/creciendo-en-familia">
                   <button className="px-4 py-1 border rounded border-[#46797A] hover:bg-[#46797A] hover:text-white transition-colors duration-300">
@@ -201,7 +212,7 @@ export const Home = () => {
           </div>
           <div className="max-h-[500px] bg-[#222126] rounded-t-xl lg:rounded-t-none lg:rounded-md">
               <video 
-                  src={video} 
+                  src={datosRadio.videoHome} 
                   controls 
                   className="w-full h-full object-contain "
               />

@@ -207,7 +207,7 @@ const Navbar = () => {
                   className="absolute left-0 w-48 py-2 mt-2 bg-white rounded-md shadow-lg"
                 >
                   {isLoadingCategorias // Mientras está cargando, muestra los skeletons
-                    ? Array(3) // Crear 6 skeletons como placeholders
+                    ? Array(1) // Crear 6 skeletons como placeholders
                         .fill()
                         .map((_) => (
                           <span
@@ -232,7 +232,7 @@ const Navbar = () => {
                     })
                   }
                   {isLoadingPrograms // Mientras está cargando, muestra los skeletons
-                    ? Array(3) // Crear 6 skeletons como placeholders
+                    ? Array(1) // Crear 6 skeletons como placeholders
                         .fill()
                         .map((_) => (
                           <span
@@ -388,7 +388,7 @@ const Navbar = () => {
             <ul className="pl-6 space-y-2">
               
               {isLoadingCategorias // Mientras está cargando, muestra los skeletons
-                    ? Array(3) // Crear 6 skeletons como placeholders
+                    ? Array(1) // Crear 6 skeletons como placeholders
                         .fill()
                         .map((_) => (
                           <li
@@ -413,7 +413,7 @@ const Navbar = () => {
                     })
                   }
                   {isLoadingPrograms // Mientras está cargando, muestra los skeletons
-                    ? Array(3) // Crear 6 skeletons como placeholders
+                    ? Array(1) // Crear 6 skeletons como placeholders
                         .fill()
                         .map((_) => (
                           <li
