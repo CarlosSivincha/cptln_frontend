@@ -26,7 +26,7 @@ export const LoginAdmin = () => {
     formulario.append("correo", correo)
     formulario.append("password", contraseña)
     try {
-    await loginUser(formulario)
+      await loginUser(formulario)
 
     } catch (error) {
       console.log(error)
