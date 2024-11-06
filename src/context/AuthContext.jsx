@@ -26,20 +26,6 @@ export const AuthProvider = ({ children }) => {
     const loginUser = async (user) => {
         try {
             const res = await login(user); // Espera a que la promesa se resuelva
-    
-            // Ahora puedes verificar si el token está presente en la cookie
-            const token = Cookies.get('token');
-            console.log(token);
-            
-            if (token) {
-                // Guarda el token en localStorage
-                localStorage.setItem('token', token); 
-                setUser(res.data);
-                setIsAuthenticated(true);
-                console.log('Signed in user:', res.data); // Verifica los datos del usuario
-            } else {
-                throw new Error('No se recibió el token');
-            }
             return res
         } catch (error) {
             console.error('Error en el login:', error.message);
@@ -98,7 +84,7 @@ export const AuthProvider = ({ children }) => {
         const initializeAuth = async () => {
             const token = localStorage.getItem('token') || Cookies.get('token');
 
-            if (!token && location.pathname.includes('/admin') && !hasRedirected.current) {
+            if (!isAuthenticated && location.pathname.includes('/admin') && !hasRedirected.current) {
                 hasRedirected.current = true;  // Marcamos que ya hemos redirigido
                 setIsAuthenticated(false);
                 setLoading(false);
