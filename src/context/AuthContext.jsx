@@ -28,8 +28,19 @@ export const AuthProvider = ({ children }) => {
             const res = await login(user); // Espera a que la promesa se resuelva
     
             // Ahora puedes verificar si el token está presente en la cookie
-            navigate('admin/')
+            const token = Cookies.get('token');
+            console.log(token);
             
+            if (token) {
+                // Guarda el token en localStorage
+                localStorage.setItem('token', token); 
+                setUser(res.data);
+                setIsAuthenticated(true);
+                console.log('Signed in user:', res.data); // Verifica los datos del usuario
+            } else {
+                throw new Error('No se recibió el token');
+            }
+            return res
         } catch (error) {
             console.error('Error en el login:', error.message);
         }
@@ -46,12 +57,12 @@ export const AuthProvider = ({ children }) => {
 
     const LogoutUser = async () => {
         try {
-            const token = Cookies.get('token');
+            const token = localStorage.getItem('token') || Cookies.get('token');
             const res = logout(token)
             if (res) {
                 setIsAuthenticated(false)
                 setUser(null)
-                navigate('/')
+                
             }
         } catch (error) {
             
@@ -85,26 +96,21 @@ export const AuthProvider = ({ children }) => {
     // Verificación inicial al cargar
     useEffect(() => {
         const initializeAuth = async () => {
-            const token = Cookies.get('token');
-            
-            // Si no hay token y estamos en '/admin', redirigimos solo una vez
+            const token = localStorage.getItem('token') || Cookies.get('token');
+
             if (!token && location.pathname.includes('/admin') && !hasRedirected.current) {
-                hasRedirected.current = true; // Evitar redirección múltiples
+                hasRedirected.current = true;  // Marcamos que ya hemos redirigido
                 setIsAuthenticated(false);
                 setLoading(false);
                 navigate('/cptln/pe/admin/login');
                 return;
             }
-    
-            // Si hay token, verificamos el login
-            if (token) {
-                await checkLogin(token);
-            }
-            setLoading(false);
+
+            await checkLogin(token);
         };
-    
+
         initializeAuth();
-    }, [location, navigate]);
+    }, [location]);
 
     return (
         <AuthContext.Provider value={{ user, loginUser, RegisterUser, LogoutUser, isAuthenticated, loading }} >
