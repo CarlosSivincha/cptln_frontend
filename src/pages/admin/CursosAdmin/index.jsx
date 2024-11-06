@@ -3,7 +3,6 @@ import ReactQuill from "react-quill";
 import { registrarCurso, obtenerCursoID, EditarCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
 
 const CursoAdmin = () => {
     const navigate = useNavigate();
