@@ -153,7 +153,7 @@ const DevocionalesAdmin = () => {
                         placeholder="Contenido del Devocional"
                     />
                     {error && <p className="text-red-600">{error}</p>}
-                    <div className="space-y-4 md:flex md:space-x-6 md:space-y-0">
+                    <div className="space-y-4 md:space-x-6 md:space-y-0 grid grid-cols-2">
                         <div>
                             <label className="block mb-2 text-gray-600">Imágene para Devocional</label>
                             {id && (
@@ -169,16 +169,21 @@ const DevocionalesAdmin = () => {
                         </div>
                         <div>
                             <label className="block mb-2 text-gray-600">Audio para Devocional</label>
-
-                            <input
-                                type="file"
-                                name="audio"
-                                onChange={handleAudio}
-                                accept="audio/*, video/mp4"
-                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            />
+                                {id && audiourl && (
+                                    <div className="flex items-center mt-6 space-x-4">
+                                        <AudioPlayer audio={audiourl} />
+                                    </div>
+                                )}
+                                <input
+                                    type="file"
+                                    name="audio"
+                                    onChange={handleAudio}
+                                    accept="audio/*, video/mp4"
+                                    className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                />
                         </div>
                     </div>
+
                     <button
                         type="submit"
                         className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"
@@ -186,14 +191,6 @@ const DevocionalesAdmin = () => {
                         {id ? 'Modificar Devocional' : 'Enviar Devocional'}
                     </button>
                 </form>
-
-                {/* Mover el AudioPlayer aquí, fuera del formulario */}
-                {id && audiourl && (
-                    <div className="flex items-center mt-6 space-x-4">
-                        <h3 className="text-xl font-semibold">Reproductor de Audio:</h3>
-                        <AudioPlayer audio={audiourl} />
-                    </div>
-                )}
             </div>
         </>
     );

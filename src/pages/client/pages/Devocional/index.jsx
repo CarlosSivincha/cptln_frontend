@@ -69,22 +69,22 @@ const Devocional = () => {
     return (
         <div className="flex flex-col gap-6 lg:gap-12 xl:gap-16 pb-4 lg:pb-8 xl:pb-16 items-center">
             <Header color="bg-l_color_y-600" title="Rincon de Gracia" text={!id ? `Devocional diario` : `Devocional ( ${convertirFechaPersonalizada(infoDevocional.fecha)} )`} />
-            <div className="xl:mx-48 lg:mx-12 md:mx-10 max-md:mx-5 my-10">
+            <div className="xl:mx-40 lg:mx-28 md:mx-20 mx-5 sm:mx-16 my-10">
                 <h3 className="h3-subtitles">{infoDevocional.titulo}</h3>
                 <p className="flex text-gray-500 italic my-5 text-xl xl:text-2xl break-all ">
                     {`Lectura: "${infoDevocional.versiculo}"`}
                 </p>
 
-                <div className="flex w-full p my-2">
+                <div className="flex w-full my-2">
                     <span className="flex w-full border border-black" />
                 </div>
-                <div className="">
-                    <div className="float-end ml-10 mb-5 md:w-1/2 lg:w-1/3 max-md:w-full ">
+                <div className="max-w-[1300px]">
+                    <div className="max-w-[385px] lg:max-w-[340px] mx-auto lg:float-end lg:mb-3 2xl:mb-5 lg:ml-6 2xl:ml-10">
                         <img src={infoDevocional.imagenURL} alt=""
                             className="mb-2" />
                         <AudioPlayer audio={infoDevocional.audioURL}/>
                     </div>
-                    <p className="standard-paragraph text-justify break-all" dangerouslySetInnerHTML={{ __html: infoDevocional.parrafo}}></p>
+                    <p className="standard-paragraph text-justify break-all mt-8" dangerouslySetInnerHTML={{ __html: infoDevocional.parrafo}}></p>
                 </div>
                 <div className="flex w-full my-10">
                     <span className="flex w-full border border-black" />

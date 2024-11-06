@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { StrictMode, lazy, Suspense } from "react";
 import PageLoader from "./pages/client/components/Loaders/PageLoader";
 import CursosBiblico from "./pages/client/pages/CursosBiblicos";
-import { AuthProvider } from "./context/Usuario_context";
+import { AuthProvider } from "./context/AuthContext";
 import Slider from "./Prueba";
 const AboutUs = lazy(() => import("@/pages/client/pages/AboutUs"));
 const Programas = lazy(() => import("@/pages/client/pages/Programs"));
@@ -69,23 +69,23 @@ const TablaresEbooks = lazy(() => import("@/pages/admin/TablaresEbooks"))
 const TablaCursos = lazy(() => import("@/pages/admin/TablaCurso"))
 const CapituloCursosAdmin = lazy(() => import("@/pages/admin/CapitulosCursosAdmin"))
 const TablaCapituloCurso = lazy(() => import("@/pages/admin/TablaCapituloCurso"))
-const RadioAdmin = lazy(()=>import('@/pages/admin/RadioAdmin'))
-const TablaRadioSecciones = lazy(()=>import('@/pages/admin/TablaRadioSecciones'))
-const SeccionRadioAdmin = lazy(()=>import('@/pages/admin/SeccionRadioAdmin'))
-const TablaRadioSeccionContenidoAdmin = lazy(()=>import('@/pages/admin/TablaRadioSeccionContenidoAdmin'))
-const ContenidoSeccionRadioAdmin = lazy(()=>import('@/pages/admin/ContenidoSeccionRadioAdmin'))
-const TablaUsuario = lazy(()=>import('@/pages/admin/TablaUsuairo'))
+const RadioAdmin = lazy(() => import('@/pages/admin/RadioAdmin'))
+const TablaRadioSecciones = lazy(() => import('@/pages/admin/TablaRadioSecciones'))
+const SeccionRadioAdmin = lazy(() => import('@/pages/admin/SeccionRadioAdmin'))
+const TablaRadioSeccionContenidoAdmin = lazy(() => import('@/pages/admin/TablaRadioSeccionContenidoAdmin'))
+const ContenidoSeccionRadioAdmin = lazy(() => import('@/pages/admin/ContenidoSeccionRadioAdmin'))
+const TablaUsuario = lazy(() => import('@/pages/admin/TablaUsuairo'))
 
 const App = () => {
   return (
     <>
-      <StrictMode>
-        <AuthProvider>
-          <div className="bg-[#EAE9E5]">
-            <Suspense fallback={<PageLoader />}>
-              {/* <Navbar color="bg-l_color_r-600"/>           */}
-              <BrowserRouter>
+        <div className="bg-[#EAE9E5]">
+          <Suspense fallback={<PageLoader />}>
+            {/* <Navbar color="bg-l_color_r-600"/>           */}
+            <BrowserRouter>
+              <AuthProvider>
                 <Routes>
+
                   <Route path="/" element={<Navbar color="bg-l_color_r-600" />}>
                     <Route index element={<Home />} />
                     <Route path="aboutus" element={<AboutUs />} />
@@ -194,10 +194,10 @@ const App = () => {
                     <Route path="tabladevocional/:id" element={<DevoAd />} />
                     <Route path="tablanews" element={<TablaNews />} />
                   </Route> */}
+                  <Route path="/cptln/pe/admin/login" element={<LoginAdmin />} />
                   <Route path="/admin" element={<Administracion />}>
-                    <Route path="register" element={<RegisterAdmin />} />
+                    <Route path="/admin/users/cptln/register" element={<RegisterAdmin />} />
                     <Route path="devoAd" element={<DevoAd />} />
-                    <Route path="login" element={<LoginAdmin />} />
                     <Route path="newsad" element={<NewsAdmin />} />
                     <Route path="eventad" element={<EventsAdmin />} />
                     <Route path="categorias" element={<CategoriaAdmin />} />
@@ -235,28 +235,28 @@ const App = () => {
 
                     <Route path="tablacursosbi" element={<Tablacursosbiblicos />} />
                     <Route path="tablapeticionebooks" element={<TablaresEbooks />} />
-                    <Route path="radioconfig" element={<RadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones" element={<TablaRadioSecciones/>}/>
-                    <Route path="radioconfig/tablasecciones/agregar" element={<SeccionRadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion" element={<SeccionRadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<TablaRadioSeccionContenidoAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<ContenidoSeccionRadioAdmin/>}/>
-                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<ContenidoSeccionRadioAdmin/>}/>
+                    <Route path="radioconfig" element={<RadioAdmin />} />
+                    <Route path="radioconfig/tablasecciones" element={<TablaRadioSecciones />} />
+                    <Route path="radioconfig/tablasecciones/agregar" element={<SeccionRadioAdmin />} />
+                    <Route path="radioconfig/tablasecciones/:idseccion" element={<SeccionRadioAdmin />} />
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion" element={<TablaRadioSeccionContenidoAdmin />} />
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/agregar" element={<ContenidoSeccionRadioAdmin />} />
+                    <Route path="radioconfig/tablasecciones/:idseccion/tablacontenidoseccion/:idcontenido" element={<ContenidoSeccionRadioAdmin />} />
 
                     {/* <Route path="tablaprogramas"/> */}
 
                     {/* <Route path="test" element={<TestView />} /> */}
                     {/* <Route path="/programas" element={<Programs/>} /> */}
                   </Route>
-                <Route path="/pruebas" element={<Slider/>}/>
+                  <Route path="/pruebas" element={<Slider />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </BrowserRouter>
-              {/* <Fotter /> */}
-            </Suspense>
-          </div>
-        </AuthProvider>
-      </StrictMode>
+              </AuthProvider>
+            </BrowserRouter>
+            {/* <Fotter /> */}
+          </Suspense>
+        </div>
+
     </>
   );
 };

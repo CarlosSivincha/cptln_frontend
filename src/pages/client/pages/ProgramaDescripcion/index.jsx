@@ -130,30 +130,40 @@ const ProgramSelect = () => {
             <div className="flex flex-col gap-12 lg:gap-16 xl:gap-24 pb-12 xl:pb-24 px-10 max-[600px]:px-[30px] md:items-center md:mx-auto max-w-[1280px]">
                 {
                     !loadingProgramaInfo && contenidoPrograma && contenidoPrograma.map((contenido, index) => (
+                        <>
+                        {
+                            contenido.imagen ? (
+                                <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center" key={index}>
 
-                        <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center" key={index}>
-                            <div className={`flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center ${index%2 == 1 ? " order-2 max-md:order-1" : ""}`}>
-                                {
-                                    contenido.imagen ? (
-                                        <img src={contenido.imagen} alt=""
+                                    <div className={`flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center ${index%2 == 1 ? " order-2 max-md:order-1" : ""}`}>
+                                        
+                                    <img src={contenido.imagen} alt=""
                                         className="bg-cover 2xl:h-80 xl:h-64 md:h-54 max-md:w-full rounded-2xl shadow-md shadow-gray-400" />
-                                        //bg-cover w-full rounded-2xl
-                                    ) : (
-                                        <img src={ImageNotFound} alt=""
-                                        className="bg-cover 2xl:h-80 xl:h-64 md:h-54 max-md:w-full rounded-2xl shadow-md shadow-gray-400" />
-                                        //bg-cover w-full rounded-2xl
-                                    )
-                                }
-                                
-                            </div>
-                            <div className="flex-1">
-                                <h3 className={`h3-subtitles ${index%2 == 1 ? "order-1 max-md:order-2" : ""}`}>{contenido.subtitulo}</h3>
-                                <p className="mt-[15px] standard-paragraph text-[#555656] text-justify" dangerouslySetInnerHTML={{ __html: contenido.parrafo}}>
-                                    
-                                </p>
-                            </div>
-                        </div>
-                    ))
+
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className={`h3-subtitles ${index%2 == 1 ? "order-1 max-md:order-2" : ""}`}>{contenido.subtitulo}</h3>
+                                        <p className="mt-[15px] standard-paragraph text-[#555656] text-justify" dangerouslySetInnerHTML={{ __html: contenido.parrafo}}>
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex justify-between gap-10 box-content" key={index}>
+
+                                    <div className="flex-1">
+                                        <h3 className={`h3-subtitles`}>{contenido.subtitulo}</h3>
+                                        <p className="mt-[15px] standard-paragraph text-[#555656] text-justify" dangerouslySetInnerHTML={{ __html: contenido.parrafo}}>
+                                            
+                                        </p>
+                                    </div>
+                                </div>
+                            )
+                        }
+                        </>    
+                    )
+                    )
+                    
                 }
                 
                 {/* <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center">

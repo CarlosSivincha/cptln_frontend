@@ -141,7 +141,7 @@ export const Home = () => {
         {/* Sección de Programas */}
 
         {/* <div className="container min-[768px]:px-10 min-[1024px]:px-12 min-[1280px]:px-16 min-[1440px]:px-6 mx-auto"> */}
-        <div className="mx-auto w-[90%] max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] lg:w-[95%] 2xl:w-[98%] min-[1650px]:w-full">
+        <div className="mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1590px] min-[1650px]:w-full ">
           <div className="flex items-center gap-4 mb-8">
             <h2 className="h3-subtitles">Programas</h2>
             <a href="/programas">
@@ -153,52 +153,42 @@ export const Home = () => {
 
           {/* Carrusel de Programas */}
           {/* <div className="mx-1 min-[768px]:px-5 min-[1024px]:px-6 min-[1280px]:px-8 min-[1440px]:px-10 min-[1920px]:px-12 "> */}
-          <div className="grid grid-cols-1">
-            <Slider {...carouselSettings}>
-              {/* {fetchProgramas.map((program, index) => {
-                //console.log(program); // Para ver si los datos son correctos
-                // console.log(fetchProgramas)
-                return (
-                  
-                  <div key={index} className="relative px-2">
-                    <HomeProgramsCard program={program} />
-                  </div>
-                );
-              })} */}
-              {
-                !isLoadingPrograms && (
-                  <a className="relative px-2" href="/programa/creciendo-en-familia">
+          <div className=" mx-auto w-[90%] lg:w-[95%] 2xl:w-[98%] min-[1650px]:w-full">
+            <div className="grid grid-cols-1">
+              <Slider {...carouselSettings}>
+                {
+                  !isLoadingPrograms && (
+                    <a className="relative px-2" href="/programa/creciendo-en-familia">
 
-                  <HomeProgramsCard program={datosRadio} radio={true}/>
-                  </a>
-                )
-              }
-              
-
-              {isLoadingPrograms // Mientras está cargando, muestra los skeletons
-                ? Array(6) // Crear 6 skeletons como placeholders
-                    .fill()
-                    .map((_, index) => (
-                      <HomeProgramsLoader key={index} /> // loading={true} activa los skeletons
-                    ))
-                : fetchProgramas.map((program, index) => {
-                  //console.log(program); // Para ver si los datos son correctos
-                  // console.log(fetchProgramas)
-                  return (
-                    
-                    <a key={index} className="relative px-2" href={program.enlace != null ? program.enlace : (`${program.categoria_id ? `/programas/${convertirTexto(program.categoria_id)}` : ""}/programa/${convertirTexto(program.titulo)}`)} target={program.enlace != null ? "_blank" : "_self"}>
-                      <HomeProgramsCard program={program} />
+                    <HomeProgramsCard program={datosRadio} radio={true}/>
                     </a>
-                  );
-                })
-              }
-            </Slider>
+                  )
+                }
+                
+
+                {isLoadingPrograms // Mientras está cargando, muestra los skeletons
+                  ? Array(6) // Crear 6 skeletons como placeholders
+                      .fill()
+                      .map((_, index) => (
+                        <HomeProgramsLoader key={index} /> // loading={true} activa los skeletons
+                      ))
+                  : fetchProgramas.map((program, index) => {
+                    return (
+                      
+                      <a key={index} className="relative px-2" href={program.enlace != null ? program.enlace : (`${program.categoria_id ? `/programas/${convertirTexto(program.categoria_id)}` : ""}/programa/${convertirTexto(program.titulo)}`)} target={program.enlace != null ? "_blank" : "_self"}>
+                        <HomeProgramsCard program={program} />
+                      </a>
+                    );
+                  })
+                }
+              </Slider>
+            </div>
           </div>
         </div>
         
 
         {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]"> */}
-        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 md:gap-8 2xl:gap-12">
+        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
           <div className="flex flex-col justify-between w-full">
               <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6 mb-4">
                   <h3 className="h3-subtitles">{datosRadio.nombre}</h3>
@@ -220,8 +210,8 @@ export const Home = () => {
       </div>
 
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
-        <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[760px] min-[768px]:px-10 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
-          <div className="min-[310px]:mx-auto min-[1110px]:mx-10 2xl:mx-auto">
+        <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-10 w-full">
+          <div className="">
             {/* <h3 className="h3-subtitles mb-5">Noticias</h3> */}
             <div className="flex items-center gap-4 mb-8">
               <h2 className="h3-subtitles">Noticias</h2>
@@ -231,66 +221,62 @@ export const Home = () => {
                 </button>
               </a>
             </div>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3">
-              {isLoadingNews // Mientras está cargando, muestra los skeletons
-                ? Array(6) // Crear 6 skeletons como placeholders
-                    .fill()
-                    .map((_, index) => (
-                      <NewsLoader key={index} /> // loading={true} activa los skeletons
-                    ))
-                : fetchNoticias.map((not, index) => (
+            <div className="mx-auto min-[1110px]:mx-10 xl:mx-auto">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3 justify-items-center ">
+                {isLoadingNews // Mientras está cargando, muestra los skeletons
+                  ? Array(6) // Crear 6 skeletons como placeholders
+                  .fill()
+                  .map((_, index) => (
+                    <NewsLoader key={index} /> // loading={true} activa los skeletons
+                  ))
+                  : fetchNoticias.map((not, index) => (
                     <NewsCard
-                      key={not._id}
-                      title={not.titulo}
-                      date={not.fecha}
-                      description={not.cuerpo}
-                      link={not._id}
-                      imageSrc={not.portada}
-                      loading={false} // loading={false} oculta los skeletons
+                    key={not._id}
+                    title={not.titulo}
+                    date={not.fecha}
+                    description={not.cuerpo}
+                    link={not._id}
+                    imageSrc={not.portada}
+                    loading={false} // loading={false} oculta los skeletons
                     />
                   ))}
+              </div>
             </div>
           </div>
 
-          <div className="w-full min-[360px]:mx-auto md:max-w-[630px] lg:max-w-[950px] xl:max-w-[1070px] 2xl:max-w-[530px] ">
+
+          <div>
             <h3 className="h3-subtitles mb-5">Eventos</h3>
-            <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 && "lg:grid-cols-2" } lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 place-items-center 2xl:max-w-[530px]`}>
-              {isLoadingEvents // Mientras está cargando, muestra los skeletons
-                ? Array(3) // Crear 6 skeletons como placeholders
-                    .fill()
-                    .map((_, index) => (
-                      <EventsLoader key={index} /> // loading={true} activa los skeletons
-                    ))
-                : fetchEventos.map((event, index) => (
-                    <EventCard
-                      key={event._id}
-                      date={event.fecha}
-                      hora={event.hora}
-                      title={event.titulo}
-                      description={event.cuerpo}
-                      location={event.ubicacion}
-                    />
-                  ))}
-              {/* <EventCard
-              date="ABR 30 2024"
-              title="Evento 1"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-              location="Av. Independencia N° 100"
-            />
-            <EventCard
-              date="ABR 30 2024"
-              title="Evento 1"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-              location="Av. Independencia N° 100"
-            />
-            <EventCard
-              date="ABR 30 2024"
-              title="Evento 1"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-              location="Av. Independencia N° 100"
-            /> */}
+            <div className="min-[360px]:mx-auto">
+              <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 ? "lg:grid-cols-2" : "lg:grid-cols-1"} xl:grid-cols-2 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 2xl:max-w-[530px] justify-items-center`}>
+                {isLoadingEvents ? (
+                  Array(3).fill().map((_, index) => (
+                    <EventsLoader key={index} />
+                  ))
+                ) : (
+                  <>
+                    {fetchEventos.map((event, index) => (
+                      <EventCard
+                        key={event._id}
+                        date={event.fecha}
+                        hora={event.hora}
+                        title={event.titulo}
+                        description={event.cuerpo}
+                        location={event.ubicacion}
+                      />
+                    ))}
+                    {fetchEventos.length < 3 &&
+                      Array(3 - fetchEventos.length).fill().map((_, index) => (
+                        <div key={index} className="invisible">
+                          <EventCard />
+                        </div>
+                      ))}
+                  </>
+                )}
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

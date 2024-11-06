@@ -25,7 +25,7 @@ const EventCard = ({ date, title, description, location, hora }) => {
     return html.replace(/<\/?[^>]+(>|$)/g, "");
   };
   return (
-    <div className="flex overflow-hidden bg-white rounded-lg shadow-md h-[140px] w-full max-w-[5000px]">
+    <div className="flex overflow-hidden bg-white rounded-lg shadow-md h-[140px] w-full max-w-[500px] ">
       <div className="flex flex-col items-center justify-center flex-shrink-0 font-bold text-white bg-[#A25F3E] h-full w-[24%]">
         <div className="text-lg xl:text-xl">{day}</div>
         <div className="text-4xl leading-none xl:text-5xl">{month}</div>
