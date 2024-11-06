@@ -60,7 +60,7 @@ const TablaUsuario = () => {
             cell: info => info.getValue(),
         }),
         columnHelper.accessor('apellidos', {
-            header: "A pellidos",
+            header: "Apellidos",
             cell: info => info.getValue(),
         }),
         columnHelper.accessor('correo', {
