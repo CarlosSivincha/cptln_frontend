@@ -86,20 +86,25 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const initializeAuth = async () => {
             const token = Cookies.get('token');
-
+            
+            // Si no hay token y estamos en '/admin', redirigimos solo una vez
             if (!token && location.pathname.includes('/admin') && !hasRedirected.current) {
-                hasRedirected.current = true;  // Marcamos que ya hemos redirigido
+                hasRedirected.current = true; // Evitar redirección múltiples
                 setIsAuthenticated(false);
                 setLoading(false);
                 navigate('/cptln/pe/admin/login');
                 return;
             }
-
-            await checkLogin(token);
+    
+            // Si hay token, verificamos el login
+            if (token) {
+                await checkLogin(token);
+            }
+            setLoading(false);
         };
-
+    
         initializeAuth();
-    }, [location]);
+    }, [location, navigate]);
 
     return (
         <AuthContext.Provider value={{ user, loginUser, RegisterUser, LogoutUser, isAuthenticated, loading }} >
