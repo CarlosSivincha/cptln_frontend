@@ -28,16 +28,8 @@ export const AuthProvider = ({ children }) => {
             const res = await login(user); // Espera a que la promesa se resuelva
     
             // Ahora puedes verificar si el token está presente en la cookie
-            const token = Cookies.get('token');
-            console.log(token);
+            navigate('admin/')
             
-            if (token) {
-                setUser(res.data);
-                setIsAuthenticated(true);
-            } else {
-                throw new Error('No se recibió el token');
-            }
-            return res
         } catch (error) {
             console.error('Error en el login:', error.message);
         }
