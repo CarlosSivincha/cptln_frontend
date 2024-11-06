@@ -26,6 +26,8 @@ export const AuthProvider = ({ children }) => {
     const loginUser = async (user) => {
         try {
             const res = await login(user); // Espera a que la promesa se resuelva
+            setIsAuthenticated(true)
+            setUser(res.data)
             return res
         } catch (error) {
             console.error('Error en el login:', error.message);
