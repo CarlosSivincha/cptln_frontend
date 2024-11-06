@@ -110,7 +110,6 @@ const EbooksAdmin = () => {
 
     return (
         <>
-            <Header color="bg-l_color_r-600" title={`${id ? 'Editar Ebook' : 'Agregar Ebook'}`} />
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
                 <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">{id ? "Editar Ebook" : "Agregar un nuevo Ebook"}</h2>
                 {error && <p className="text-center text-red-500">{error}</p>}

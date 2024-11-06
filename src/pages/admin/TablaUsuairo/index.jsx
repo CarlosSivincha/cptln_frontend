@@ -110,7 +110,7 @@ const TablaUsuario = () => {
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold text-gray-700">Usuairos</h3>
                     <button
-                        onClick={() => navigate('/admin/login')}
+                        onClick={() => navigate('/admin/register')}
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar

@@ -34,7 +34,7 @@ const TablaCapituloCurso = () => {
             }
         }
         fetch();
-    }, [capitulos]);
+    }, []);
 
     const columnHelper = createColumnHelper();
 

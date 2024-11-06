@@ -3,7 +3,6 @@ import ReactQuill from "react-quill";
 import { registrarCurso, obtenerCursoID, EditarCurso } from "../../../Api/cursos";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
 
 const CursoAdmin = () => {
     const navigate = useNavigate();
@@ -51,7 +50,6 @@ const CursoAdmin = () => {
         }
     };
 
-    // Modificar un curso
     const ModificarCurso = async (event) => {
         event.preventDefault();
         if (!descripcion.trim()) {
@@ -71,7 +69,6 @@ const CursoAdmin = () => {
         }
     };
 
-    // Modulos de ReactQuill
     const modules = {
         toolbar: [
             ["bold", "italic", "underline"],
@@ -79,7 +76,6 @@ const CursoAdmin = () => {
         ],
     };
 
-    
     return (
         <>
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
