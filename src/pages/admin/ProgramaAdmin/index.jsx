@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
-import { crearPrograma, editarPrograma, buscarPrograma } from "../../../Api/programas";
+import { crearPrograma, editarPrograma, buscarProgramaAdmin } from "../../../Api/programas";
 import { useParams } from "react-router-dom";
 import { obtenerCategorias } from "../../../Api/categorias";
 
@@ -69,7 +69,7 @@ const ProgramaAdmin = () => {
     useEffect(() => {
         if (id) {
             const fetch = async () => {
-                const response = await buscarPrograma(id)
+                const response = await buscarProgramaAdmin(id)
                 setSelectcategoria(response.data.categoria_id)
                 setTitulo(response.data.titulo)
                 setDescripcion(response.data.descripcion)

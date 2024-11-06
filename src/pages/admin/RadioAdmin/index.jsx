@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { obtenerDatosDeRadio, actualizarDatosDeRadio } from "../../../Api/radio";
+import { obtenerDatosDeRadioAdmin, actualizarDatosDeRadio } from "../../../Api/radio";
 import { useNavigate } from "react-router-dom";
 
 const RadioAdmin = () => {
@@ -14,17 +14,17 @@ const RadioAdmin = () => {
     const [nombre, setNombre] = useState(null)
     const [descripcion, setDescripcion] = useState(null)
     const [imagenesExtra, setImagenesExtra] = useState([])
-    const [video, setVideo] = useState([])
+    const [video, setVideo] = useState(null)
     const handleNombre = (e) => setNombre(e.target.value)
     const handleDescripcion = (html) => setDescripcion(html)
     const handleID = (value) => setID(value)
     const handleImagenesExtra = (event) => setImagenesExtra(event.target.files)
-    const handleVideo = (event) => setVideo(event.target.files)
+    const handleVideo = (event) => setVideo(event.target.files[0])
 
     // Recuperar Datos
     useEffect(() => {
         const fetch = async () => {
-            const res = await obtenerDatosDeRadio()
+            const res = await obtenerDatosDeRadioAdmin()
             if (res.data._id) {
                 setID(res.data._id)
             }

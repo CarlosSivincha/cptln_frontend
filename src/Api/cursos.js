@@ -1,27 +1,40 @@
 import axios from "./axios";
 
-
-// Curso
-export const registrarCurso = event => axios.post("cursos",event)
-
+// Cliente
 export const obtenerCurso = () => axios.get("cursos")
 
 export const obtenerCursoID = (id) => axios.get(`cursos/${id}`)
 
-export const EditarCurso =  (id, data) => axios.post(`cursos/${id}`,data)
-
-export const obtenerCursoPag = (parametros) => axios.get("cursos/pagination",parametros)
-
-
-// Contenido
-export const crearCapituloCurso = (idcurso, data) => axios.post(`/cursos/capitulos/capitulo/${idcurso}`,data)
-
 export const buscarContenidosDelCurso = (idcurso) => axios.get(`/cursos/capitulos/capitulo/${idcurso}`)
 
-export const editarCapituloCurso = (idcurso, idcapitulo, data) => axios.post(`/cursos/capitulos/${idcurso}/${idcapitulo}`, data)
 
-export const buscarCapituloEspecifico = (idcurso, id) => axios.get(`/cursos/capitulos/${idcurso}/${id}`)
+// Admin
 
-export const obtenerCapitulosCursoPag = (idcurso, parametros) => axios.get(`/cursos/capitulos/pagination/${idcurso}`,parametros) 
+// Curso //
+export const obtenerCursoAdmin = () => axios.get("/admin/cursos")
 
-export const ordenarListaDeCapitulos = (id, data) => axios.post(`/cursos/capitulos/ordenar/${id}`,data)
+export const obtenerCursoIDAdmin = (id) => axios.get(`/admin/cursos/${id}`)
+
+export const registrarCurso = event => axios.post("/admin/cursos",event)
+
+export const EditarCurso =  (id, data) => axios.post(`/admin/cursos/${id}`,data)
+
+export const obtenerCursoPag = (parametros) => axios.get("/admin/cursos/pagination",parametros)
+
+export const eliminarCurso = (idcurso) => axios.post('/admin/cursos/delete', idcurso)
+
+
+// Contenido //
+export const buscarContenidosDelCursoAdmin = (idcurso) => axios.get(`/admin/cursos/capitulos/capitulo/${idcurso}`)
+
+export const buscarCapituloEspecifico = (idcurso, id) => axios.get(`/admin/cursos/capitulos/${idcurso}/${id}`)
+
+export const crearCapituloCurso = (idcurso, data) => axios.post(`/admin/cursos/capitulos/capitulo/${idcurso}`,data)
+
+export const editarCapituloCurso = (idcurso, idcapitulo, data) => axios.post(`/admin/cursos/capitulos/${idcurso}/${idcapitulo}`, data)
+
+export const obtenerCapitulosCursoPag = (idcurso, parametros) => axios.get(`/admin/cursos/capitulos/pagination/${idcurso}`,parametros) 
+
+export const ordenarListaDeCapitulos = (id, data) => axios.post(`/admin/cursos/capitulos/ordenar/${id}`,data)
+
+export const eliminarCapituloDelCurso = (idcurso, idcapitulo) => axios.post(`/admin/cursos/capitulos/${idcurso}/${idcapitulo}/delete`)

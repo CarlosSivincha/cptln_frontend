@@ -5,7 +5,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerNoticiasPag, EliminarNoticia } from '../../../Api/noticias';
+import { obtenerNoticiasPagAdmin, EliminarNoticia } from '../../../Api/noticias';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
@@ -23,11 +23,11 @@ const TablaNews = () => {
     const [isLoading, setIsLoading] = useState(false);
 
 
-     // Función para obtener los eventos con paginación
-     const fetchNoticias = async (page) => {
+    // Función para obtener los eventos con paginación
+    const fetchNoticias = async (page) => {
         try {
             setIsLoading(true); // Iniciar estado de carga
-            const response = await obtenerNoticiasPag({ params: { page: Number(page), limit: 10 } });
+            const response = await obtenerNoticiasPagAdmin({ params: { page: Number(page), limit: 10 } });
             setNoticias(response.data.noticias); // Actualizar el estado con los eventos
             setCurrentPage(response.data.currentPage); // Actualizar la página actual
             setTotalPages(response.data.totalPages); // Actualizar el total de páginas
@@ -37,8 +37,8 @@ const TablaNews = () => {
             setIsLoading(false); // Finalizar estado de carga
         }
     };
-       // Llamada inicial para cargar los datos al montar el componente
-       useEffect(() => {
+    // Llamada inicial para cargar los datos al montar el componente
+    useEffect(() => {
         fetchNoticias(currentPage);
     }, [currentPage]);
 
@@ -88,16 +88,16 @@ const TablaNews = () => {
             header: "Fecha",
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('programa_id', { 
+        columnHelper.accessor('programa_id', {
             header: "Programa",
             cell: info => {
-               const programagaa = categoria.find(programa => programa._id.toString()===info.getValue())
+                const programagaa = categoria.find(programa => programa._id.toString() === info.getValue())
                 return programagaa ? programagaa.titulo : ''
-            }  
-            
+            }
+
         })
     ];
-    
+
     const table = useReactTable({
         data: noticias,
         columns,
@@ -105,7 +105,7 @@ const TablaNews = () => {
     });
 
     const navigate = useNavigate();
-    
+
     // Función para manejar la eliminación de un evento y refrescar los datos
     const handleDelete = async (id) => {
         const success = await EliminarNoticia({ id }); // Llamada a la función de eliminación
@@ -128,7 +128,7 @@ const TablaNews = () => {
             setCurrentPage(currentPage - 1);
         }
     };
-    
+
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
@@ -139,7 +139,7 @@ const TablaNews = () => {
                         className="flex items-center px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600"
                     >
                         Agregar
-                        <FaPlus  className="ml-1"  size={13}/>
+                        <FaPlus className="ml-1" size={13} />
                     </button>
                 </div>
 
@@ -188,7 +188,7 @@ const TablaNews = () => {
                                             className="text-blue-500 transition-colors hover:text-blue-600">
 
                                             <MdEditDocument size={20} />
-                                            
+
                                         </button>
                                         <button
                                             type='button'

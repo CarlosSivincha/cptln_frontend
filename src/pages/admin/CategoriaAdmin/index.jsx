@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
-import { obtenerCategoriasID, registrarCategoria, EditarCategorias } from "../../../Api/categorias";
+import { obtenerCategoriasIDAdmin, registrarCategoria, EditarCategorias } from "../../../Api/categorias";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 
@@ -47,7 +47,7 @@ const CategoriaAdmin = () => {
     useEffect(() => {
         if (id) {
             const fetchData = async () => {
-                const response = await obtenerCategoriasID(id);
+                const response = await obtenerCategoriasIDAdmin(id);
                 setNombre(response.data.nombre);
                 setDescripcion(response.data.descripcion);
                 setColor(response.data.color);
