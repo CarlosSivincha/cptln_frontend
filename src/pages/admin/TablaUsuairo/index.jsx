@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
 
-import { login,EliminarUsuario  } from '../../../Api/auth';
+import { login,  } from '../../../Api/auth';
 
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,6 @@ import { MdDeleteForever } from "react-icons/md";
 
 const TablaUsuario = () => {
 
-    // Gaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const [usuario, setUsuario] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
