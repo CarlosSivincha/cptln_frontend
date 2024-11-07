@@ -5,8 +5,8 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerCategoriasPag } from '../../../Api/categorias';
-import { MdEditDocument } from "react-icons/md";
+import { obtenerCategoriasPag, EliminarCategoria } from '../../../Api/categorias';
+import { MdEditDocument, MdDeleteForever } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 
@@ -18,21 +18,25 @@ const TablaCategoria = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
 
+
+ // Función para obtener los eventos con paginación
+ const fetchCategoria = async (page) => {
+    try {
+        setIsLoading(true); // Iniciar estado de carga
+        const response = await obtenerCategoriasPag({ params: { page: Number(page), limit: 10 } });
+        setCategoria(response.data.categorias);
+        setCurrentPage(response.data.currentPage);
+        setTotalPages(response.data.totalPages);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        setIsLoading(false); // Finalizar estado de carga
+    }
+};
+   
+    // Llamada inicial para cargar los datos al montar el componente
     useEffect(() => {
-        const fetch = async (page) => {
-            try {
-                setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerCategoriasPag({ params: { page: Number(page), limit: 10 } });
-                setCategoria(response.data.categorias);
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsLoading(false); // Finalizar estado de carga
-            }
-        }
-        fetch(currentPage);
+        fetchCategoria(currentPage);
     }, [currentPage]);
 
     const columnHelper = createColumnHelper();
@@ -73,7 +77,13 @@ const TablaCategoria = () => {
     });
 
     const navigate = useNavigate();
-
+    // Función para manejar la eliminación de un evento y refrescar los datos
+    const handleDelete = async (id) => {
+        const success = await EliminarCategoria({ id }); // Llamada a la función de eliminación
+        if (success) { // Verifica si la eliminación fue exitosa
+            fetchCategoria(currentPage); // Refresca los datos después de eliminar
+        }
+    };
     const EditarCategorias = (id) => {
         navigate(`${id}`);
     };
@@ -148,6 +158,13 @@ const TablaCategoria = () => {
 
                                             <MdEditDocument size={20} />
                                             
+                                        </button>
+                                        <button
+                                            type='button'
+                                            onClick={() => handleDelete(row.original._id)} // Uso de la función handleDelete
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
                                         </button>
                                     </td>
                                 </tr>

@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import React, { useEffect, useState } from 'react';
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { FaPlus } from "react-icons/fa";
-import { MdEditDocument, MdEditNote } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
-import { obtenerSecciones } from '../../../Api/radio';
-
+import { MdEditDocument, MdEditNote, MdDeleteForever } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import { obtenerSecciones, eliminarSeccion } from '../../../Api/radio';
 
 const TablaRadioSecciones = () => {
+    const navigate = useNavigate();
+    const [secciones, setSecciones] = useState([]);
 
-    // React Routes
-    const navigate = useNavigate()
+    // Función para obtener las secciones y actualizar el estado
+    const fetchSecciones = async () => {
+        const response = await obtenerSecciones();
+        setSecciones(response.data);
+    };
 
-    // Secciones de la radio
-    const [secciones, setSecciones] = useState([])
+    // Cargar las secciones al montar el componente
     useEffect(() => {
-        const fetch = async () => {
-            const response = await obtenerSecciones()
-            setSecciones(response.data)
-        }
-        fetch()
-    }, [])
+        fetchSecciones();
+    }, []);
 
-    // Configuracion de la tabla
     const columnHelper = createColumnHelper();
 
     const columns = [
@@ -30,6 +28,17 @@ const TablaRadioSecciones = () => {
             cell: info => info.getValue(),
         }),
     ];
+
+    // Función para manejar la eliminación de una sección y refrescar los datos
+    const handleDelete = async (id, nombre) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar "${nombre}"?`);
+        if (confirmDelete) {
+            const success = await eliminarSeccion({ id });
+            if (success) {
+                fetchSecciones(); // Refresca la tabla después de eliminar
+            }
+        }
+    };
 
     const table = useReactTable({
         data: secciones,
@@ -88,24 +97,31 @@ const TablaRadioSecciones = () => {
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </td>
                                         ))}
-                                        <td className="px-4 py-2 text-center border border-gray-300 w-20">
-                                            <div className='w-full grid grid-cols-2 place-content-center'>
+                                        <td className="w-20 px-4 py-2 text-center border border-gray-300">
+                                            <div className='grid w-full grid-cols-3 gap-2'>
                                                 <button
                                                     title='Modificar Seccion'
                                                     type='button'
                                                     onClick={() => navigate(`${row.original._id}`)}
-                                                    className="text-blue-500 transition-colors hover:text-blue-600 flex justify-center">
+                                                    className="flex justify-center w-full text-blue-500 transition-colors hover:text-blue-600">
                                                     <MdEditDocument size={20} className='fill-yellow-400' />
                                                 </button>
                                                 <button
                                                     title='Ver contenido'
                                                     type='button'
                                                     onClick={() => navigate(`${row.original._id}/tablacontenidoseccion`)}
-                                                    className="text-blue-500 transition-colors hover:text-blue-600 flex justify-center">
+                                                    className="flex justify-center w-full text-blue-500 transition-colors hover:text-blue-600">
                                                     <MdEditNote size={20} />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleDelete(row.original._id, row.original.nombre)} // Pasa el id y el titulo
+                                                    className="w-full text-red-500 transition-colors hover:text-red-600">
+                                                    <MdDeleteForever size={20} />
                                                 </button>
                                             </div>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>

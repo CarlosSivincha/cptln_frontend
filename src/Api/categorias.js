@@ -18,3 +18,5 @@ export const registrarCategoria = event => axios.post("/admin/categorias",event)
 export const EditarCategorias =  (id, data) => axios.post(`/admin/categorias/${id}`,data)
 
 export const obtenerCategoriasPag = (parametros) => axios.get("/admin/categorias/pagination",parametros)
+
+export const EliminarCategoria = ({id}) => axios.post("admin/categorias/delete",{},{params: {id}} )

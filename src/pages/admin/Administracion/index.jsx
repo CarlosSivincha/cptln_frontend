@@ -181,6 +181,11 @@ const Administracion = () => {
                                             <span className="text-sm text-black">Cursos</span>
                                         </li>
                                     </Link>
+                                    <Link to="/admin/tablacontactos" className="w-full">
+                                        <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
+                                            <span className="text-sm text-black">Contactanos</span>
+                                        </li>
+                                    </Link>
                                 </ul>
                             )}
                         </Link>

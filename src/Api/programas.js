@@ -27,8 +27,8 @@ export const obtenerProgramasPagination = (params) => axios.get('/admin/programa
 
 export const editarPrograma = (id, data) => axios.post(`/admin/programa/editar/${id}`,data)
 
-export const eliminarPrograma = (idprograma) => axios.post(`/admin/programa/delete`, idprograma)
-
+// export const eliminarPrograma = (idprograma) => axios.post(`/admin/programa/delete`, idprograma)
+export const eliminarPrograma = ({idprograma}) => axios.post(`/admin/programa/delete`,{},{params: {idprograma}} )
 
 // Contenido //
 export const obtenerContenidoProgramaPagination = (id, params) => axios.get(`/admin/programa/contenido/pagination/${id}`, params )

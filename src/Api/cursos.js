@@ -21,7 +21,8 @@ export const EditarCurso =  (id, data) => axios.post(`/admin/cursos/${id}`,data)
 
 export const obtenerCursoPag = (parametros) => axios.get("/admin/cursos/pagination",parametros)
 
-export const eliminarCurso = (idcurso) => axios.post('/admin/cursos/delete', idcurso)
+// export const eliminarCurso = (idcurso) => axios.post('/admin/cursos/delete', idcurso)
+export const eliminarCurso = ({idcurso}) => axios.post("admin/cursos/delete",{},{params: {idcurso}} )
 
 
 // Contenido //

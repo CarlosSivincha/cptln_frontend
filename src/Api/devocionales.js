@@ -22,4 +22,4 @@ export const registrarDevo = devo => axios.post("/admin/devocionales",devo)
 
 export const EditarDevocional =  (id, data) => axios.post(`/admin/devocionales/${id}`,data)
 
-export const eliminarDevocional = (id) => axios.post('/admin/devocionales/delete', id)
+export const eliminarDevocional = ({id}) => axios.post('/admin/devocionales/delete',{},{params: {id}} )
