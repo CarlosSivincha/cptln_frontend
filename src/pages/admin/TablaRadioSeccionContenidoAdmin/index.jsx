@@ -35,7 +35,7 @@ const TablaRadioSeccionContenidoAdmin = () => {
     const columns = [
         columnHelper.accessor('descripcion', {
             header: "Descripcion",
-            cell: info => info.getValue(),
+            cell: info => <div dangerouslySetInnerHTML={{ __html: info.getValue()}}/>,
         }),
     ];
 
