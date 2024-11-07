@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { obtenerSeccionCotenido, agregarSeccionContenido, modificarSeccionContenido } from "../../../Api/radio";
 import { useParams, useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
 
 const ContenidoSeccionRadioAdmin = () => {
     const { idseccion, idcontenido } = useParams();
@@ -10,7 +11,7 @@ const ContenidoSeccionRadioAdmin = () => {
     const [media, setMedia] = useState([]);
     const [loading, setLoading] = useState(false); // Estado para la carga de archivos
 
-    const handleDescripcion = (event) => setDescripcion(event.target.value);
+    const handleDescripcion = (html) => setDescripcion(html);
 
     // Validación de archivos subidos (eliminamos la restricción de formatos específicos)
     const handleMedia = (event) => {
@@ -46,6 +47,10 @@ const ContenidoSeccionRadioAdmin = () => {
     // Agregar Sección
     const agregarSeccionNueva = async (event) => {
         event.preventDefault();
+        if (!descripcion) { // Verifica si 'cuerpo' está vacío
+            setError("Por favor, ingresa un descripción.");
+            return;
+        }
         setLoading(true); // Indicar que está en proceso de carga
         const formData = new FormData();
         formData.append('descripcion', descripcion.trim().replace(/\s+/g, ' '));
@@ -77,13 +82,20 @@ const ContenidoSeccionRadioAdmin = () => {
             setLoading(false); // Dejar de mostrar el estado de carga
         }
     };
+
+    const modules = {
+        toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ],
+    };
     return (
         <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
             <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">
                 {(idseccion && idcontenido) ? "Datos Actuales" : "Nuevo Contenido"}
             </h2>
             <form onSubmit={(idseccion && idcontenido) ? modificarSeccionExistente : agregarSeccionNueva} className="space-y-6">
-                <input
+                {/* <input
                     type="text"
                     name="Descripcion"
                     value={descripcion}
@@ -91,7 +103,15 @@ const ContenidoSeccionRadioAdmin = () => {
                     placeholder="Escribe una descripcion"
                     className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                     required
-                />
+                /> */}
+                <ReactQuill
+                        className="bg-white rounded-lg"
+                        modules={modules}
+                        name="cuerpo"
+                        value={descripcion}
+                        onChange={handleDescripcion}
+                        placeholder="Contenido de la Noticia"
+                    />
                 <div>
                     <input
                         type="file"
