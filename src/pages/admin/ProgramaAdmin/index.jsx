@@ -145,6 +145,7 @@ const ProgramaAdmin = () => {
             }
             const respuesta = await editarPrograma(id, formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tablaprogramas");
         } catch (error) {
             console.log(error);
         }

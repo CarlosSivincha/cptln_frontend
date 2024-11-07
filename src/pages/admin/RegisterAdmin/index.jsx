@@ -1,38 +1,49 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 import OriginalLogo from "../../../../src/assets/OriginalLogo.png";
 import { useAuth } from "../../../context/AuthContext";
 
 export const RegisterAdmin = () => {
-
-  const { RegisterUser, errorsAuth } = useAuth()
+  const { RegisterUser, errorsAuth } = useAuth();
+  const navigate = useNavigate(); // Crear una instancia de useNavigate
 
   // Formulario
-  const [nombres, setNombre] = useState("")
-  const [apellidos, setApellidos] = useState("")
-  const [correo, setCorreo] = useState("")
-  const [contraseña, setContraseña] = useState("")
-  const [confirmarContraseña, setConfirmarContraseña] = useState("")
-  const [error, setError] = useState("") // Para manejar los errores de validación
-  const [errorcorreo, setErrorcorreo] = useState("")
+  const [nombres, setNombre] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contraseña, setContraseña] = useState("");
+  const [confirmarContraseña, setConfirmarContraseña] = useState("");
+  const [error, setError] = useState(""); // Para manejar los errores de validación
+  const [errorcorreo, setErrorcorreo] = useState("");
 
-  const handleNombres = (event) => setNombre(event.target.value)
-  const handleApellidos = (event) => setApellidos(event.target.value)
-  const handleCorreo = (event) => setCorreo(event.target.value)
-  const handleContraseña = (event) => setContraseña(event.target.value)
+  const handleNombres = (event) => setNombre(event.target.value);
+  const handleApellidos = (event) => setApellidos(event.target.value);
+  const handleCorreo = (event) => setCorreo(event.target.value);
+  const handleContraseña = (event) => setContraseña(event.target.value);
+  const handleConfirmarContraseña = (event) => setConfirmarContraseña(event.target.value);
 
+  const registrarUsuario = async (e) => {
+    e.preventDefault();
+    if (contraseña !== confirmarContraseña) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
 
-  const registrarUsuario = (e) => {
-    e.preventDefault()
-    const formData = new FormData()
-    formData.append('nombres', nombres)
-    formData.append('apellidos', apellidos)
-    formData.append('correo', correo)
-    formData.append('password', contraseña)
+    const formData = new FormData();
+    formData.append("nombres", nombres);
+    formData.append("apellidos", apellidos);
+    formData.append("correo", correo);
+    formData.append("password", contraseña);
 
     // Llamar a la función para registrar al usuario
-      RegisterUser(formData)
-      console.log(errorsAuth)
-  }
+    try {
+      await RegisterUser(formData);
+      navigate("/admin/tablausuario"); // Redirigir a la ruta especificada
+    } catch (error) {
+      console.log(errorsAuth);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#EAE9E5]">
       {/* Contenedor del formulario */}
@@ -77,6 +88,7 @@ export const RegisterAdmin = () => {
               />
             </div>
             {errorsAuth && <p className="mb-4 text-sm text-red-500">{errorsAuth}</p>}
+            {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
             <div className="mb-4">
               <input
                 type="password"
@@ -91,11 +103,11 @@ export const RegisterAdmin = () => {
               <input
                 type="password"
                 placeholder="Confirmar Contraseña"
+                onChange={handleConfirmarContraseña}
                 className="w-full p-3 bg-gray-100 rounded-md"
                 required
               />
             </div>
-
 
             {/* Botón de registro */}
             <button
