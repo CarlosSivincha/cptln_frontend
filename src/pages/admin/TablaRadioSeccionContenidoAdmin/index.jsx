@@ -30,12 +30,18 @@ const TablaRadioSeccionContenidoAdmin = () => {
         fetchSeccion()
     }, [idseccion])
 
+    const stripHtml = (html) => {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+        return tempDiv.innerText;
+    };
+
     const columnHelper = createColumnHelper();
 
     const columns = [
         columnHelper.accessor('descripcion', {
             header: "Descripcion",
-            cell: info => <div dangerouslySetInnerHTML={{ __html: info.getValue()}}/>,
+            cell: info => <div className="line-clamp-2" dangerouslySetInnerHTML={{ __html: info.getValue()}}/>,
         }),
     ];
 
