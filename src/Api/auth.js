@@ -6,4 +6,4 @@ export const registrar = (user) => axios.post(`/admin/cptln/pe/users/register`, 
 export const login = (user) => axios.post(`/admin/cptln/pe/users/login`, user);
 export const logout = (token) => axios.post(`/admin/cptln/pe/users/logout`, token);
 export const eliminarUsuario = (id) => axios.post(`/admin/cptln/pe/users/${id}/delete`);
-export const verifyTokenRequest = (token) => axios.post("/verifytoken",token);
+export const verifyTokenRequest = () => axios.post("/verifytoken");
