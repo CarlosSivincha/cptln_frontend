@@ -178,11 +178,14 @@ const NewsFormComponent = () => {
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                         required
                     />
-                    <select value={selectcategoria} onChange={(event) => setSelectcategoria(event.target.value)}>
+                    <select
+                        value={selectcategoria}
+                        onChange={(event) => setSelectcategoria(event.target.value)}
+                        required // Asegura que el usuario seleccione una opción válida
+                    >
+                        <option value="" disabled>Selecciona el programa</option>
                         {Array.isArray(categorias) && categorias.map((programa) => (
-                            
-                            !programa.enlace && <option value={programa._id}  key={programa._id}>{programa.titulo}</option>
-
+                            !programa.enlace && <option value={programa._id} key={programa._id}>{programa.titulo}</option>
                         ))}
                     </select>
                     <button
