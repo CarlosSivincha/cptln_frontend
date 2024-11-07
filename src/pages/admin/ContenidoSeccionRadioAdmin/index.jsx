@@ -10,14 +10,14 @@ const ContenidoSeccionRadioAdmin = () => {
 
     const [descripcion, setDescripcion] = useState("");
     const [media, setMedia] = useState([]);
-    const [loading, setLoading] = useState(false); // Estado para la carga de archivos
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(""); // Estado para manejar mensajes de error
 
     const handleDescripcion = (html) => setDescripcion(html);
 
-    // Validación de archivos subidos (eliminamos la restricción de formatos específicos)
     const handleMedia = (event) => {
         const archivosSeleccionados = Array.from(event.target.files);
-        setMedia(archivosSeleccionados); // Actualizamos el estado con todos los archivos seleccionados
+        setMedia(archivosSeleccionados);
     };
 
     useEffect(() => {
@@ -30,7 +30,6 @@ const ContenidoSeccionRadioAdmin = () => {
         }
     }, [idseccion, idcontenido]);
 
-    // Función para manejar la carga de archivos
     const uploadFiles = async (formData) => {
         try {
             const response = await agregarSeccionContenido(idseccion, formData);
@@ -41,18 +40,19 @@ const ContenidoSeccionRadioAdmin = () => {
         } catch (error) {
             console.error("Error al cargar los archivos:", error);
         } finally {
-            setLoading(false); // Dejar de mostrar el estado de carga
+            setLoading(false);
         }
     };
 
-    // Agregar Sección
     const agregarSeccionNueva = async (event) => {
         event.preventDefault();
-        if (!descripcion) { // Verifica si 'cuerpo' está vacío
-            setError("Por favor, ingresa un descripción.");
+        if (!descripcion.trim()) { // Verifica si 'descripcion' está vacío
+            setError("Por favor, ingresa una descripción.");
             return;
         }
-        setLoading(true); // Indicar que está en proceso de carga
+        setLoading(true);
+        setError(""); // Resetea el error si existe una descripción válida
+
         const formData = new FormData();
         formData.append('descripcion', descripcion.trim().replace(/\s+/g, ' '));
         if (media.length > 0) {
@@ -61,10 +61,11 @@ const ContenidoSeccionRadioAdmin = () => {
         await uploadFiles(formData);
     };
 
-    // Modificar Sección
     const modificarSeccionExistente = async (event) => {
         event.preventDefault();
-        setLoading(true); // Indicar que está en proceso de carga
+        setLoading(true);
+        setError("");
+
         const formData = new FormData();
         formData.append('descripcion', descripcion.trim().replace(/\s+/g, ' '));
         if (media.length > 0) {
@@ -80,7 +81,7 @@ const ContenidoSeccionRadioAdmin = () => {
         } catch (error) {
             console.error("Error al modificar el contenido:", error);
         } finally {
-            setLoading(false); // Dejar de mostrar el estado de carga
+            setLoading(false);
         }
     };
 
@@ -90,36 +91,32 @@ const ContenidoSeccionRadioAdmin = () => {
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ],
     };
+
     return (
         <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
             <h2 className="mb-6 text-3xl font-bold text-center text-gray-800">
                 {(idseccion && idcontenido) ? "Datos Actuales" : "Nuevo Contenido"}
             </h2>
             <form onSubmit={(idseccion && idcontenido) ? modificarSeccionExistente : agregarSeccionNueva} className="space-y-6">
-                {/* <input
-                    type="text"
-                    name="Descripcion"
+                
+                <ReactQuill
+                    className="bg-white rounded-lg"
+                    modules={modules}
+                    name="cuerpo"
                     value={descripcion}
                     onChange={handleDescripcion}
-                    placeholder="Escribe una descripcion"
-                    className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                    required
-                /> */}
-                <ReactQuill
-                        className="bg-white rounded-lg"
-                        modules={modules}
-                        name="cuerpo"
-                        value={descripcion}
-                        onChange={handleDescripcion}
-                        placeholder="Contenido de la Noticia"
-                    />
+                    placeholder="Contenido de la Noticia"
+                />
+                
+                {error && <p className="text-red-500">{error}</p>} {/* Mostrar mensaje de error si existe */}
+                
                 <div>
                     <input
                         type="file"
                         name="media"
                         onChange={handleMedia}
                         multiple
-                        required={!idcontenido} // Obligatorio solo al agregar, no al modificar
+                        required={!idcontenido}
                     />
                 </div>
 
