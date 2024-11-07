@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
     const LogoutUser = async () => {
         try {
-            const token = localStorage.getItem('token') || Cookies.get('token');
+            const token = localStorage.removeItem('token') || Cookies.remove('token');
             const res = logout(token)
             if (res) {
                 setIsAuthenticated(false)
