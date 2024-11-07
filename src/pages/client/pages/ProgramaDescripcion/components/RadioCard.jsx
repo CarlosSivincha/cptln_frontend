@@ -43,9 +43,8 @@ export const RadioCard = ({descripcion = "", contenido = []}) =>{
             <p
                 className={`flex-grow standard-paragraph transition-all duration-500 ${
                     isOpenDescription ? 'opacity-100 visibility-visible' : 'opacity-100 visibility-hidden'
-                }`}
+                }`} dangerouslySetInnerHTML={{ __html: descripcion}}
             >
-                {descripcion}
             </p>
             </div>
             
