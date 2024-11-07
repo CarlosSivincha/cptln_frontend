@@ -7,7 +7,7 @@ const Header = lazy(() => import("@/pages/client/components/Header"));
 export const AboutUs = () => {
   return (
     <div className="flex flex-col gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28 ">
-      <Header color="bg-l_color_r-600" title="¿Quienes Somos?"/>
+      <Header color="bg-l_color_r-600" title="¿Quiénes Somos?"/>
       <div className="flex justify-between max-md:flex-col gap-10 max-w-[1280px] box-content px-10 max-[600px]:px-[30px] md:items-center md:mx-auto">
         <div className="flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center">
           <img
