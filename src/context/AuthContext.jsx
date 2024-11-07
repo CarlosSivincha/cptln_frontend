@@ -64,15 +64,14 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const hasRedirected = useRef(false); // Usamos un ref para evitar redirecciones múltiples
-    // Verificación inicial al cargar
+    const [hasRedirected, setHasRedirected] = useState(false);
     useEffect(() => {
         const checkLogin = async () => {
             try {
-                const res = await verifyTokenRequest()
+                const res = await verifyTokenRequest();
                 if (!res.data) {
-                    if (location.pathname.includes('/admin') && !hasRedirected.current) {
-                        hasRedirected.current = true;  // Marcamos que ya hemos redirigido
+                    if (location.pathname.includes('/admin') && !hasRedirected) {
+                        setHasRedirected(true);
                         setIsAuthenticated(false);
                         setLoading(false);
                         navigate('/cptln/pe/admin/login');
@@ -86,12 +85,10 @@ export const AuthProvider = ({ children }) => {
             } catch (error) {
                 console.error('Token verification error:', error);
                 setIsAuthenticated(false);
-            } finally {
-                setLoading(false); // Asegúrate de que la carga se complete
             }
-        }
+        };
         checkLogin();
-    }, [location]);
+    }, [location, hasRedirected, setHasRedirected, setIsAuthenticated, setUser, setLoading, navigate]);
 
     return (
         <AuthContext.Provider value={{ user, loginUser, RegisterUser, LogoutUser, isAuthenticated, loading, errorsAuth }} >
