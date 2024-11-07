@@ -12,6 +12,7 @@ import { MdCastForEducation } from "react-icons/md";
 import { FaUserPen } from "react-icons/fa6";
 import { useAuth } from '../../../context/AuthContext';
 import { AiOutlineLogout } from "react-icons/ai";
+import { logout } from '../../../Api/auth';
 
 
 
@@ -36,8 +37,8 @@ const Administracion = () => {
         if (isExpanded) setShowSubmenu(false); // Cierra el submenú si el menú se contrae
     };
 
-    const logout = () => {
-        LogoutUser()
+    const logoutUser = async() => {
+        await logout()
         window.location.reload()
     }
 
@@ -56,7 +57,7 @@ const Administracion = () => {
                             <p>
                                 {user.nombres + ' ' + user.apellidos}
                             </p>
-                            <button onClick={logout}>
+                            <button onClick={logoutUser}>
                                 <AiOutlineLogout className='size-5'/>
                             </button>
                         </div>
