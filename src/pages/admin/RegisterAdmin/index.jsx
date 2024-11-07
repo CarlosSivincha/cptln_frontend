@@ -11,22 +11,47 @@ export const RegisterAdmin = () => {
   const [apellidos, setApellidos] = useState("")
   const [correo, setCorreo] = useState("")
   const [contraseña, setContraseña] = useState("")
+  const [confirmarContraseña, setConfirmarContraseña] = useState("")
+  const [error, setError] = useState("") // Para manejar los errores de validación
+  const [errorcorreo, setErrorcorreo] = useState("") 
+
   const handleNombres = (event) => setNombre(event.target.value)
   const handleApellidos = (event) => setApellidos(event.target.value)
   const handleCorreo = (event) => setCorreo(event.target.value)
   const handleContraseña = (event) => setContraseña(event.target.value)
-
+  const handleConfirmarContraseña = (event) => setConfirmarContraseña(event.target.value)
 
   const registrarUsuario = (e) => {
     e.preventDefault()
+
+    // Validar si las contraseñas coinciden
+    if (contraseña !== confirmarContraseña) {
+      setError("Las contraseñas no coinciden")
+      return
+    }
+
+    // Si las contraseñas coinciden, limpiar el error
+    setError("")
+
     const formData = new FormData()
-    formData.append('nombres',nombres)
-    formData.append('apellidos',apellidos)
-    formData.append('correo',correo)
-    formData.append('password',contraseña)
-    const response = RegisterUser(formData)
-    console.log(response);
+    formData.append('nombres', nombres)
+    formData.append('apellidos', apellidos)
+    formData.append('correo', correo)
+    formData.append('password', contraseña)
+    
+    // Llamar a la función para registrar al usuario
+    try {
+      const response = RegisterUser(formData)
+      console.log(response)
+
+    } catch (error) {
+      console.log(error)
+      setErrorcorreo(error.response.data.errors[0].message)
+    }
+   
+
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#EAE9E5]">
       {/* Contenedor del formulario */}
@@ -70,7 +95,7 @@ export const RegisterAdmin = () => {
                 required
               />
             </div>
-
+            {error && <p className="mb-4 text-sm text-red-500">{errorcorreo}</p>}
             <div className="mb-4">
               <input
                 type="password"
@@ -85,11 +110,14 @@ export const RegisterAdmin = () => {
               <input
                 type="password"
                 placeholder="Confirmar Contraseña"
+                onChange={handleConfirmarContraseña}
                 className="w-full p-3 bg-gray-100 rounded-md"
                 required
               />
             </div>
 
+            {/* Mensaje de error si las contraseñas no coinciden */}
+            {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
 
             {/* Botón de registro */}
             <button

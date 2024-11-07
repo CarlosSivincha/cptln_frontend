@@ -5,8 +5,8 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerUsuarios } from '../../../Api/auth';
-import { MdEditDocument } from "react-icons/md";
+import { obtenerUsuarios, eliminarUsuario } from '../../../Api/auth';
+import { MdEditDocument, MdDeleteForever } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 
@@ -28,7 +28,7 @@ const TablaUsuario = () => {
             setIsLoading(false); // Finalizar estado de carga
         }
     };
-    
+
     useEffect(() => {
         fetchUsuario();
     }, []);
@@ -56,7 +56,19 @@ const TablaUsuario = () => {
         getCoreRowModel: getCoreRowModel(),
     });
 
-
+    const handleDelete = async (id, nombres) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar "${nombres}"?`);
+        if (confirmDelete) {
+            try {
+                await eliminarUsuario(id); // Llamada a la API para eliminar el usuario
+                setUsuario(prevUsuarios => prevUsuarios.filter(user => user._id !== id)); // Elimina el usuario de la lista en el frontend
+                alert("Usuario eliminado exitosamente.");
+            } catch (error) {
+                console.error("Error eliminando el Usuario:", error);
+                alert("Hubo un error al eliminar el Usuario.");
+            }
+        }
+    };
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-5xl p-6 rounded-lg shadow-lg bg-gray-50">
@@ -115,6 +127,13 @@ const TablaUsuario = () => {
                                             onClick={() => EditarUsuario(row.original._id)}
                                             className="text-blue-500 transition-colors hover:text-blue-600">
                                             <MdEditDocument size={20} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDelete(row.original._id, row.original.nombres)} // Pasar tanto el id como el nombre
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
                                         </button>
                                     </td>
                                 </tr>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { agregarSeccion, modificarSeccion, obtenerSeccion } from "../../../Api/radio";
 
 
@@ -7,6 +7,7 @@ const SeccionRadioAdmin = () => {
 
     // Obtener el parametro ID
     const { idseccion } = useParams()
+    const navigate = useNavigate();
 
     // Guardar datos del formulario
     const [nombre, setNombre] = useState("");
@@ -29,19 +30,41 @@ const SeccionRadioAdmin = () => {
         event.preventDefault();
         const formData = new FormData();
         formData.append('nombre', nombre.trim().replace(/\s+/g, ' '));
-        const response = await agregarSeccion(formData)
-        console.log(response);
+    
+        try {
+            const response = await agregarSeccion(formData);
+            console.log(response);
+            
+            // Verificar la respuesta correctamente
+            if (response.status === 200) {
+                navigate("/admin/radioconfig/tablasecciones");
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
+    
 
     // Modificar Seccion
     const modificarSeccionExistente = async (event) => {
         event.preventDefault();
         const formData = new FormData();
         formData.append('nombre', nombre.trim().replace(/\s+/g, ' '));
-        const response = await modificarSeccion(idseccion, formData)
-        console.log(response);
+    
+        try {
+            const response = await modificarSeccion(idseccion, formData);
+            console.log(response);
+    
+            // Verificar la respuesta correctamente
+            if (response.status === 200) {
+                // Redirigir después de la modificación exitosa
+                navigate("/admin/radioconfig/tablasecciones");
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
-
+    
     return (
         <>
             <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
@@ -52,8 +75,9 @@ const SeccionRadioAdmin = () => {
                         name="titulo"
                         value={nombre}
                         onChange={handleNombre}
-                        placeholder="TÃ­tulo"
+                        placeholder="Titulo"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                        required
                     />
                     <button
                         type="submit"

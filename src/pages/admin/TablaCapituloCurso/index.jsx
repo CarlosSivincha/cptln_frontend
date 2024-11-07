@@ -5,47 +5,44 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { buscarContenidosDelCurso, ordenarListaDeCapitulos } from '../../../Api/cursos';
-import { MdEditDocument } from "react-icons/md";
+import { buscarContenidosDelCurso, ordenarListaDeCapitulos, eliminarCapituloDelCurso } from '../../../Api/cursos';
+import { MdEditDocument, MdDeleteForever } from "react-icons/md";
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
-
 
 const TablaCapituloCurso = () => {
 
     const navigate = useNavigate();
-
-    const { idcurso } = useParams()
+    const { idcurso } = useParams();
 
     const [capitulos, setCapitulos] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
             try {
-                setIsLoading(true); // Iniciar estado de carga
+                setIsLoading(true);
                 const response = await buscarContenidosDelCurso(idcurso);
                 setCapitulos(response.data);
             } catch (error) {
                 console.log(error);
             } finally {
-                setIsLoading(false); // Finalizar estado de carga
+                setIsLoading(false);
             }
-        }
+        };
         fetch();
-    }, [capitulos]);
+    }, [idcurso]);
 
     const columnHelper = createColumnHelper();
 
     const columns = [
         columnHelper.accessor('_id', {
             header: 'ID',
-            cell: info => null, // No muestra el valor en la celda
+            cell: info => null,
             enableColumnFilter: false,
-            size: 0, // Mantén el tamaño en 0 para ocupar menos espacio
+            size: 0,
             meta: {
-                hidden: true, // Puedes usar esta propiedad para marcar que está oculta
+                hidden: true,
             },
         }),
         columnHelper.accessor('titulo', {
@@ -60,32 +57,39 @@ const TablaCapituloCurso = () => {
         getCoreRowModel: getCoreRowModel(),
     });
 
-
-    // Gurdar el indice del objeto seleccionado
     const [draggedItemIndex, setDraggedItemIndex] = useState(null);
     const [isHovering, setIsHovering] = useState(false);
 
-    // Evento que inicializa al arrastrar el objeto
     const handleDragStart = (index) => {
         setDraggedItemIndex(index);
     };
 
-    // Evento que ocurre durante toda la interacccion de arrastrar, en este caso, previene que al momemnto de arrastrar
-    // el objeto, se regrese automaticamente
     const handleDragOver = (event) => {
         event.preventDefault();
-        setIsHovering(true)
+        setIsHovering(true);
     };
 
-    // Evento al soltar el objeto arrastrado
     const handleDrop = async (index) => {
-        const formData = new FormData()
-        formData.append('indexSeleccionado', draggedItemIndex)
-        formData.append('indexInsertar', index)
-        const response = await ordenarListaDeCapitulos(idcurso, formData)
-        setContenido(response.data);
+        const formData = new FormData();
+        formData.append('indexSeleccionado', draggedItemIndex);
+        formData.append('indexInsertar', index);
+        const response = await ordenarListaDeCapitulos(idcurso, formData);
+        setCapitulos(response.data);
         setDraggedItemIndex(null);
         setIsHovering(false);
+    };
+    const handleDelete = async (idcapitulo, titulo) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar "${titulo}"?`);
+        if (confirmDelete) {
+            try {
+                await eliminarCapituloDelCurso(idcurso, idcapitulo);
+                setCapitulos(prevCapitulos => prevCapitulos.filter(cap => cap._id !== idcapitulo));
+                alert("Capítulo eliminado exitosamente.");
+            } catch (error) {
+                console.error("Error eliminando el capítulo:", error);
+                alert("Hubo un error al eliminar el capítulo.");
+            }
+        }
     };
 
     return (
@@ -101,7 +105,6 @@ const TablaCapituloCurso = () => {
                     </button>
                 </div>
 
-                {/* Tabla */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full border border-gray-300 table-auto">
                         <thead>
@@ -112,12 +115,10 @@ const TablaCapituloCurso = () => {
                                             key={header.id}
                                             className={`px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300 ${header.column.id === '_id' ? 'hidden' : ''}`}
                                         >
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                            {header.isPlaceholder ? null : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
                                         </th>
                                     ))}
                                     <th className="px-2 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Acciones</th>
@@ -148,17 +149,17 @@ const TablaCapituloCurso = () => {
                                             type='button'
                                             onClick={() => navigate(`${row.original._id}`)}
                                             className="text-blue-500 transition-colors hover:text-blue-600">
-
                                             <MdEditDocument size={20} />
-
                                         </button>
+
                                         <button
-                                            type='button'
-                                            onClick={() => navigate(`${row.original._id}`)}
-                                            className="text-red-500 transition-colors hover:text-red-600">
+                                            type="button"
+                                            onClick={() => handleDelete(row.original._id, row.original.titulo)} // Pasar tanto el id como el titulo
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
                                             <MdDeleteForever size={20} />
                                         </button>
-
+                                        
                                     </td>
                                 </tr>
                             ))}
@@ -168,8 +169,6 @@ const TablaCapituloCurso = () => {
             </div>
         </div>
     );
-
-
-}
+};
 
 export default TablaCapituloCurso;

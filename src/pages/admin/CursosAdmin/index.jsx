@@ -50,7 +50,6 @@ const CursoAdmin = () => {
         }
     };
 
-    // Modificar un curso
     const ModificarCurso = async (event) => {
         event.preventDefault();
         if (!descripcion.trim()) {
@@ -70,7 +69,6 @@ const CursoAdmin = () => {
         }
     };
 
-    // Modulos de ReactQuill
     const modules = {
         toolbar: [
             ["bold", "italic", "underline"],
@@ -78,7 +76,6 @@ const CursoAdmin = () => {
         ],
     };
 
-    
     return (
         <>
             <div className="min-w-[400px] max-w-3xl px-6 py-12 mx-auto">
