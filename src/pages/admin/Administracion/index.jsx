@@ -36,6 +36,11 @@ const Administracion = () => {
         if (isExpanded) setShowSubmenu(false); // Cierra el submenú si el menú se contrae
     };
 
+    const logout = () => {
+        LogoutUser()
+        window.location.reload()
+    }
+
     return (
         <>
             <nav className="flex items-center justify-between w-full px-40 py-4 bg-l_color_r-600">
@@ -51,7 +56,7 @@ const Administracion = () => {
                             <p>
                                 {user.nombres + ' ' + user.apellidos}
                             </p>
-                            <button onClick={() => LogoutUser()}>
+                            <button onClick={logout}>
                                 <AiOutlineLogout className='size-5'/>
                             </button>
                         </div>
@@ -174,6 +179,11 @@ const Administracion = () => {
                                     <Link to="/admin/tablacursosbi" className="w-full">
                                         <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
                                             <span className="text-sm text-black">Cursos</span>
+                                        </li>
+                                    </Link>
+                                    <Link to="/admin/tablacontactos" className="w-full">
+                                        <li className="flex items-center justify-start w-full px-4 py-2 transition-all duration-300 cursor-pointer hover:bg-slate-400">
+                                            <span className="text-sm text-black">Contactanos</span>
                                         </li>
                                     </Link>
                                 </ul>

@@ -5,12 +5,12 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerCursoPag } from '../../../Api/cursos';
+import { obtenerCursoPag, eliminarCurso } from '../../../Api/cursos';
 import { MdEditDocument } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 import { MdLibraryAdd } from "react-icons/md";
-
+import { MdDeleteForever } from "react-icons/md";
 const TablaCursos = () => {
 
     const [cursos, setCursos] = useState([]);
@@ -18,22 +18,36 @@ const TablaCursos = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(false); // Estado de carga
 
+
+
+    // Función para obtener los eventos con paginación
+    const fetchCurso = async (page) => {
+        try {
+            setIsLoading(true); // Iniciar estado de carga
+            const response = await obtenerCursoPag({ params: { page: Number(page), limit: 10 } });
+            setCursos(response.data.cursos);
+            setCurrentPage(response.data.currentPage);
+            setTotalPages(response.data.totalPages);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false); // Finalizar estado de carga
+        }
+    };
+    // Llamada inicial para cargar los datos al montar el componente
     useEffect(() => {
-        const fetch = async (page) => {
-            try {
-                setIsLoading(true); // Iniciar estado de carga
-                const response = await obtenerCursoPag({ params: { page: Number(page), limit: 10 } });
-                setCursos(response.data.cursos);
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setIsLoading(false); // Finalizar estado de carga
+        fetchCurso(currentPage);
+    }, [currentPage]);
+     // Función para manejar la eliminación de un evento y refrescar los datos
+     const handleDelete = async (idcurso, titulo) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar "${titulo}"?`);
+        if (confirmDelete) { // Si el usuario confirma la eliminación
+            const success = await eliminarCurso({ idcurso }); // Llamada a la función de eliminación
+            if (success) { // Verifica si la eliminación fue exitosa
+                fetchCurso(currentPage); // Refresca los datos después de eliminar
             }
         }
-        fetch(currentPage);
-    }, [currentPage]);
+    };
 
     const columnHelper = createColumnHelper();
 
@@ -144,7 +158,7 @@ const TablaCursos = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="px-4 py-2 text-center border border-gray-300">
+                                    <td className="flex px-4 py-2 space-x-2 text-center border border-gray-300">
                                         <button
                                             type='button'
                                             onClick={() => EditarCursos(row.original._id)}
@@ -158,6 +172,13 @@ const TablaCursos = () => {
                                             onClick={() => navigate(`${row.original._id}/tablacapitulos/`)}
                                             className="text-green-700 transition-colors hover:text-green-900">
                                             <MdLibraryAdd size={20} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDelete(row.original._id, row.original.titulo)} // Pasa el id y el titulo
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
                                         </button>
                                     </td>
                                 </tr>

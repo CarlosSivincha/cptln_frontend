@@ -1,16 +1,20 @@
 import { useState } from "react";
 import OriginalLogo from "../../../../src/assets/OriginalLogo.png";
-import { useAuth } from "../../../context/AuthContext"; 
+import { useAuth } from "../../../context/AuthContext";
 
 export const RegisterAdmin = () => {
 
-  const { RegisterUser } = useAuth()
+  const { RegisterUser, errorsAuth } = useAuth()
 
   // Formulario
   const [nombres, setNombre] = useState("")
   const [apellidos, setApellidos] = useState("")
   const [correo, setCorreo] = useState("")
   const [contraseña, setContraseña] = useState("")
+  const [confirmarContraseña, setConfirmarContraseña] = useState("")
+  const [error, setError] = useState("") // Para manejar los errores de validación
+  const [errorcorreo, setErrorcorreo] = useState("")
+
   const handleNombres = (event) => setNombre(event.target.value)
   const handleApellidos = (event) => setApellidos(event.target.value)
   const handleCorreo = (event) => setCorreo(event.target.value)
@@ -20,12 +24,14 @@ export const RegisterAdmin = () => {
   const registrarUsuario = (e) => {
     e.preventDefault()
     const formData = new FormData()
-    formData.append('nombres',nombres)
-    formData.append('apellidos',apellidos)
-    formData.append('correo',correo)
-    formData.append('password',contraseña)
-    const response = RegisterUser(formData)
-    console.log(response);
+    formData.append('nombres', nombres)
+    formData.append('apellidos', apellidos)
+    formData.append('correo', correo)
+    formData.append('password', contraseña)
+
+    // Llamar a la función para registrar al usuario
+      RegisterUser(formData)
+      console.log(errorsAuth)
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#EAE9E5]">
@@ -70,7 +76,7 @@ export const RegisterAdmin = () => {
                 required
               />
             </div>
-
+            {errorsAuth && <p className="mb-4 text-sm text-red-500">{errorsAuth}</p>}
             <div className="mb-4">
               <input
                 type="password"

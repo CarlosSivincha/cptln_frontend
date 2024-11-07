@@ -5,8 +5,8 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerProgramasPagination } from '../../../Api/programas';
-import { MdEditDocument, MdEditNote } from "react-icons/md";
+import { obtenerProgramasPagination, eliminarPrograma } from '../../../Api/programas';
+import { MdEditDocument, MdEditNote, MdDeleteForever } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
 import { obtenerCategorias } from '../../../Api/categorias';
@@ -45,7 +45,21 @@ const TablaProgramas = () => {
         }
         fetch(currentPage);
     }, [currentPage]);
-
+    const handleDeletePrograma = async (idPrograma, titulo) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar el programa "${titulo}"?`);
+        if (confirmDelete) {
+            try {
+                // Llamada a la API para eliminar el programa, pasando el id como parte de params
+                await eliminarPrograma({ idprograma: idPrograma });
+                // Elimina el programa del estado
+                setProgramas(prevProgramas => prevProgramas.filter(programa => programa._id !== idPrograma));
+                alert("Programa eliminado exitosamente.");
+            } catch (error) {
+                console.error("Error eliminando el programa:", error);
+                alert("Hubo un error al eliminar el programa.");
+            }
+        }
+    };
     useEffect(() => {
         const fetch = async () => {
             const response = await obtenerCategorias()
@@ -147,31 +161,39 @@ const TablaProgramas = () => {
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}
-                                    <td className="grid grid-cols-2 place-items-center space-x-2 justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300 w-28">
-                                        <div>
+                                    <td className="grid grid-cols-3 px-2 py-2 space-x-2 text-sm text-gray-700 border border-gray-300 place-items-center w-28">
+                                        <div className="flex justify-center w-full">
                                             <button
-                                                type='button'
+                                                type="button"
                                                 onClick={() => EditarPrograma(row.original._id)}
-                                                className="flex text-blue-500 transition-colors hover:text-blue-600"
-                                            >
+                                                className="w-full text-blue-500 transition-colors hover:text-blue-600">
                                                 <MdEditDocument size={20} />
                                             </button>
                                         </div>
-                                        <div>
+                                        <div className="flex justify-center w-full">
                                             {row.original.enlace ? (
-                                                <a href={row.original.enlace} target='_blank' className='flex'>
+                                                <a href={row.original.enlace} target='_blank' className='flex justify-center w-full'>
                                                     <FaLink size={20} className='fill-gray-400' />
                                                 </a>
                                             ) : (
                                                 <button
-                                                    type='button'
-                                                    onClick={() => EditorContenido((row.original._id))}
-                                                    className='flex'>
+                                                    type="button"
+                                                    onClick={() => EditorContenido(row.original._id)}
+                                                    className='flex justify-center w-full'>
                                                     <MdEditNote size={30} />
                                                 </button>
                                             )}
                                         </div>
+                                        <div className="flex justify-center w-full">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleDeletePrograma(row.original._id, row.original.titulo)} // Pasar el id y titulo
+                                                className="w-full text-red-500 transition-colors hover:text-red-600">
+                                                <MdDeleteForever size={25} />
+                                            </button>
+                                        </div>
                                     </td>
+
                                 </tr>
                             ))}
                         </tbody>

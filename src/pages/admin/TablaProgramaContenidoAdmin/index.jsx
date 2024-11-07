@@ -5,8 +5,8 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react';
-import { obtenerContenidoProgramaPagination, ordenarListaDeContenido } from '../../../Api/programas';
-import { MdEditDocument } from "react-icons/md";
+import { obtenerContenidoProgramaPagination, ordenarListaDeContenido, eliminarContenidoDelPrograma } from '../../../Api/programas';
+import { MdEditDocument, MdDeleteForever } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaLink } from "react-icons/fa";
 import { useParams } from 'react-router-dom';
@@ -42,6 +42,21 @@ const TablaProgramaContenidoAdmin = () => {
         }
         fetch(currentPage);
     }, [currentPage]);
+    const handleDelete = async (idContenido, subtitulo) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar "${subtitulo}"?`);
+        if (confirmDelete) {
+            try {
+                // Llamada a la API para eliminar el contenido
+                await eliminarContenidoDelPrograma(id, idContenido);
+                // Actualiza el estado después de eliminar
+                setContenido(contenido.filter(item => item._id !== idContenido));
+                alert("Contenido eliminado exitosamente.");
+            } catch (error) {
+                console.log("Error al eliminar el contenido:", error);
+                alert("Hubo un error al eliminar el contenido.");
+            }
+        }
+    };
 
     const columnHelper = createColumnHelper();
 
@@ -166,15 +181,22 @@ const TablaProgramaContenidoAdmin = () => {
                                         </td>
                                     ))}
                                     <td className="flex items-center justify-center px-2 py-2 text-sm text-gray-700 border border-gray-300 w-28">
-                                        <div>
-                                            <button
-                                                type='button'
-                                                onClick={() => EditarPrograma(row.original._id)}
-                                                className="flex text-blue-500 transition-colors hover:text-blue-600"
-                                            >
-                                                <MdEditDocument size={20} />
-                                            </button>
-                                        </div>
+
+                                        <button
+                                            type='button'
+                                            onClick={() => EditarPrograma(row.original._id)}
+                                            className="flex text-blue-500 transition-colors hover:text-blue-600"
+                                        >
+                                            <MdEditDocument size={20} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDelete(row.original._id, row.original.subtitulo)} // Pasar idContenido y subtitulo
+                                            className="text-red-500 transition-colors hover:text-red-600"
+                                        >
+                                            <MdDeleteForever size={20} />
+                                        </button>
+
                                     </td>
                                 </tr>
                             ))}
