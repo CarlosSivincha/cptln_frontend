@@ -53,10 +53,10 @@ const TablaProgramas = () => {
                 await eliminarPrograma({ idprograma: idPrograma });
                 // Elimina el programa del estado
                 setProgramas(prevProgramas => prevProgramas.filter(programa => programa._id !== idPrograma));
-                alert("Programa eliminado exitosamente.");
+                
             } catch (error) {
-                console.error("Error eliminando el programa:", error);
-                alert("Hubo un error al eliminar el programa.");
+                console.error( error);
+              
             }
         }
     };

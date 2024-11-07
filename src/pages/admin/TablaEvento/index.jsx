@@ -75,13 +75,28 @@ const TablaEvento = () => {
 
     const navigate = useNavigate();
 
-    // Función para manejar la eliminación de un evento y refrescar los datos
-    const handleDelete = async (id) => {
-        const success = await EliminarEvento({ id }); // Llamada a la función de eliminación
-        if (success) { // Verifica si la eliminación fue exitosa
-            fetchEventos(currentPage); // Refresca los datos después de eliminar
+    const handleDelete = async (id, titulo) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar el evento "${titulo}"?`);
+        
+        if (confirmDelete) {
+            try {
+                // Llamada a la función de eliminación del evento
+                const success = await EliminarEvento({ id });
+                
+                if (success) {
+                    // Refresca los datos después de eliminar
+                    fetchEventos(currentPage);
+                    alert("Evento eliminado exitosamente.");
+                } else {
+                    alert("Hubo un error al eliminar el evento.");
+                }
+            } catch (error) {
+                console.error("Error eliminando el evento:", error);
+                alert("Hubo un error al eliminar el evento.");
+            }
         }
     };
+    
 
     const EditarEvento = (id) => {
         navigate(`tablaevento/${id}`);
@@ -160,7 +175,7 @@ const TablaEvento = () => {
                                         </button>
                                         <button
                                             type='button'
-                                            onClick={() => handleDelete(row.original._id)} // Uso de la función handleDelete
+                                            onClick={() => handleDelete(row.original._id,  row.original.titulo)} // Uso de la función handleDelete
                                             className="text-red-500 transition-colors hover:text-red-600"
                                         >
                                             <MdDeleteForever size={20} />

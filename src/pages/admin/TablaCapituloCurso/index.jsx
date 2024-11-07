@@ -84,10 +84,10 @@ const TablaCapituloCurso = () => {
             try {
                 await eliminarCapituloDelCurso(idcurso, idcapitulo);
                 setCapitulos(prevCapitulos => prevCapitulos.filter(cap => cap._id !== idcapitulo));
-                alert("Capítulo eliminado exitosamente.");
+               
             } catch (error) {
-                console.error("Error eliminando el capítulo:", error);
-                alert("Hubo un error al eliminar el capítulo.");
+                console.error( error);
+                
             }
         }
     };

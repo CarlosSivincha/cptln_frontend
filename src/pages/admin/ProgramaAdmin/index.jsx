@@ -3,14 +3,14 @@ import ReactQuill from "react-quill";
 import Header from "@/pages/client/components/Header";
 import "react-quill/dist/quill.snow.css";
 import { crearPrograma, editarPrograma, buscarProgramaAdmin } from "../../../Api/programas";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { obtenerCategorias } from "../../../Api/categorias";
 
 const ProgramaAdmin = () => {
 
     // Obtener el parametro ID
     const { id } = useParams()
-
+    const navigate = useNavigate();
     // Guardar datos del formulario
     const [titulo, setTitulo] = useState("");
     const [selectcategoria, setSelectcategoria] = useState(null);
@@ -117,6 +117,7 @@ const ProgramaAdmin = () => {
             }
             const respuesta = await crearPrograma(formData);
             console.log(respuesta);
+            if (respuesta.status === 200) navigate("/admin/tablaprogramas");
         } catch (error) {
             console.log(error);
         }
@@ -202,7 +203,7 @@ const ProgramaAdmin = () => {
                         </select>
                     </div>
 
-                    <div className="grid grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-4 gap-4 lg:grid-cols-6">
                         {colorOptions.map((option) => (
                             <label key={option.value} className="flex items-center cursor-pointer">
                                 <input

@@ -3,39 +3,19 @@ import { obtenerSeccionCotenido, agregarSeccionContenido, modificarSeccionConten
 import { useParams, useNavigate } from "react-router-dom";
 
 const ContenidoSeccionRadioAdmin = () => {
-
     const { idseccion, idcontenido } = useParams();
     const navigate = useNavigate();
 
     const [descripcion, setDescripcion] = useState("");
     const [media, setMedia] = useState([]);
+    const [loading, setLoading] = useState(false); // Estado para la carga de archivos
 
     const handleDescripcion = (event) => setDescripcion(event.target.value);
 
-    // Formatos permitidos para archivos de imagen, audio y video
-    const formatosPermitidos = {
-        imagen: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/bmp", "image/tiff", "image/svg+xml"],
-        audio: ["audio/mp3", "audio/wav", "audio/aac", "audio/flac", "audio/ogg", "audio/m4a"],
-        video: ["video/mp4", "video/avi", "video/mkv", "video/mov", "video/wmv", "video/flv", "video/webm"]
-    };
-
-    // Validación de archivos subidos
+    // Validación de archivos subidos (eliminamos la restricción de formatos específicos)
     const handleMedia = (event) => {
         const archivosSeleccionados = Array.from(event.target.files);
-        const archivosValidos = archivosSeleccionados.filter((archivo) => {
-            const tipoArchivo = archivo.type;
-            return (
-                formatosPermitidos.imagen.includes(tipoArchivo) ||
-                formatosPermitidos.audio.includes(tipoArchivo) ||
-                formatosPermitidos.video.includes(tipoArchivo)
-            );
-        });
-
-        if (archivosValidos.length !== archivosSeleccionados.length) {
-            alert("Algunos archivos tienen un formato no permitido y se han excluido.");
-        }
-        
-        setMedia(archivosValidos); // Actualizamos el estado solo con los archivos válidos
+        setMedia(archivosSeleccionados); // Actualizamos el estado con todos los archivos seleccionados
     };
 
     useEffect(() => {
@@ -48,35 +28,54 @@ const ContenidoSeccionRadioAdmin = () => {
         }
     }, [idseccion, idcontenido]);
 
-    // Agregar Seccion
-    const agregarSeccionNueva = async (event) => {
-        event.preventDefault();
-        const formData = new FormData();
-        formData.append('descripcion', descripcion.trim().replace(/\s+/g, ' '));
-        if (media.length > 0) {
-            [...media].forEach((file) => formData.append('media', file));
+    // Función para manejar la carga de archivos
+    const uploadFiles = async (formData) => {
+        try {
+            const response = await agregarSeccionContenido(idseccion, formData);
+            if (response.status === 200) {
+                navigate(`/admin/radioconfig/tablasecciones/${idseccion}/tablacontenidoseccion`);
+            }
+            console.log(response);
+        } catch (error) {
+            console.error("Error al cargar los archivos:", error);
+        } finally {
+            setLoading(false); // Dejar de mostrar el estado de carga
         }
-        const response = await agregarSeccionContenido(idseccion, formData);
-         // Verificar la respuesta correctamente
-         if (response.status === 200) {
-            navigate(`/admin/radioconfig/tablasecciones/${idseccion}/tablacontenidoseccion`);
-        }
-        console.log(response);
     };
 
-    // Modificar Seccion
-    const modificarSeccionExistente = async (event) => {
+    // Agregar Sección
+    const agregarSeccionNueva = async (event) => {
         event.preventDefault();
+        setLoading(true); // Indicar que está en proceso de carga
         const formData = new FormData();
         formData.append('descripcion', descripcion.trim().replace(/\s+/g, ' '));
         if (media.length > 0) {
             [...media].forEach((file) => formData.append('media', file));
         }
-        const response = await modificarSeccionContenido(idseccion, idcontenido, formData);
-        if (response.status === 200) {
-            navigate(`/admin/radioconfig/tablasecciones/${idseccion}/tablacontenidoseccion`);
+        await uploadFiles(formData);
+    };
+
+    // Modificar Sección
+    const modificarSeccionExistente = async (event) => {
+        event.preventDefault();
+        setLoading(true); // Indicar que está en proceso de carga
+        const formData = new FormData();
+        formData.append('descripcion', descripcion.trim().replace(/\s+/g, ' '));
+        if (media.length > 0) {
+            [...media].forEach((file) => formData.append('media', file));
         }
-        console.log(response);
+    
+        try {
+            const response = await modificarSeccionContenido(idseccion, idcontenido, formData);
+            if (response.status === 200) {
+                navigate(`/admin/radioconfig/tablasecciones/${idseccion}/tablacontenidoseccion`);
+            }
+            console.log(response);
+        } catch (error) {
+            console.error("Error al modificar el contenido:", error);
+        } finally {
+            setLoading(false); // Dejar de mostrar el estado de carga
+        }
     };
     return (
         <div className="max-w-4xl px-5 py-10 mx-auto md:px-8 lg:px-12">
@@ -99,10 +98,10 @@ const ContenidoSeccionRadioAdmin = () => {
                         name="media"
                         onChange={handleMedia}
                         multiple
-                        accept=".jpeg, .jpg, .png, .webp, .bmp, .tiff, .svg, .mp3, .wav, .aac, .flac, .ogg, .m4a, .mp4, .avi, .mkv, .mov, .wmv, .flv, .webm"
                         required={!idcontenido} // Obligatorio solo al agregar, no al modificar
                     />
                 </div>
+
                 <button
                     type="submit"
                     className="w-full px-4 py-3 font-semibold text-white transition duration-200 rounded-lg bg-l_color_y-600 hover:bg-l_color_y-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-l_color_y-600"

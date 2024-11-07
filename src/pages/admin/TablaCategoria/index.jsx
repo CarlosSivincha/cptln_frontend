@@ -77,11 +77,26 @@ const TablaCategoria = () => {
     });
 
     const navigate = useNavigate();
-    // Función para manejar la eliminación de un evento y refrescar los datos
-    const handleDelete = async (id) => {
-        const success = await EliminarCategoria({ id }); // Llamada a la función de eliminación
-        if (success) { // Verifica si la eliminación fue exitosa
-            fetchCategoria(currentPage); // Refresca los datos después de eliminar
+
+    
+
+    const handleDelete = async (id, nombre) => {
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar la categoria "${nombre}"?`);
+        
+        if (confirmDelete) {
+            try {
+                // Llamada a la función de eliminación de la noticia
+                const success = await EliminarCategoria({ id });
+                
+                if (success) {
+                    // Refresca los datos después de eliminar
+                    fetchCategoria(currentPage);
+                   
+                } 
+            } catch (error) {
+                console.error(error);
+                
+            }
         }
     };
     const EditarCategorias = (id) => {
@@ -161,7 +176,7 @@ const TablaCategoria = () => {
                                         </button>
                                         <button
                                             type='button'
-                                            onClick={() => handleDelete(row.original._id)} // Uso de la función handleDelete
+                                            onClick={() => handleDelete(row.original._id, row.original.nombre)} // Uso de la función handleDelete
                                             className="text-red-500 transition-colors hover:text-red-600"
                                         >
                                             <MdDeleteForever size={20} />
