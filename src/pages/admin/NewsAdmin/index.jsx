@@ -181,6 +181,7 @@ const NewsFormComponent = () => {
                     <select
                         value={selectcategoria}
                         onChange={(event) => setSelectcategoria(event.target.value)}
+                        className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                          // Asegura que el usuario seleccione una opción válida
                     >
                         <option value="" disabled>Selecciona el programa</option>
