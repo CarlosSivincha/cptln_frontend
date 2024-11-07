@@ -17,16 +17,6 @@ const MOCK_MEDIA = [
     type: 'audio',
     ruta: 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav',
     thumbnail: '/api/placeholder/800/600'
-  },
-  {
-    type: 'image',
-    ruta: 'https://alfaomegaeditor.com.ar/wp-content/uploads/2023/02/unnamed.png',
-    alt: 'Segunda imagen de prueba'
-  },
-  {
-    type: 'audio',
-    ruta: 'https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav',
-    thumbnail: '/api/placeholder/800/600'
   }
 ];
 
@@ -45,6 +35,17 @@ export const MediaSlider = ({ contenido = MOCK_MEDIA }) => {
         const mediaElement = mediaRefs.current[currentIndex];
         if (mediaElement) {
           mediaElement.addEventListener('ended', handleMediaEnd);
+          if (currentMedia.type === 'video') {
+            // Pause the video if it's the first slide
+            if (currentIndex === 0) {
+              mediaElement.pause();
+            } else {
+              mediaElement.play().catch(err => console.log('Error al reproducir:', err));
+            }
+          } else {
+            // Always play the audio
+            mediaElement.play().catch(err => console.log('Error al reproducir:', err));
+          }
           return () => mediaElement.removeEventListener('ended', handleMediaEnd);
         }
       }
@@ -56,7 +57,7 @@ export const MediaSlider = ({ contenido = MOCK_MEDIA }) => {
       if (parseInt(index) !== currentIndex && mediaRef) {
         mediaRef.pause();
       } else if (mediaRef && (contenido[currentIndex]?.type === 'video' || contenido[currentIndex]?.type === 'audio')) {
-        mediaRef.play().catch(err => console.log('Error al reproducir:', err));
+        mediaRef.pause()
       }
     });
   }, [currentIndex, contenido]);

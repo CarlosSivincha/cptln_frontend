@@ -180,7 +180,9 @@ const NewsFormComponent = () => {
                     />
                     <select value={selectcategoria} onChange={(event) => setSelectcategoria(event.target.value)}>
                         {Array.isArray(categorias) && categorias.map((programa) => (
-                            <option value={programa._id}  key={programa._id}>{programa.titulo}</option>
+                            
+                            !programa.enlace && <option value={programa._id}  key={programa._id}>{programa.titulo}</option>
+
                         ))}
                     </select>
                     <button
