@@ -181,7 +181,7 @@ const NewsFormComponent = () => {
                     <select
                         value={selectcategoria}
                         onChange={(event) => setSelectcategoria(event.target.value)}
-                        required // Asegura que el usuario seleccione una opción válida
+                         // Asegura que el usuario seleccione una opción válida
                     >
                         <option value="" disabled>Selecciona el programa</option>
                         {Array.isArray(categorias) && categorias.map((programa) => (
