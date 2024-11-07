@@ -12,7 +12,7 @@ export const CreciendoEnFamilia = () => {
 
     useEffect(() => {
         const fetch = async () => {
-            const response = await obtenerRadioDataCliente();
+            const response = await obtenerRadioDataCliente({"limit":3});
             // console.log(response)
             setDatosRadio(response.data);
             // console.log(response.data[0].nombre)

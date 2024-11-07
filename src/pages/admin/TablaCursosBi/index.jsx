@@ -55,6 +55,10 @@ const Tablacursosbiblicos = () => {
             header: "Correo",
             cell: info => info.getValue(),
         }),
+        columnHelper.accessor('motivo', {
+            header: "Curso",
+            cell: info => info.getValue(),
+        }),
     ];
 
     const table = useReactTable({
@@ -100,7 +104,6 @@ const Tablacursosbiblicos = () => {
                                                 )}
                                         </th>
                                     ))}
-                                   
                                 </tr>
                             ))}
 

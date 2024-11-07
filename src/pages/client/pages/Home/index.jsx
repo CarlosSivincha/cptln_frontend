@@ -141,7 +141,7 @@ export const Home = () => {
         {/* Sección de Programas */}
 
         {/* <div className="container min-[768px]:px-10 min-[1024px]:px-12 min-[1280px]:px-16 min-[1440px]:px-6 mx-auto"> */}
-        <div className="mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1590px] min-[1650px]:w-full ">
+        <div className="mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1690px] min-[1650px]:w-full ">
           <div className="flex items-center gap-4 mb-8">
             <h2 className="h3-subtitles">Programas</h2>
             <a href="/programas">
@@ -188,7 +188,7 @@ export const Home = () => {
         
 
         {/* <div className="flex w-full mx-5 sm:mx-10 sm:max-w-[645px] md:mx-auto md:max-w-[672px] lg:max-w-[980px] lg:mx-auto min-[1110px]:mx-auto min-[1110px]:max-w-[1025px] max-2xl:flex-col gap-10 2xl:gap-12 2xl:max-w-[1480px] 2xl:mx-12 min-[1650px]:mx-auto min-[1650px]:max-w-[1520px]"> */}
-        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-4 2xl:gap-10">
+        <div className="grid xl:grid-cols-2 mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1690px] min-[1650px]:w-full gap-4 2xl:gap-10">
           <div className="flex flex-col justify-between w-full">
               <div className="flex flex-col gap-2 xl:gap-4 2xl:gap-6 mb-4">
                   <h3 className="h3-subtitles">{datosRadio.nombre}</h3>
@@ -210,8 +210,8 @@ export const Home = () => {
       </div>
 
         {/* flex sm:mx-10 md:mx-auto lg:mx-10 min-[1110px]:mx-auto max-2xl:flex-col gap-10 2xl:gap-20 2xl:max-w-[1880px] 2xl:mx-16 min-[1650px]:mx-auto */}
-        <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1590px] min-[1650px]:w-full gap-10 w-full">
-          <div className="">
+        <div className="flex max-2xl:flex-col mx-auto px-8 max-w-[860px] min-[768px]:px-20 min-[1024px]:max-w-[1690px] min-[1650px]:w-full gap-10 w-full">
+          <div className="2xl:w-2/3">
             {/* <h3 className="h3-subtitles mb-5">Noticias</h3> */}
             <div className="flex items-center gap-4 mb-8">
               <h2 className="h3-subtitles">Noticias</h2>
@@ -245,9 +245,9 @@ export const Home = () => {
           </div>
 
 
-          <div>
+          <div className="2xl:w-1/3">
             <h3 className="h3-subtitles mb-5">Eventos</h3>
-            <div className="min-[360px]:mx-auto">
+            <div className="min-[360px]:mx-auto ">
               <div className={`grid grid-cols-1 ${fetchEventos && fetchEventos.length > 1 ? "lg:grid-cols-2" : "lg:grid-cols-1"} xl:grid-cols-2 2xl:grid-cols-1 gap-4 xl:gap-8 2xl:gap-6 2xl:max-w-[530px] justify-items-center`}>
                 {isLoadingEvents ? (
                   Array(3).fill().map((_, index) => (

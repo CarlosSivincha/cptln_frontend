@@ -4,6 +4,7 @@ const Header = lazy(() => import("@/pages/client/components/Header"));
 const AudioPlayer = lazy(() => import("@/pages/client/components/AudioPlayer"))
 const Devocionales = lazy(() => import("@/pages/client/components/Devocionales"));
 const DevocionalLoader = lazy(() => import("@/pages/client/components/Loaders/DevocionalLoader.jsx"));
+const ImageLoader = lazy(() => import("@/pages/client/components/Loaders/ImageLoader.jsx"));
 
 import { obtenerDevocionalHoy, obtenerDevocional, obtenerDevocionalID } from "@/Api/devocionales";
 import { useParams, useNavigate } from "react-router-dom";
@@ -24,7 +25,7 @@ const Devocional = () => {
                 if (!id) {
                     const response = await obtenerDevocionalHoy()
                     setInfoDevocional(response.data)
-                    setInfoDevocionalLoader(false)
+                    setInfoDevocionalLoader(true)
                 } else {
                     const response = await obtenerDevocionalID(id)
                     setInfoDevocional(response.data)
@@ -70,9 +71,9 @@ const Devocional = () => {
         <div className="flex flex-col gap-6 lg:gap-12 xl:gap-16 pb-4 lg:pb-8 xl:pb-16 items-center">
             <Header color="bg-l_color_y-600" title="Rincon de Gracia" text={!id ? `Devocional diario` : `Devocional ( ${convertirFechaPersonalizada(infoDevocional.fecha)} )`} />
             <div className="xl:mx-40 lg:mx-28 md:mx-20 mx-5 sm:mx-16 my-10">
-                <h3 className="h3-subtitles">{infoDevocional.titulo}</h3>
+                <h3 className="h3-subtitles">{!isInfoDevocioalLoader ? "Devocional" : infoDevocional.titulo}</h3>
                 <p className="flex text-gray-500 italic my-5 text-xl xl:text-2xl break-all ">
-                    {`Lectura: "${infoDevocional.versiculo}"`}
+                    {`Lectura: "${!isInfoDevocioalLoader && !infoDevocional ? "..." : infoDevocional.versiculo}"`}
                 </p>
 
                 <div className="flex w-full my-2">
@@ -80,8 +81,9 @@ const Devocional = () => {
                 </div>
                 <div className="max-w-[1300px]">
                     <div className="max-w-[385px] lg:max-w-[340px] mx-auto lg:float-end lg:mb-3 2xl:mb-5 lg:ml-6 2xl:ml-10">
-                        <img src={infoDevocional.imagenURL} alt=""
-                            className="mb-2" />
+                        {
+                            !isInfoDevocioalLoader && infoDevocional.imageURL ? <ImageLoader/> : <img src={infoDevocional.imagenURL} alt="" className="mb-2" />
+                        }
                         <AudioPlayer audio={infoDevocional.audioURL}/>
                     </div>
                     <p className="standard-paragraph text-justify break-all mt-8" dangerouslySetInnerHTML={{ __html: infoDevocional.parrafo}}></p>

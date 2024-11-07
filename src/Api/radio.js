@@ -2,9 +2,9 @@ import axios from "./axios";
 
 // Cliente
 export const obtenerDatosDeRadio = () => axios.get(`/client/radio`)
-export const obtenerRadioDataCliente = () => axios.get(`/client/radio/secciones`)
+export const obtenerRadioDataCliente = ({limit}) => axios.get(`/client/radio/secciones`, {params: {limit}})
 export const obtenerRadioDataSeccion = (id) => axios.get(`/client/radio/seccion/${id}`)
-
+export const obtenerContenidoSeccionPagination = (id, parametros) => axios.get(`/client/radio/${id}/pagination`,{params: parametros})
 
 // Admin 
 

@@ -134,7 +134,7 @@ const Navbar = () => {
                 isScrolledUp ? "text-black" : "text-white"
               }`}
             >
-              CPTL - PERÚ
+              CPTLN - PERÚ
             </span>
           </a>
 
@@ -180,7 +180,7 @@ const Navbar = () => {
             </button>
           </div>
 
-          <ul className="hidden space-x-10 font-bold lg:flex 2xl:text-[17px]">
+          <ul className="hidden ml-2 space-x-7 lg:space-x-8 xl:space-x-10 font-bold lg:flex 2xl:text-[17px]">
           <li className={`hover:text-gray-300 ${isScrolledUp ? "text-black" : "text-white"}`}>
               <a href="/">Inicio</a>
             </li>
@@ -231,6 +231,12 @@ const Navbar = () => {
                       );
                     })
                   }
+                  <a
+                    href={`/programa/creciendo-en-familia`}
+                    className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
+                  >
+                    Creciendo en Familia
+                  </a>
                   {isLoadingPrograms // Mientras está cargando, muestra los skeletons
                     ? Array(1) // Crear 6 skeletons como placeholders
                         .fill()
@@ -412,6 +418,12 @@ const Navbar = () => {
                       );
                     })
                   }
+                  <a
+                    href={`/programa/creciendo-en-familia`}
+                    className="block px-4 py-2 text-black hover:bg-[#dfdfdf]"
+                  >
+                    Creciendo en Familia
+                  </a>
                   {isLoadingPrograms // Mientras está cargando, muestra los skeletons
                     ? Array(1) // Crear 6 skeletons como placeholders
                         .fill()
@@ -505,7 +517,7 @@ const Navbar = () => {
             <div className="items-center flex flex-col gap-4">
                 <img src={WhiteIcon} alt="qhite-icon" className="w-12 xl:w-16"/>
                 <span className="text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.2em]">Cristo para Todas las Naciones - Perú</span>
-                <span className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.2em]">Síguenos en:</span>
+                {/* <span className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.2em]">Síguenos en:</span> */}
                 {/* <div className="flex flex-col">
                   <svg className="e-font-icon-svg e-fab-facebook" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                       <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path>

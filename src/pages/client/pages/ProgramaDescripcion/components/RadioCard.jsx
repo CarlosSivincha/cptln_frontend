@@ -27,11 +27,13 @@ export const RadioCard = ({descripcion = "", contenido = []}) =>{
         setIsOpenDescription(!isOpenDescription);
     }
     return(
-    <div className="max-w-[400px] sm:max-w-[600px] max-h-[800px] shadow-lg">
+    <div className="flex flex-col max-w-[400px] sm:max-w-[600px] max-h-[800px] shadow-lg min-h-72">
         {/* <div className="transition-all hover:scale-105 duration-300">
             <MediaSlider contenido={contenido}/>
         </div> */}
-        <MediaSlider contenido={contenido}/>
+        <div>
+            <MediaSlider contenido={contenido}/>
+        </div>
         <div
             className={`bg-white flex px-6 pb-2 pt-4 transition-all duration-500 ${
                 isOpenDescription ? 'max-h-[500px] overflow-y-auto' : 'max-h-[98px] min-[1100px]:max-h-[115px] overflow-hidden'

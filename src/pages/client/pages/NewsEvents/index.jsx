@@ -2,8 +2,9 @@ import { lazy, useEffect, useState } from "react";
 import ImagenNoticia1 from "../../../../assets/img_N_card.png";
 // import {NewsLoader} from "../../components/Loaders/NewsLoader"
 
-import { obtenerNoticia } from "@/Api/noticias";
+import { obtenerNoticiasPag } from "@/Api/noticias";
 import { obtenerEventos } from "@/Api/eventos";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 import data from "../../data.json"
 
@@ -20,14 +21,27 @@ export const NewsEvents = () => {
   const [isLoadingNews, setIsLoadingNews] = useState(true); // Nuevo estado de carga
   const [isLoadingEvents, setIsLoadingEventes] = useState(true); // Nuevo estado de carga
 
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   useEffect(() => {  
-    const fetch = async () => {
-      const response = await obtenerNoticia({"limit":null})
+    const fetch = async (page) => {
+      setIsTransitioning(true);
+      const response = await obtenerNoticiasPag({ params: { page: Number(page), limit: 4 } })
       // console.log(response)
-      setFetchNoticias(response.data)
+      setFetchNoticias(response.data.noticias)
+      console.log(response.data)
       setIsLoadingNews(false);
+      setCurrentPage(response.data.currentPage); // Actualizar la página actual
+      setTotalPages(response.data.totalPages); // Actualizar el total de páginas
+      setIsTransitioning(false);
     }
-    fetch();
+    fetch(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {  
     const fetchEvent = async () => {
       const response = await obtenerEventos()
       // console.log(response)
@@ -36,6 +50,25 @@ export const NewsEvents = () => {
     }
     fetchEvent();
   }, []);
+  
+
+  const handleNextPage = () => {
+      if (currentPage < totalPages && !isTransitioning) {
+          setCurrentPage(currentPage + 1);
+      }
+  };
+
+  const handlePreviousPage = () => {
+      if (currentPage > 1 && !isTransitioning) {
+          setCurrentPage(currentPage - 1);
+      }
+  };
+
+  const handlePage = (index) => {
+    if (!isTransitioning) {
+      setCurrentPage(index);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-12 lg:gap-16 xl:gap-28 pb-12 lg:pb-16 xl:pb-28">
@@ -61,6 +94,78 @@ export const NewsEvents = () => {
                       loading={false} // loading={false} oculta los skeletons
                     />
                   ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-center max-w-[1300px] mx-auto gap-2 md:gap-7 mt-8">
+              <button
+                className={`px-4 py-2 text-sm rounded-md text-l_color_o-600 bg-white hover:bg-l_color_v hover:text-white transition-colors ${
+                  currentPage === 1 || isLoadingNews ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1 || isLoadingNews}
+              >
+                <FaAngleLeft size={22}/>
+              </button>
+
+              {Array.from({ length: totalPages }, (_, index) => {
+                const pageNumber = index + 1;
+                const isFirstTwo = pageNumber <= 2;
+                const isLastTwo = pageNumber > totalPages - 2;
+                const isCurrentPage = pageNumber === currentPage;
+
+                // En tablet, mostrar solo los dos primeros y los dos últimos números
+                if (isFirstTwo || isLastTwo || isCurrentPage) {
+                  return (
+                    <button
+                      key={index}
+                      className={`px-4 py-2 text-base font-bold rounded-md  hover:text-white hover:bg-l_color_v transition-colors  ${
+                        currentPage === pageNumber ? "bg-l_color_v text-white shadow-xl" : "bg-white text-l_color_v shadow-md"
+                      }`}
+                      onClick={() => handlePage(pageNumber)}
+                      disabled={isLoadingNews || isTransitioning}
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                }
+
+                // Puntos suspensivos después de los primeros dos números
+                if (pageNumber === 3 && currentPage > 3 && !isLastTwo) {
+                  return (
+                    <button
+                      key="dots"
+                      className="px-4 py-2 text-base font-bold rounded-md text-l_color_v bg-white  cursor-default"
+                      disabled
+                    >
+                      ...
+                    </button>
+                  );
+                }
+
+                // Puntos suspensivos antes de los últimos dos números
+                if (pageNumber === totalPages - 2 && currentPage < totalPages - 2 && !isFirstTwo) {
+                  return (
+                    <button
+                      key="dots-end"
+                      className="px-4 py-2 text-base font-bold rounded-md text-l_color_v bg-white cursor-default"
+                      disabled
+                    >
+                      ...
+                    </button>
+                  );
+                }
+
+                return null;
+              })}
+
+              <button
+                className={`px-4 py-2 text-base rounded-md text-l_color_o-600 bg-white hover:bg-l_color_v hover:text-white transition-colors ${
+                  currentPage === totalPages || isLoadingNews ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages || isLoadingNews}
+              >
+                <FaAngleRight size={22}/>
+              </button>
             </div>
           </div>
 
@@ -110,3 +215,4 @@ export const NewsEvents = () => {
 };
 
 export default NewsEvents;
+
