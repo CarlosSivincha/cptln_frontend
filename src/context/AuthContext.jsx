@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [errorsAuth , setErrorsAuth] = useState("")
 
     const loginUser = async (user) => {
         try {
@@ -39,7 +40,13 @@ export const AuthProvider = ({ children }) => {
             const response = await registrar(user)
             console.log(response)
         } catch (error) {
-            console.log(error)
+            if (error.response && error.response.data && error.response.data.errors) {
+                const firstError = error.response.data.errors[0]; // Primer error de la respuesta
+                setErrorsAuth(firstError.message); // Establecer el primer error como estado
+            } else {
+                setErrorsAuth("Error desconocido"); // En caso de que no se obtenga un error esperado
+            }
+    
         }
     }
 
@@ -53,7 +60,7 @@ export const AuthProvider = ({ children }) => {
                 
             }
         } catch (error) {
-            
+            setErrorsAuth(error)
         }
     }
 
@@ -87,7 +94,7 @@ export const AuthProvider = ({ children }) => {
     // }, [location]);
 
     return (
-        <AuthContext.Provider value={{ user, loginUser, RegisterUser, LogoutUser, isAuthenticated, loading }} >
+        <AuthContext.Provider value={{ user, loginUser, RegisterUser, LogoutUser, isAuthenticated, loading, errorsAuth }} >
             {children}
         </AuthContext.Provider>
     )

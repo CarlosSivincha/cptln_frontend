@@ -1,10 +1,10 @@
 import { useState } from "react";
 import OriginalLogo from "../../../../src/assets/OriginalLogo.png";
-import { useAuth } from "../../../context/AuthContext"; 
+import { useAuth } from "../../../context/AuthContext";
 
 export const RegisterAdmin = () => {
 
-  const { RegisterUser } = useAuth()
+  const { RegisterUser, errorsAuth } = useAuth()
 
   // Formulario
   const [nombres, setNombre] = useState("")
@@ -13,7 +13,7 @@ export const RegisterAdmin = () => {
   const [contraseña, setContraseña] = useState("")
   const [confirmarContraseña, setConfirmarContraseña] = useState("")
   const [error, setError] = useState("") // Para manejar los errores de validación
-  const [errorcorreo, setErrorcorreo] = useState("") 
+  const [errorcorreo, setErrorcorreo] = useState("")
 
   const handleNombres = (event) => setNombre(event.target.value)
   const handleApellidos = (event) => setApellidos(event.target.value)
@@ -38,18 +38,10 @@ export const RegisterAdmin = () => {
     formData.append('apellidos', apellidos)
     formData.append('correo', correo)
     formData.append('password', contraseña)
-    
+
     // Llamar a la función para registrar al usuario
-    try {
-      const response = RegisterUser(formData)
-      console.log(response)
-
-    } catch (error) {
-      console.log(error)
-      setErrorcorreo(error.response.data.errors[0].message)
-    }
-   
-
+      RegisterUser(formData)
+      console.log(errorsAuth)
   }
 
   return (
@@ -95,7 +87,7 @@ export const RegisterAdmin = () => {
                 required
               />
             </div>
-            {error && <p className="mb-4 text-sm text-red-500">{errorcorreo}</p>}
+            {errorsAuth && <p className="mb-4 text-sm text-red-500">{errorsAuth}</p>}
             <div className="mb-4">
               <input
                 type="password"
