@@ -68,8 +68,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkLogin = async () => {
             try {
-                const token = Cookies.get('token')
-                const res = await verifyTokenRequest(token);
+                const res = await verifyTokenRequest();
                 if (!res.data) {
                     if (location.pathname.includes('/admin') && !hasRedirected) {
                         setHasRedirected(true);
