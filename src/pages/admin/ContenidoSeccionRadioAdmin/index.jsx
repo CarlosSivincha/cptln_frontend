@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { obtenerSeccionCotenido, agregarSeccionContenido, modificarSeccionContenido } from "../../../Api/radio";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const ContenidoSeccionRadioAdmin = () => {
     const { idseccion, idcontenido } = useParams();
