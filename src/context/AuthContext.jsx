@@ -17,12 +17,12 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
 
     const location = useLocation()
-    const navigate = useNavigate()
+    const navigate = useNavigate ()
 
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [errorsAuth, setErrorsAuth] = useState("")
+    const [errorsAuth , setErrorsAuth] = useState("")
 
     const loginUser = async (user) => {
         try {
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setErrorsAuth("Error desconocido"); // En caso de que no se obtenga un error esperado
             }
-
+    
         }
     }
 
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
             if (res) {
                 setIsAuthenticated(false)
                 setUser(null)
-
+                
             }
         } catch (error) {
             setErrorsAuth(error)
