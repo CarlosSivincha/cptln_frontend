@@ -17,12 +17,12 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
 
     const location = useLocation()
-    const navigate = useNavigate ()
+    const navigate = useNavigate()
 
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [errorsAuth , setErrorsAuth] = useState("")
+    const [errorsAuth, setErrorsAuth] = useState("")
 
     const loginUser = async (user) => {
         try {
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setErrorsAuth("Error desconocido"); // En caso de que no se obtenga un error esperado
             }
-    
+
         }
     }
 
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
             if (res) {
                 setIsAuthenticated(false)
                 setUser(null)
-                
+
             }
         } catch (error) {
             setErrorsAuth(error)
@@ -68,7 +68,11 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkLogin = async () => {
             try {
-                const res = await verifyTokenRequest();
+                const token = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('token='))
+                    ?.split('=')[1];
+                const res = await verifyTokenRequest(token);
                 if (!res.data) {
                     if (location.pathname.includes('/admin') && !hasRedirected) {
                         setHasRedirected(true);
