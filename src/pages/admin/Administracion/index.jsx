@@ -42,6 +42,18 @@ const Administracion = () => {
         window.location.reload()
     }
 
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            // Esto evita que la página sea almacenada en el caché de navegación
+        };
+        
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
     return (
         <>
             <nav className="flex items-center justify-between w-full px-40 py-4 bg-l_color_r-600">
