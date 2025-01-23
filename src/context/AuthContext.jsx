@@ -66,32 +66,32 @@ export const AuthProvider = ({ children }) => {
 
     const hasRedirected = useRef(false); // Usamos un ref para evitar redirecciones múltiples
     // Verificación inicial al cargar
-    // useEffect(() => {
-    //     const checkLogin = async () => {
-    //         try {
-    //             const res = await verifyTokenRequest()
-    //             if (!res.data) {
-    //                 if (location.pathname.includes('/admin') && !hasRedirected.current) {
-    //                     hasRedirected.current = true;  // Marcamos que ya hemos redirigido
-    //                     setIsAuthenticated(false);
-    //                     setLoading(false);
-    //                     navigate('/cptln/pe/admin/login');
-    //                     return;
-    //                 }
-    //             } else {
-    //                 setIsAuthenticated(true);
-    //                 setUser(res.data);
-    //             }
-    //             setLoading(false);
-    //         } catch (error) {
-    //             console.error('Token verification error:', error);
-    //             setIsAuthenticated(false);
-    //         } finally {
-    //             setLoading(false); // Asegúrate de que la carga se complete
-    //         }
-    //     }
-    //     checkLogin();
-    // }, [location]);
+    useEffect(() => {
+        const checkLogin = async () => {
+            try {
+                const res = await verifyTokenRequest()
+                if (!res.data) {
+                    if (location.pathname.includes('/admin') && !hasRedirected.current) {
+                        hasRedirected.current = true;  // Marcamos que ya hemos redirigido
+                        setIsAuthenticated(false);
+                        setLoading(false);
+                        navigate('/cptln/pe/admin/login');
+                        return;
+                    }
+                } else {
+                    setIsAuthenticated(true);
+                    setUser(res.data);
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error('Token verification error:', error);
+                setIsAuthenticated(false);
+            } finally {
+                setLoading(false); // Asegúrate de que la carga se complete
+            }
+        }
+        checkLogin();
+    }, [location]);
 
     return (
         <AuthContext.Provider value={{ user, loginUser, RegisterUser, LogoutUser, isAuthenticated, loading, errorsAuth }} >
