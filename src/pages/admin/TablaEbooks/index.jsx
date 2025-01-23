@@ -25,6 +25,11 @@ const TablaEbooks = () => {
         try {
             setIsLoading(true); // Iniciar estado de carga
             const response = await obtenerEbooksPag({ params: { page: Number(page), limit: 10 } });
+            if (response.data.ebooks){
+                setEbooks(response.data.ebooks); // Actualizar el estado con los eventos
+            } else{
+                setEbooks([]);
+            }
             setEbooks(response.data.ebooks); // Actualizar el estado con los eventos
             setCurrentPage(response.data.currentPage); // Actualizar la página actual
             setTotalPages(response.data.totalPages); // Actualizar el total de páginas

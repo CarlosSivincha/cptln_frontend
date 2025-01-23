@@ -87,7 +87,7 @@ const CursosBiblico = () => {
 
     return (
         <div className="flex flex-col gap-12 pb-12 lg:gap-16 xl:gap-28 lg:pb-16 xl:pb-28">
-            <Header color="bg-l_color_o-600" title="Cursos Bíblicos" />
+            <Header color="bg-[#3C5050]" title="Cursos Bíblicos" />
             <div className="grid grid-cols-1 gap-12 lg:gap-16 xl:gap-28 mx-5 sm:mx-10 2xl:w-full max-w-[1500px] xl:mx-10 2xl:mx-auto rounded-xl">
                 {
                     !isLoadingCursos && cursos && cursos.map((curso, index) => (
@@ -102,7 +102,7 @@ const CursosBiblico = () => {
                     <p className="font-light text-[1.125em] leading-[1.5em] max-[1100px]:text-[1em] max-[1100px]:leading-[1.4em] text-justify">Cada uno de los 12 videos contiene una guía de estudio con referencias bíblicas y preguntas de reflexión y discusión.</p>
                     <p className="font-bold text-[1.25em] leading-[1.5em] max-[1100px]:text-[1.125em] max-[1100px]:leading-[1.4em] ">¿Estás listo para aprender?</p>
                 </div>
-                <div className="flex flex-col gap-5 max-lg:h-2/3 h-auto lg:h-96 w-full bg-l_color_v-600 px-5 py-5 xl:px-10 justify-center">
+                <div className="flex flex-col gap-5 max-lg:h-2/3 h-auto lg:h-96 w-full bg-[#47797A]/70 px-5 py-5 xl:px-10 justify-center">
                     <img src={WhiteIcon} alt="" className="self-center w-12 my-4" />
                     <form className="flex flex-col w-full gap-5" onSubmit={enviarDatos}>
                         <div className="flex gap-5 max-md:flex-col">
@@ -130,9 +130,8 @@ const CursosBiblico = () => {
                             onChange={handleCategoria}
                             className="py-1.5 px-2 rounded-lg border border-[#EAE9E5] text-[1.125em] leading-[1.5em] max-[1100px]:text-[1em] max-[1100px]:leading-[1.4em]"
                             required
-                            defaultValue="none"
                         >
-                            <option value="none" disabled className="text-gray-400" selected="selected">Escoja un curso</  option>
+                            <option value="" disabled className="text-gray-400">Escoja un curso</option>
                             {
                                 !isLoadingCursos && cursos && cursos.map((curso, index) => (
                                     <option value={curso.titulo}>{curso.titulo}</option>
@@ -144,7 +143,7 @@ const CursosBiblico = () => {
                             <option value="Depresión">Depresión</option>
                             <option value="Ansiedad">Ansiedad</option> */}
                         </select>
-                        <button type="submit" className="px-4 py-2 text-white transition-all duration-300 rounded-md bg-l_color_o-400 hover:shadow-md">Enviar</button>
+                        <button type="submit" className="px-4 py-2 text-white transition-all duration-300 rounded-md bg-[#A25F3B]/80 hover:shadow-md hover:bg-[#A25F3B]">Enviar</button>
                     </form>
                 </div>
             </div>

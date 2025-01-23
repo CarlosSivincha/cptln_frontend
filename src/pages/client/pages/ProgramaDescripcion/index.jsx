@@ -193,23 +193,21 @@ const ProgramSelect = () => {
                         <>
                         {
                             contenido.imagen ? (
-                                <div className="flex justify-between max-md:flex-col gap-10 box-content md:items-center md:min-w-[650px] xl:min-w-[800px] 2xl:min-w-[1000px]" key={index}>
+                                <div className="flex justify-between self-start max-md:flex-col gap-10 box-content md:items-center md:min-w-[650px] xl:min-w-[800px] 2xl:min-w-[1000px]" key={index}>
 
-                                    <div className={`flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center ${index%2 == 1 ? " order-2 max-md:order-1" : ""}`}>
-                                        
-                                    <img src={contenido.imagen} alt=""
+                                    <div className={`flex-1 max-w-[498px] max-md:w-full max-md:max-w-full max-md:flex max-md:justify-center ${index%2 == 1 ? "order-2 max-md:order-1" : "max-md:order-1"}`}>   
+                                        <img src={contenido.imagen} alt=""
                                         className="bg-cover 2xl:h-80 xl:h-64 md:h-54 max-md:w-full rounded-2xl shadow-md shadow-gray-400" />
-
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className={`h3-subtitles ${index%2 == 1 ? "order-1 max-md:order-2" : ""}`}>{contenido.subtitulo}</h3>
+                                        <h3 className={`h3-subtitles ${index%2 == 1 ? "order-1 max-md:order-2" : "max-md:order-2"}`}>{contenido.subtitulo}</h3>
                                         <p className="mt-[15px] standard-paragraph text-[#555656] text-justify" dangerouslySetInnerHTML={{ __html: contenido.parrafo}}>
                                             
                                         </p>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex justify-between gap-10 box-content" key={index}>
+                                <div className="flex self-start gap-10 box-content" key={index}>
 
                                     <div className="flex-1">
                                         <h3 className={`h3-subtitles`}>{contenido.subtitulo}</h3>

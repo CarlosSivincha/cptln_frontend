@@ -31,7 +31,11 @@ const TablaProgramaContenidoAdmin = () => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
                 const response = await obtenerContenidoProgramaPagination(id, { params: { page: Number(page), limit: 10 } });
-                setContenido(response.data.contenidoPrograma);
+                if (response.data.contenidoPrograma){
+                    setContenido(response.data.contenidoPrograma); // Actualizar el estado con los contenidoPrograma
+                } else{
+                    setContenido([]);
+                }
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {

@@ -74,7 +74,11 @@ const TablaCapituloCurso = () => {
         formData.append('indexSeleccionado', draggedItemIndex);
         formData.append('indexInsertar', index);
         const response = await ordenarListaDeCapitulos(idcurso, formData);
-        setCapitulos(response.data);
+        if (response.data){
+            setCapitulos(response.data); // Actualizar el estado con los capitulos
+        } else{
+            setCapitulos([]);
+        }
         setDraggedItemIndex(null);
         setIsHovering(false);
     };

@@ -25,6 +25,11 @@ const TablaCursos = () => {
         try {
             setIsLoading(true); // Iniciar estado de carga
             const response = await obtenerCursoPag({ params: { page: Number(page), limit: 10 } });
+            if (response.data.cursos){
+                setCursos(response.data.cursos); // Actualizar el estado con los cursos
+            } else{
+                setCursos([]);
+            }
             setCursos(response.data.cursos);
             setCurrentPage(response.data.currentPage);
             setTotalPages(response.data.totalPages);

@@ -41,7 +41,6 @@ const RadioAdmin = () => {
     // Guardar Cambios
     const guardarDatosDeRadio = async (event) => {
         event.preventDefault();
-        console.log(`adasd`);
         const formData = new FormData()
         formData.append('nombre', nombre)
         if (id) formData.append('id', id);
@@ -54,7 +53,8 @@ const RadioAdmin = () => {
         }
         try {
             const res = await actualizarDatosDeRadio(formData)
-            console.log(res);
+            alert("Datos actualizados correctamente")
+
         } catch (error) {
             console.log(error);
         }
@@ -68,8 +68,8 @@ const RadioAdmin = () => {
     };
 
     return (
-        <>
-            <div className="flex flex-col px-96 pt-10 w-full">
+        <div className="flex justify-center mt-10 mx-5">  
+            <div className="flex flex-col max-w-5xl pt-10 w-full">
                 <h2 className="mb-6 text-3xl font-bold text-start text-gray-800">Configuracion de la radio</h2>
                 <form onSubmit={guardarDatosDeRadio} className="space-y-6">
                     <input
@@ -103,6 +103,7 @@ const RadioAdmin = () => {
 
                     <div className="grid grid-cols-2 pt-10 gap-x-10">
                         <button 
+                        type="button"
                             className="transition duration-200 bg-yellow-500 rounded-md hover:bg-yellow-600"
                             onClick={() => navigate(`tablasecciones`)}>
                             Modificar Secciones
@@ -117,7 +118,7 @@ const RadioAdmin = () => {
 
                 </form>
             </div>
-        </>
+        </div>
     )
 }
 

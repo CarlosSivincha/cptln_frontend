@@ -80,11 +80,9 @@ const NewsFormComponent = () => {
         if (id) {
             const fetch = async () => {
                 const response = await obtenerNoticiaID(id);
-                setSelectcategoria(response.data.programa);
+                setSelectcategoria(response.data.programa_id);
                 setTitulo(response.data.titulo);
                 setCuerpo(response.data.cuerpo);
-          
-               
                 setFecha(response.data.fecha);
             };
             fetch();
@@ -98,7 +96,7 @@ const NewsFormComponent = () => {
             return;
         }
         const formData = new FormData();
-        formData.append('programa_id', selectcategoria);
+        formData.append('programa_id', selectcategoria ?? "");
         formData.append('titulo', titulo);
         formData.append('cuerpo', cuerpo);
         formData.append('fecha', fecha);

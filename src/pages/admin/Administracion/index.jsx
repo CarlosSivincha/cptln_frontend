@@ -193,7 +193,7 @@ const Administracion = () => {
 
                     </ul>
                 </div>
-                <div className="flex flex-col w-full transition-all duration-300 bg-[#EAE9E5] overflow-y-auto h-[calc(100vh-5rem)]">
+                <div className="flex flex-col w-full pl-24 transition-all duration-300 bg-[#EAE9E5] overflow-y-auto h-[calc(100vh-5rem)]">
                     <Outlet />
                 </div>
             </div>

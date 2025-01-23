@@ -24,7 +24,11 @@ const TablaDevocional = () => {
         try {
             setIsLoading(true); // Iniciar estado de carga
             const response = await obtenerDevocionalPagAdmin({ params: { page: Number(page), limit: 10 } });
-            setDevocionales(response.data.devocionales);
+            if (response.data.devocionales){
+                setDevocionales(response.data.devocionales); // Actualizar el estado con los eventos
+            } else{
+                setDevocionales([]);
+            }
             setCurrentPage(response.data.currentPage);
             setTotalPages(response.data.totalPages);
         } catch (error) {

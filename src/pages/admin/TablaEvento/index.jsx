@@ -22,7 +22,11 @@ const TablaEvento = () => {
         try {
             setIsLoading(true); // Iniciar estado de carga
             const response = await obtenerEventosPag({ params: { page: Number(page), limit: 10 } });
-            setEventos(response.data.eventos); // Actualizar el estado con los eventos
+            if (response.data.eventos){
+                setEventos(response.data.eventos); // Actualizar el estado con los eventos
+            } else{
+                setEventos([]);
+            }
             setCurrentPage(response.data.currentPage); // Actualizar la página actual
             setTotalPages(response.data.totalPages); // Actualizar el total de páginas
         } catch (error) {

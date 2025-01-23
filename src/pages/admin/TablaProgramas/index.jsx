@@ -34,7 +34,11 @@ const TablaProgramas = () => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
                 const response = await obtenerProgramasPagination({ params: { page: Number(page), limit: 10 } });
-                setProgramas(response.data.programas);
+                if (response.data.programas){
+                    setProgramas(response.data.programas); // Actualizar el estado con los programas
+                } else{
+                    setProgramas([]);
+                }
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {

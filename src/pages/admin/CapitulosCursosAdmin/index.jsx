@@ -118,7 +118,7 @@ const CapituloCursosAdmin = () => {
                         <label className="block font-semibold text-gray-700">Link de YouTube</label>
                         <input
                             name="Youtube"
-                            value={youtubelink}
+                            value={`https://www.youtube.com/watch?v=${youtubelink}`}
                             onChange={handleYoutubelink}
                             placeholder="https://www.youtube.com/ o solo la ID del video"
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"

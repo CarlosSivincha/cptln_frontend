@@ -24,6 +24,11 @@ const TablaCategoria = () => {
     try {
         setIsLoading(true); // Iniciar estado de carga
         const response = await obtenerCategoriasPag({ params: { page: Number(page), limit: 10 } });
+        if (response.data.categorias){
+            setCategoria(response.data.categorias); // Actualizar el estado con los categorias
+        } else{
+            setCategoria([]);
+        }
         setCategoria(response.data.categorias);
         setCurrentPage(response.data.currentPage);
         setTotalPages(response.data.totalPages);

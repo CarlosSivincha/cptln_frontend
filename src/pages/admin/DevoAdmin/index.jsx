@@ -22,6 +22,7 @@ const DevocionalesAdmin = () => {
     const [parrafo, setParrafo] = useState("");
     const [fecha, setFecha] = useState("");
     const [error, setError] = useState("");
+    const [errorFecha, setErrorFecha] = useState("");
 
     const handleImagen = (event) => setImagen(event.target.files[0]);
     const handleAudio = (event) => {
@@ -77,6 +78,7 @@ const DevocionalesAdmin = () => {
             if (respuesta.status === 200) navigate("/admin/tabladevocional");
         } catch (error) {
             console.log(error);
+            setErrorFecha(error.response.data.error.fecha);
         }
     };
 
@@ -126,14 +128,18 @@ const DevocionalesAdmin = () => {
                             className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
                             required
                         />
-                        <input
-                            type="date"
-                            name="fecha"
-                            value={fecha}
-                            onChange={handleFecha}
-                            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
-                            required
-                        />
+                        <div className="w-full relative">
+
+                            <input
+                                type="date"
+                                name="fecha"
+                                value={fecha}
+                                onChange={handleFecha}
+                                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-l_color_y-600"
+                                required
+                            />
+                            <span className="text-red-600 italic absolute left-0 top-full">{errorFecha}</span>
+                        </div>
                     </div>
                     <input
                         type="text"

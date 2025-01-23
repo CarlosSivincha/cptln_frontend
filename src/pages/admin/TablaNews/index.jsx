@@ -28,7 +28,11 @@ const TablaNews = () => {
         try {
             setIsLoading(true); // Iniciar estado de carga
             const response = await obtenerNoticiasPagAdmin({ params: { page: Number(page), limit: 10 } });
-            setNoticias(response.data.noticias); // Actualizar el estado con los eventos
+            if (response.data.noticias){
+                setNoticias(response.data.noticias); // Actualizar el estado con los eventos
+            } else{
+                setNoticias([]);
+            }
             setCurrentPage(response.data.currentPage); // Actualizar la página actual
             setTotalPages(response.data.totalPages); // Actualizar el total de páginas
         } catch (error) {

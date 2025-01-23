@@ -3,24 +3,46 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { MdEditDocument, MdDeleteForever } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { obtenerSeccionContenidos, obtenerSeccion, eliminarContenido } from "../../../Api/radio" // Asegúrate de importar eliminarContenido
+import { obtenerSeccionContenidos, obtenerSeccion, eliminarContenido } from "../../../Api/radio"
 
 const TablaRadioSeccionContenidoAdmin = () => {
-
     const navigate = useNavigate()
     const { idseccion } = useParams()
-    const [contenidos, setContenidos] = useState([])
+    const [allContenidos, setAllContenidos] = useState([])
+    const [paginatedContenidos, setPaginatedContenidos] = useState([])
     const [seccion, setSeccion] = useState("")
+    const [currentPage, setCurrentPage] = useState(1)
+    const [isLoading, setIsLoading] = useState(false)
+    const itemsPerPage = 10
 
-    // Obtener contenidos de la sección
     const fetchContenidos = async () => {
-        const response = await obtenerSeccionContenidos(idseccion)
-        setContenidos(response.data)
+        try {
+            setIsLoading(true)
+            const response = await obtenerSeccionContenidos(idseccion)
+            setAllContenidos(response.data)
+            updatePaginatedData(response.data, 1)
+        } catch (error) {
+            console.error(error)
+            setAllContenidos([])
+            setPaginatedContenidos([])
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const updatePaginatedData = (data, page) => {
+        const startIndex = (page - 1) * itemsPerPage
+        const endIndex = startIndex + itemsPerPage
+        setPaginatedContenidos(data.slice(startIndex, endIndex))
     }
 
     useEffect(() => {
-        fetchContenidos();
-    }, [])
+        fetchContenidos()
+    }, [idseccion])
+
+    useEffect(() => {
+        updatePaginatedData(allContenidos, currentPage)
+    }, [currentPage])
 
     useEffect(() => {
         const fetchSeccion = async () => {
@@ -30,33 +52,46 @@ const TablaRadioSeccionContenidoAdmin = () => {
         fetchSeccion()
     }, [idseccion])
 
-    const columnHelper = createColumnHelper();
+    const columnHelper = createColumnHelper()
 
     const columns = [
         columnHelper.accessor('descripcion', {
             header: "Descripcion",
             cell: info => <div className="line-clamp-2" dangerouslySetInnerHTML={{ __html: info.getValue()}}/>,
         }),
-    ];
+    ]
 
     const table = useReactTable({
-        data: contenidos,
+        data: paginatedContenidos,
         columns,
         getCoreRowModel: getCoreRowModel(),
-    });
+    })
 
-    // Función para manejar la eliminación de un contenido de la sección
     const handleDelete = async (idcontenido) => {
-        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar este contenido?`);
+        const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar este contenido?`)
         if (confirmDelete) {
             try {
-                await eliminarContenido(idseccion, idcontenido);
-                fetchContenidos(); // Refresca los contenidos después de eliminar
+                await eliminarContenido(idseccion, idcontenido)
+                fetchContenidos()
             } catch (error) {
-                console.error("Error eliminando el contenido:", error);
+                console.error("Error eliminando el contenido:", error)
             }
         }
-    };
+    }
+
+    const totalPages = Math.ceil(allContenidos.length / itemsPerPage)
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(curr => curr + 1)
+        }
+    }
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(curr => curr - 1)
+        }
+    }
 
     return (
         <div className="flex justify-center mt-10">
@@ -71,7 +106,6 @@ const TablaRadioSeccionContenidoAdmin = () => {
                     </button>
                 </div>
 
-                {/* Tabla */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full border border-collapse border-gray-300 table-auto">
                         <thead>
@@ -130,9 +164,26 @@ const TablaRadioSeccionContenidoAdmin = () => {
                         </tbody>
                     </table>
                 </div>
+
+                <div className="flex items-center justify-between mt-6">
+                    <button
+                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === 1 || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1 || isLoading}
+                    >
+                        Anterior
+                    </button>
+                    <button
+                        className={`px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-l_color_r-600 transition-colors ${currentPage === totalPages || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages || isLoading}
+                    >
+                        Siguiente
+                    </button>
+                </div>
             </div>
         </div>
     )
 }
 
-export default TablaRadioSeccionContenidoAdmin;
+export default TablaRadioSeccionContenidoAdmin

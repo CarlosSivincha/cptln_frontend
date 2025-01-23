@@ -19,7 +19,11 @@ const Tablacursosbiblicos = () => {
             try {
                 setIsLoading(true); // Iniciar estado de carga
                 const response = await obtenerCursosPag({ params: { page: Number(page), limit: 10 } });
-                setSolicitudes(response.data.solicitudes);
+                if (response.data.solicitudes){
+                    setSolicitudes(response.data.solicitudes); // Actualizar el estado con los solicitudes
+                } else{
+                    setSolicitudes([]);
+                }
                 setCurrentPage(response.data.currentPage);
                 setTotalPages(response.data.totalPages);
             } catch (error) {
